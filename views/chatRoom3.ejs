@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room2</title>
+    <title>Room3</title>
     <link href="/dist/output.css" rel="stylesheet">
     <style>
         body {
@@ -92,7 +92,7 @@
                 <div class="flex items-center">
                     <img class="w-10 h-10" src="./img/user.png" alt="">
                     <div class="ml-4">
-                        <h5 class="text-lg">小美</h5>
+                        <h5 class="text-lg">Kelly</h5>
                         <p class="mt-1">你在幹嘛？</p>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                 <div class="flex items-center">
                     <img class="w-10 h-10" src="./img/user.png" alt="">
                     <div class="ml-4">
-                        <h5 class="text-lg">小寧</h5>
+                        <h5 class="text-lg">James</h5>
                         <p class="mt-1">吃飯了</p>
                     </div>
                 </div>
@@ -109,10 +109,10 @@
         </div>
         <div class="border border-red-400 h-screen p-2 w-[600px]">
             <label id="nickname-label" for="nickname-input">你的小名</label>
-            <input class="border border-gray-400" type="text" id="nickname-input" placeholder="暱稱" value="ID2" required>
+            <input class="border border-gray-400" type="text" id="nickname-input" placeholder="暱稱" value="ID3" required>
             <br>
             <ul id="messages">
-                <li>聊天室-2</li>
+                <li>聊天室-3</li>
             </ul>
             <form id="form" action="">
                 <input class="pl-4" id="receiverId" type="text" placeholder="聊天對象ID">
@@ -147,7 +147,7 @@
         var receiverInput = document.getElementById('receiverId')
 
         // 以下為房間號碼設定，senderId需要抓userId的資料，receiverId需要抓收件人Id 
-        const senderId = "2";
+        const senderId = "3";
         socket.emit("joinMyRoom", senderId)  // 使用者進入自己的房間
         console.log('joinRoom');
 
@@ -162,6 +162,7 @@
             else {
                 room = `${senderId}${receiverId}`;
             }
+            console.log('3');
             if (input.value) {
                 socket.emit("send", { nickname, message: input.value, senderId, receiverId, room });
                 // socket.emit("send", "hi");
