@@ -84,180 +84,173 @@
 </head>
 
 <body>
+    <%- include('./partials/header') %>
 
-    <div class="flex justify-start items-center h-screen">
-        <div class="border border-red-400 h-screen p-2 w-[400px]">
-            <div class="bg-blue-300 p-2">聊天室好友</div>
-            <div class="mt-2 p-2" id="chatlist">
-                <!-- <div class="flex items-center mb-2">
+        <div class="flex justify-start items-center h-screen">
+            <div class="border border-red-400 h-screen p-2 w-[400px]">
+                <div class="bg-blue-300 p-2">聊天室好友</div>
+                <div class="mt-2 p-2" id="chatlist">
+                    <!-- <div class="flex items-center mb-2">
                     <img class="w-10 h-10" src="./img/user.png" alt="">
                     <div class="ml-4">
                         <h5 class="text-lg">Kelly</h5>
                         <p class="mt-1">你在幹嘛？</p>
                     </div>
                 </div> -->
-            </div>
+                </div>
 
-        </div>
-        <div class="border border-red-400 h-screen p-2 w-[600px]">
-            <label id="nickname-label" for="nickname-input">你的小名</label>
-            <input class="border border-gray-400" type="text" id="nickname-input" placeholder="暱稱" value="" required>
-            <br>
-            <ul id="messages">
-                <li>聊天室-1</li>
-            </ul>
-            <form id="form" action="">
-                <input class="pl-4" id="receiverId" type="text" placeholder="聊天對象ID">
-                <input id="input" autocomplete="off" /><button>Send</button>
-            </form>
-        </div>
-        <div class="flex items-center justify-center border border-red-400 h-screen w-[300px]">
-            <div class="flex-col border border-red-300">
-                <img class="p-10" src="./img/user.png" alt="">
-                <div class="border border-red-300 mt-4">
-                    <div class="text-lg">Name</div>
-                    <ul class="mt-2">
-                        <li>tag 1</li>
-                        <li>tag 2</li>
-                        <li>tag 3</li>
-                    </ul>
+            </div>
+            <div class="border border-red-400 h-screen p-2 w-[600px]">
+                <label id="nickname-label" for="nickname-input">你的小名</label>
+                <input class="border border-gray-400" type="text" id="nickname-input" placeholder="暱稱" value=""
+                    required>
+                <br>
+                <ul id="messages">
+                    <li>聊天室</li>
+                </ul>
+                <div class="flex justify-center items-center">
+                    <div class="text-[30px]">請於左方選擇一人聊天</div>
+                </div>
+                <form id="form" action="">
+                    <input class="pl-4" id="receiverId" type="text" placeholder="聊天對象ID">
+                    <input id="input" autocomplete="off" /><button>Send</button>
+                </form>
+            </div>
+            <div class="flex items-center justify-center border border-red-400 h-screen w-[300px]">
+                <div class="flex-col border border-red-300">
+                    <img class="p-10" src="./img/user.png" alt="">
+                    <div class="border border-red-300 mt-4">
+                        <div class="text-lg">Name</div>
+                        <ul class="mt-2">
+                            <li>tag 1</li>
+                            <li>tag 2</li>
+                            <li>tag 3</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- <script src="/socket.io/socket.io.js"></script> -->
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-    <script>
+        <!-- <script src="/socket.io/socket.io.js"></script> -->
+        <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+        <script>
 
-        let socket = io();
+            let socket = io();
 
-        var messages = document.getElementById('messages');
-        var form = document.getElementById('form');
-        var input = document.getElementById('input');
-        var nicknameInput = document.getElementById('nickname-input');
-        var receiverInput = document.getElementById('receiverId')
-        var chatlist = document.getElementById('chatlist')
-        let senderId
-        let userName
-
-        // 以下為房間號碼設定，senderId需要抓userId的資料，receiverId需要抓收件人Id 
-        // socket.emit("joinMyRoom", senderId)  // 使用者進入自己的房間
-
-        async function login() {
-            const response = await fetch("http://127.0.0.1:3000/user/signin", {
-                method: "post",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: "test@gmail.com",
-                    password: "1111"
-                    // provider: "native"
-                })
-            })
-            const user = await response.json();
-            const token = user.data.access_token;
-            const userId = user.data.user.id;
-            const name = user.data.user.name;
-            console.log(user);
-            localStorage.setItem('jwtToken', token);
-            localStorage.setItem('userId', userId);
-            localStorage.setItem('name',name);
-            socket.emit('joinMyRoom', String(userId)); // 加入socket房間
-            senderId = userId;
-            userName = name;
-        }
-
-        async function resetInputValue() {
-            await login();
-            console.log(senderId, "<----senderId");
+            const messages = document.getElementById('messages');
+            const form = document.getElementById('form');
+            const input = document.getElementById('input');
             const nicknameInput = document.getElementById('nickname-input');
-            nicknameInput.value = senderId; // Reset the value to an empty string
-        }
+            const receiverInput = document.getElementById('receiverId')
+            const chatList = document.getElementById('chatlist')
+            const senderId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('name');
 
-        resetInputValue();
+            socket.emit('joinMyRoom', String(senderId)); // 加入自己socket房間
+            nicknameInput.value = userName; // Reset the value to an empty string
 
-        let nicknameInputValue = document.getElementById('nickname-input').value;
-        nicknameInputValue = senderId;
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const nickname = userName;
+                const receiverId = Number(receiverInput.value);
+                let room
+                if (senderId > receiverId) {
+                    room = `${receiverId}${senderId}`;
+                }
+                else {
+                    room = `${senderId}${receiverId}`;
+                }
+                if (input.value) {
+                    socket.emit("send", { nickname, message: input.value, senderId, receiverId, room });
 
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const nickname = nicknameInput.value;
-            const receiverId = Number(receiverInput.value);
-            let room
-            if (senderId > receiverId) {
-                room = `${receiverId}${senderId}`;
-            }
-            else {
-                room = `${senderId}${receiverId}`;
-            }
-            if (input.value) {
-                socket.emit("send", { nickname, message: input.value, senderId, receiverId, room });
+                    // 前端畫面先不用管
+                    let userInput = document.createElement('li');
+                    userInput.classList.add('send');
+                    userInput.textContent = `${nickname}: ${input.value}【room${room}】`;
+                    messages.appendChild(userInput);
+                    window.scrollTo(0, document.body.scrollHeight);
+                    input.value = '';
+                }
+            });
 
-                // 前端畫面先不用管
-                let userInput = document.createElement('li');
-                userInput.classList.add('send');
-                userInput.textContent = `${nickname}: ${input.value}【room${room}】`;
-                messages.appendChild(userInput);
+            // 聽自己id的socket範圍，如果有訊息就拉出來
+            socket.on("message", function (data) {
+                console.log('收到');
+                const { nickname, message, senderId, receiverId, room } = data;
+
+                // Check if a message from the same senderId already exists
+                const existingChatPerson = document.querySelector(`.flex.items-center[data-senderid="${senderId}"]`);
+                if (existingChatPerson) {
+                    // Update the message content
+                    const messageElement = existingChatPerson.querySelector('.mt-1');
+                    messageElement.textContent = message;
+                    chatList.prepend(existingChatPerson);
+                } else {
+                    // Create a new chatPerson element
+                    const chatPerson = document.createElement('div');
+                    chatPerson.setAttribute('class', 'flex items-center bg-blue-100 mb-2 p-2');
+                    chatPerson.setAttribute('data-senderid', senderId); // Add a custom attribute to identify the senderId
+
+                    // Create and append other child elements
+                    const img = document.createElement('img');
+                    img.setAttribute('class', 'w-10 h-10');
+                    img.setAttribute('src', './img/user.png');
+                    img.setAttribute('alt', '');
+
+                    const div = document.createElement('div');
+                    div.setAttribute('class', 'ml-4');
+
+                    const h5 = document.createElement('h5');
+                    h5.setAttribute('class', 'text-lg');
+                    h5.textContent = `${nickname}  ID:${senderId}`;
+
+                    const p = document.createElement('p');
+                    p.setAttribute('class', 'mt-1');
+                    p.textContent = message;
+
+                    div.appendChild(h5);
+                    div.appendChild(p);
+
+                    chatPerson.appendChild(img);
+                    chatPerson.appendChild(div);
+
+                    chatList.prepend(chatPerson);
+                }
+
+                // Add the message to the messages list
+                var item = document.createElement('li');
+                item.textContent = `${nickname}  : ${message} 【room${room}】`;
+                messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
-                input.value = '';
+            });
+
+            async function fetchChatList() {
+                try {
+                    const fetchChatList = await fetch(`http://127.0.0.1:3000/api/v1/chatlist/${senderId}`)
+                    const fetchData = await fetchChatList.json();
+                    console.log(fetchData);
+                    fetchData.forEach(item => {
+                        const chatPerson = `<a href="/chatroom/${item.room_name}" class="block w-full" >
+                                            <div class="flex items-center mb-2 bg-gray-100">
+                                           <img class="w-10 h-10" src="./img/user.png" alt="">
+                                            <div class="ml-4">
+                                            <h5 class="text-lg">${item.receiverId}</h5>
+                                            <p class="mt-1">${item.last_message}</p>
+                                            </div>  
+                                            </div>
+                                            </a>`;
+                        chatList.innerHTML += chatPerson;
+                    });
+
+                } catch (err) {
+                    console.error('Error occurred while fetching chat list:', error);
+                }
+
             }
-        });
 
-        // 聽自己id的socket範圍，如果有訊息就拉出來
-        socket.on("message", function (data) {
-    console.log('收到');
-    const { nickname, message, senderId, receiverId, room } = data;
+            fetchChatList()
 
-    // Check if a message from the same senderId already exists
-    const existingChatPerson = document.querySelector(`.flex.items-center[data-senderid="${senderId}"]`);
-    if (existingChatPerson) {
-        // Update the message content
-        const messageElement = existingChatPerson.querySelector('.mt-1');
-        messageElement.textContent = message;
-        chatlist.prepend(existingChatPerson);
-    } else {
-        // Create a new chatPerson element
-        const chatPerson = document.createElement('div');
-        chatPerson.setAttribute('class', 'flex items-center bg-blue-100 mb-2 p-2');
-        chatPerson.setAttribute('data-senderid', senderId); // Add a custom attribute to identify the senderId
-
-        // Create and append other child elements
-        const img = document.createElement('img');
-        img.setAttribute('class', 'w-10 h-10');
-        img.setAttribute('src', './img/user.png');
-        img.setAttribute('alt', '');
-
-        const div = document.createElement('div');
-        div.setAttribute('class', 'ml-4');
-
-        const h5 = document.createElement('h5');
-        h5.setAttribute('class', 'text-lg');
-        h5.textContent = `${nickname}  ID:${senderId}`;
-
-        const p = document.createElement('p');
-        p.setAttribute('class', 'mt-1');
-        p.textContent =  message;
-
-        div.appendChild(h5);
-        div.appendChild(p);
-
-        chatPerson.appendChild(img);
-        chatPerson.appendChild(div);
-
-        chatlist.prepend(chatPerson);
-    }
-
-    // Add the message to the messages list
-    var item = document.createElement('li');
-    item.textContent = `${nickname}  : ${message} 【room${room}】`;
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
-});
-
-
-    </script>
+        </script>
 </body>
 
 </html>

@@ -18,6 +18,7 @@ export function socketHandler( io: Server ){
        
       // enter room via userID
        socket.on('joinMyRoom', (room : string)=>{
+        console.log(`ID${room} enter chatroom...`);
         socket.join(room);
       })
   
@@ -25,7 +26,7 @@ export function socketHandler( io: Server ){
       socket.on('send', async (data: data) => {
         const { nickname , message , senderId, receiverId, room} = data;
         console.log('收到訊息-->',nickname , message , senderId, receiverId, room);
-        await chatRoomModel.checkRoom(senderId, receiverId, room)  // 每次傳訊息都需要檢查是否有room，後續需要使用Rides讀取比較快
+        await chatRoomModel.checkRoom(senderId, receiverId, room)  
         socket.to(receiverId.toString()).emit("message", { nickname , message , senderId, receiverId, room} )
         await chatRoomModel.saveMessage( message , senderId ,room)
     })

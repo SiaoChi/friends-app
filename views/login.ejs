@@ -1,11 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>login</title>
+    <link href="/dist/output.css" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    </style>
 </head>
-<body>
-    登入頁面
+
+<body class="">
+    <%- include('./partials/header') %>
+        <div class="flex justify-center min-h-2/3 bg-gray-00 ">
+
+            <div class="flex flex-wrap justify-center mt-20">
+                <div class="flex justify-center items-start  mx-6 my-4">
+                    <form method="POST" id="signup-form"
+                        class="flex-col items-center justify-center login-form p-10 w-[350px] h-[430px] border border-gray-200  shadow-md">
+                        <div class="text-[26px] text-center">註冊</div>
+                        <div class="text-[14px] text-center">請填寫以下資料註冊</div>
+                        <div class="message  text-center text-blue-500 p-2"></div>
+                        <input id="signup-name"
+                            class="input-field border border-gray-300  mt-4 w-[268px] h-[38px] rounded-sm px-2 text-sm"
+                            type="text" placeholder="Name" name="name" required>
+                        <input id="signup-mail"
+                            class="input-field border border-gray-300 w-[268px] mt-4 h-[38px] rounded-sm px-2 text-sm"
+                            type="email" placeholder="Email" name="email" required>
+                        <input id="signup-password"
+                            class="input-field border border-gray-300  mt-4 h-[38px] w-[268px] rounded-sm px-2 text-sm"
+                            type="password" placeholder="Password" name="password" required>
+
+                        <button
+                            class="bg-black hover:bg-white hover:border hover:border-black hover:text-black w-[268px] h-[38px] text-white mt-6 rounded-3xl text-[12px]"
+                            type="submit" class="button">Sign up</button>
+                        <button
+                            class="border border-blue-500 w-[268px] h-[38px] text-blue-500 mt-4 rounded-3xl text-[12px] fb-login"
+                            onclick="login()"> Sign up with Facebook</button>
+                    </form>
+                </div>
+
+
+                <div class="flex justify-center items-start  mx-6 my-4">
+                    <form id="signin-form"
+                        class="flex-col items-center justify-center login-form p-10 w-[350px] h-[430px] border border-gray-200  shadow-md"
+                        method="POST">
+                        <div class="text-[26px] text-center">登入</div>
+                        <div class="text-[14px] text-center">請填寫以下資料登入</div>
+                        <div class="signin-message text-center text-blue-500 p-2"></div>
+
+                        <input id="signin-mail"
+                            class="input-field border border-gray-300 w-[268px] mt-4 h-[38px] rounded-sm px-2 text-sm "
+                            type="email " placeholder="Email" name="email" required>
+                        <input id="signin-password"
+                            class="input-field border border-gray-300  mt-4 h-[38px] w-[268px] rounded-sm px-2 text-sm"
+                            type="text" placeholder="Password" name="password" required>
+
+                        <button
+                            class="bg-black hover:bg-white hover:border hover:border-black hover:text-black w-[268px] h-[38px] text-white mt-6 rounded-3xl text-[12px]"
+                            type="submit" class="button">Sign in</button>
+                        <button
+                            class="border border-blue-500 w-[268px] h-[38px] text-blue-500  mt-4 rounded-3xl text-[12px] fb-login"
+                            onclick="login()"> Signin with Facebook</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script>
+
+            // 送出註冊signUp
+            $('#signup-form').submit(async (event) => {
+                console.log('submit')
+                event.preventDefault();
+                const name = $('#signup-name').val();
+                const email = $('#signup-mail').val();
+                const password = $('#signup-password').val();
+                console.log(name, email, password)
+                console.log('-----')
+                const data = {
+                    name: name,
+                    email: email,
+                    password
+                }
+
+                try {
+                    const response = await fetch('/user/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(data);
+                        localStorage.setItem('userId', data.data.user.id);
+                        localStorage.setItem('name', data.data.user.name);
+
+                        for (let i = 0; i < localStorage.length; i++) {
+                            const key = localStorage.key(i);
+                            const value = localStorage.getItem(key);
+                            console.log(key + ": " + value);
+                        }
+
+                        const redirectUrl = data.data.redirectUrl;
+                        window.location.href = redirectUrl;
+                    } else {
+                        const data = await response.json();
+                        alert(data.message); //顯示登入失敗錯誤訊息
+                    }
+
+
+                } catch (error) {
+                    console.log(error)
+                    alert('error')
+                }
+
+            });
+
+            // 送出登入sign in
+            $('#signin-form').submit(async (event) => {
+                console.log('submit')
+                event.preventDefault();
+                const email = $('#signin-mail').val();
+                const password = $('#signin-password').val();
+                console.log(email, password)
+                console.log('--登入前端---')
+                const data = {
+                    email: email,
+                    password: password
+                }
+
+                try {
+                    const response = await fetch('/user/signin', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(data);
+                        console.log(data);
+                        localStorage.setItem('userId', data.data.user.id);
+                        localStorage.setItem('name', data.data.user.name);
+
+                        for (let i = 0; i < localStorage.length; i++) {
+                            const key = localStorage.key(i);
+                            const value = localStorage.getItem(key);
+                            console.log(key + ": " + value);
+                        }
+                        const redirectUrl = data.redirectUrl;
+                        if (redirectUrl) {
+                            window.location.href = redirectUrl;
+                        } else {
+                            alert('this account is not existed');
+                        }
+                    } else {
+                        const data = await response.json();
+                        alert(data.message); //顯示登入失敗錯誤訊息
+                    }
+
+
+                } catch (error) {
+
+                    console.log('error,status', error.status)
+                    console.log(error.message)
+                    alert(error.message)
+                }
+
+            });
+
+
+            // FB登入
+            const msgDiv = document.querySelector('.signin-message');
+
+            window.fbAsyncInit = function () {
+                FB.init({
+                    appId: '598353045687371',
+                    xfbml: true,
+                    version: 'v16.0'
+                });
+                FB.AppEvents.logPageView();
+            };
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) { return; }
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+            function login() {
+                FB.login(function (response) {
+                    console.log(response);
+                    const accessToken = response.authResponse.accessToken;
+                    console.log(accessToken)
+                    if (response.status === "connected") {
+                        FB.api('/me', {
+                            'fields': 'id,name,email,picture'
+                        }, function (response) {
+                            console.log(response);
+
+                            const fb_api_url = '/user/signin';
+                            const config = {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    provider: "Facebook",
+                                    email: response.email,
+                                    accessToken: accessToken
+                                }),
+                            }
+
+                            fetch(fb_api_url, config)
+                                .then(res => {
+                                    if (res.ok) {
+                                        return res.json()
+                                    } else {
+                                        throw new Error(`Request failed with status ${res.status}`);
+                                    }
+                                }
+                                )
+                                .then(res => {
+                                    console.log('登入成功')
+                                    msgDiv.innerText = "恭喜你登入成功!";
+                                })
+                                .catch(err => console.log(err))
+                        });
+                    }
+                }, {
+                    scope: 'email',
+                    auth_type: 'rerequest'
+                });
+            }
+
+        </script>
+
 </body>
+
+
 </html>

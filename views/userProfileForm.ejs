@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/dist/output.css" rel="stylesheet" />
+  <title>個人資料表單</title>
+</head>
+
+<body>
+  <%- include('./partials/header') %>
+  <div class="container">
+    <h1 class="py-4 text-center text-lg">填寫個人資料</h1>
+    <div class="flex justify-center items-center border border-red-400 p-5 ">
+      <form action="/user/profile/form" method="POST" class="flex-col">
+        <label for="name">姓名：</label>
+        <input class="border border-black" type="text" id="name" name="name" value="<%= userData[0].name ? userData[0].name : '' %>" required><br><br>
+
+        <img id="preview" src="https://picsum.photos/id/237/200/300" alt="圖片預覽"
+          style="width: 100px;"><br><br>
+
+        <label for="picture">圖片：</label>
+        <select class="border border-black" id="picture" name="picture" onchange="previewImage(this)" required>
+          <option value="" disabled selected>請選擇一張大頭照</option>
+          <option value="https://picsum.photos/id/237/200/300">狗</option>
+          <option value="https://picsum.photos/id/238/200/300">建築</option>
+          <option value="https://picsum.photos/id/239/200/300">花</option>
+        </select><br><br>
+
+        <label for="birth">生日：</label>
+        <input class="border border-black" type="date" id="birth" name="birth" value="<%= userData[0].birth ? userData[0].birth : '' %>" required><br><br>
+
+        <label for="email">Email：</label>
+        <input class="border border-black" type="email" id="email" name="email" value="<%= userData[0].email ? userData[0].email : '' %>"><br><br>
+
+        <label for="location">居住地區：</label>
+        <select class="border border-black" id="location" name="location" required>
+          <option value="<%= userData[0].location ? userData[0].location : '' %>"><%= userData[0].location ? userData[0].location : '請選擇' %></option>
+          <option value="臺北市">臺北市</option>
+          <option value="新北市">新北市</option>
+          <option value="基隆市">基隆市</option>
+          <option value="新竹市">新竹市</option>
+          <option value="桃園市">桃園市</option>
+          <option value="新竹縣">新竹縣</option>
+          <option value="宜蘭縣">宜蘭縣</option>
+          <option value="臺中市">臺中市</option>
+          <option value="苗栗縣">苗栗縣</option>
+          <option value="彰化縣">彰化縣</option>
+          <option value="南投縣">南投縣</option>
+          <option value="雲林縣">雲林縣</option>
+          <option value="高雄市">高雄市</option>
+          <option value="臺南市">臺南市</option>
+          <option value="嘉義市">嘉義市</option>
+          <option value="嘉義縣">嘉義縣</option>
+          <option value="屏東縣">屏東縣</option>
+          <option value="澎湖縣">澎湖縣</option>
+        </select><br><br>
+
+
+        <label for="sickYear">家屬生病年份：</label>
+        <input class="border border-black" type="number" id="sickYear" name="sickYear" placeholder="ex.2022" value="<%= userData[0].sick_year ? userData[0].sick_year : '' %>" required><br><br>
+
+        <label for="level">醫生診斷病程：</label>
+        <select class="border border-black" id="level" name="level" required>
+          <option value="<%= userData[0].level ? userData[0].level : '' %>"><%= userData[0].level ? userData[0].level : '請選擇' %></option>
+          <option value="早期">早期</option>
+          <option value="中期">中期</option>
+          <option value="晚期">晚期</option>
+        </select><br><br>
+
+        <label for="carer">主要照顧者：</label>
+        <select class="border border-black" id="carer" name="carer" required>
+          <option value="<%= userData[0].carer ? userData[0].carer : '請選擇' %>"><%= userData[0].carer ? userData[0].carer : '請選擇' %></option>
+          <option value="自己">自己</option>
+          <option value="家人">家人</option>
+          <option value="看護">看護</option>
+          <option value="外傭">外傭</option>
+        </select><br><br>
+
+        <label for="currentProblems">你目前遇到的問題：</label><br>
+        <textarea class="border border-black w-[300px] h-[100px]" id="currentProblems" name="currentProblems" value="<%= userData[0].current_problem ? userData[0].current_problem : '' %>" required><%= userData[0].current_problem ? userData[0].current_problem : '' %>
+        </textarea><br><br>
+
+        <label for="conditions">家屬病況：</label><br>
+        <% for (let i=0; i < tags.length; i++) { %>
+          <input type="checkbox" id="conditions" name="tags" value="<%= tags[i].id %>">
+          <label for="condition<%= tags[i].id %>">
+            <%= tags[i].name %>
+          </label><br>
+        <% } %><br>
+        <button class="bg-black text-white w-[200px]" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    function previewImage(input) {
+      var preview = document.getElementById('preview');
+      if (input.value) {
+        preview.src = input.value;
+      }
+    }
+
+      // 頁面載入時預設顯示圖片一
+      window.onload = function () {
+        var selectElement = document.getElementById("picture");
+        previewImage(selectElement);
+      };
+
+
+    </script>
+</body>
+
+</html>

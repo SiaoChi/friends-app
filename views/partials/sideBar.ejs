@@ -1,0 +1,33 @@
+
+
+<div class="w-1/4 p-5 border border-red-300 h-screen">
+  <ul>
+    <button onclick="profile()" class="cursor-pointer py-2 hover:underline">我的個人專頁</button>
+    <li><a href="/user/profile" class="block py-2 hover:underline">編輯個人專頁</a></li>
+    <li><a href="/friends/recommend" class="block py-2 hover:underline">尋找智友</a></li>
+    <li><a href="/friends" class="block py-2 hover:underline">已追蹤智友</a></li>
+    <li><a href="/chatroom" class="block py-2 hover:underline">聊天室</a></li>
+</ul>
+
+  <button class="mt-5 bg-black text-white w-[150px] py-2" onclick="logout()">登出</button>
+</div>
+<script>
+
+    function profile(){
+      const userId = localStorage.getItem('userId');
+      console.log(userId);
+      const url = `/user/profile/${userId}`
+      console.log(url);
+      window.location.href = url;
+    }
+
+      function logout() {
+    // 清除 cookie
+    document.cookie.split(";").forEach(function (cookie) {
+      document.cookie = cookie.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
+    // 重新導向到登出頁面或首頁
+    window.location.href = "/";
+  }
+</script>

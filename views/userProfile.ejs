@@ -1,11 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="/dist/output.css" rel="stylesheet" />
+    <title>Profile</title>
 </head>
+
 <body>
-    個人專頁
+    <%- include('./partials/header') %>
+
+        <div class="flex items-start justify-start ">
+            <%- include('./partials/sideBar') %>
+                <!-- 個人 -->
+                <div class="w-vw-30 p-5 flex flex-col border border-red-300 ">
+                    <button class="bg-black text-white w-[150px]"><a href="/user/profile/form">修改個人資料</a></button>
+                    <img class="w-[150px] mt-2" src="<%= userProfile[0].picture %>" alt="">
+                    <ul>
+                        <li>稱呼：<%= userProfile[0].name %>
+                        </li>
+                        <li>地區：<%= userProfile[0].location %>
+                        </li>
+                        <li>家屬確診年：<%= userProfile[0].sick_year %>
+                        </li>
+                        <li>家屬診斷病程：<%= userProfile[0].level %>
+                        </li>
+                        <li>現有煩惱：<%= userProfile[0].current_problem %>
+                        </li>
+                    </ul>
+                    病況：
+
+                    <% if (userProfile[0].tags && userProfile[0].tags.length> 0) { %>
+                        <ul>
+                            <% userProfile[0].tags.forEach(function(tag) { %>
+                                <li>
+                                    <%= tag %>
+                                </li>
+                                <% }); %>
+                        </ul>
+                        <% } else { %>
+                            <p>尚未點選家屬病況</p>
+                            <% } %>
+
+                </div>
+                <div class="p-5 w-vw-40 h-[560px] overflow-y-scroll">
+                    <button class="bg-black text-white w-[150px]"><a href="/api/v1/user/create-article">新增心情記事</a></button>
+                    <% if (userProfile[0].articles && Array.isArray(userProfile[0].articles)) { %>
+                        <% userProfile[0].articles.forEach(function(article) { %>
+                    <div class=" flex-col py-4 ">
+                              <div class="bg-gray-100  mt-4 p-5">
+                                <p class="p-6 mt-3">
+                                  <%= article %>
+                                </p>
+                              </div>
+                            <% }); %>
+                          <% } else { %>
+                            <p>立刻新增第一筆心情記事吧！
+                            </p>
+                          <% } %>
+                          
+                    </div>
+                </div>
+        </div>
+        <script>
+        </script>
 </body>
+
 </html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/dist/output.css" rel="stylesheet" />
+    <title>Document</title>
+</head>
+<body class="bg-gray-100">
+  <%- include('./partials/header') %>
+  <div class="container mx-auto p-7 w-vw-40 ">
+    <h1 class="text-3xl font-bold mb-4">照護記事</h1>
+    <form id="createArticleForm" class="max-w-xl mt-5">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">標題：</label>
+        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" placeholder="請輸入標題" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="content">內容：</label>
+        <textarea class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="content" rows="5" placeholder="請輸入內容" required></textarea>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="date">日期：</label>
+        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date" type="date" required>
+      </div>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold my-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button"><a href="/user/profile">回上一頁</a></button>
+      <button id="submitButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold ml-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">送出</button>
+    </form>
+  </div>
+  
+  <script>
+    // 監聽表單提交事件
+    document.getElementById("createArticleForm").addEventListener("submit", function (event) {
+      event.preventDefault(); // 阻止預設的表單提交行為
+
+      // 獲取輸入的標題、內容和日期
+      const title = document.getElementById("title").value;
+      const content = document.getElementById("content").value;
+      const date = document.getElementById("date").value;
+
+      // 執行 AJAX 請求或其他操作（此處僅示範）
+      createArticle(title, content, date);
+    });
+
+    // 執行文章創建的 AJAX 請求
+    function createArticle(title, content, date) {
+      // 使用 fetch API 發送 POST 請求到指定的 API 端點
+      fetch("/api/v1/user/create-article", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ title, content, date })
+      })
+        .then(response => response.json())
+        .then(data => {
+          // 請求成功後的處理
+          if(data.message === 'success'){
+            console.log(data);
+            console.log(data.message);
+          // 清空輸入欄位
+          document.getElementById("title").value = "";
+          document.getElementById("content").value = "";
+          document.getElementById("date").value = "";
+          return alert("文章已成功新增！");
+          }
+          console.log(data);
+          alert("文章新增失敗！");
+        })
+        .catch(error => {
+          // 請求失敗後的處理
+          console.error(error);
+        });
+    }
+  </script>
+</body>
+
+</html>

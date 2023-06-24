@@ -3,9 +3,13 @@ import cookieParser from "cookie-parser";
 import chatRoomRouter  from "./routers/chatRoom.js"
 import userRouter from "./routers/user.js"
 import admin from "./routers/admin.js"
+import friends from "./routers/friends.js"
+import index from "./routers/index.js"
 import bodyParser from "body-parser";
 import { socketHandler } from "./socket/socketHandler.js";
 import { errorHandler } from "./utils/errorHandler.js";
+import cors from "cors";
+
 
 const app = express();
 
@@ -20,6 +24,8 @@ app.set('view engine', 'ejs');
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(cors());
+app.enable("trust proxy");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/',express.static('./public'));
 app.use("/uploads",express.static("./uploads"))
@@ -29,9 +35,11 @@ app.use("/uploads",express.static("./uploads"))
 // ])
 
 app.use("/", [
+  index,
   chatRoomRouter,
   userRouter,
-  admin
+  admin,
+  friends
 ])
 
 app.all('*', (req, res) => {
