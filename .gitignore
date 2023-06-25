@@ -2,4 +2,5 @@
 uploads/*
 /node_modules/
 
+backup.sql
 .env

@@ -226,7 +226,7 @@
 
             async function fetchChatList() {
                 try {
-                    const fetchChatList = await fetch(`http://127.0.0.1:3000/api/v1/chatlist/${senderId}`)
+                    const fetchChatList = await fetch(`/api/v1/chatlist/${senderId}`)
                     const fetchData = await fetchChatList.json();
                     console.log(fetchData);
                     fetchData.forEach(item => {
