@@ -255,7 +255,7 @@
 
             async function fetchChatList() {
                 try {
-                    const fetchData = await fetch(`http://127.0.0.1:3000/api/v1/chatlist/${senderId}`)
+                    const fetchData = await fetch(`/api/v1/chatlist/${senderId}`)
                     const fetchChatList = await fetchData.json();
                     console.log('fetchChatList', fetchChatList);
                     fetchChatList.forEach(item => {
@@ -306,7 +306,7 @@
             let receiverName
             async function fetchReceiverInfo() {
                 try {
-                    const fetchData = await fetch(`http://127.0.0.1:3000/api/v1/user/profile/${receiverId}`)
+                    const fetchData = await fetch(`/api/v1/user/profile/${receiverId}`)
                     const receiverInfo = await fetchData.json();
                     console.log('fetchReceiverInfo->', receiverInfo);
                     receiverPicture = receiverInfo[0].picture;
@@ -334,7 +334,7 @@
 
             async function fetchRoomMessages() {
                 try {
-                    const fetchData = await fetch(`http://127.0.0.1:3000/api/v1/chatroom/${roomName}`)
+                    const fetchData = await fetch(`/api/v1/chatroom/${roomName}`)
                     const fetchRoomMessages = await fetchData.json();
                     console.log('fetchRoomMessages->', fetchRoomMessages);
 
