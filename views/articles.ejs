@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/dist/output.css" rel="stylesheet" />
+    <title>你的智友-心情分享</title>
+</head>
+
+<body>
+    <%- include('./partials/header') %>
+
+        <div class="flex flex-col items-center justify-center py-4">
+            <% if (userArticles && userArticles.length> 0) { %>
+                <% for (let i=0; i < userArticles.length; i++) { %>
+                    <div class="bg-gray-100 w-[600px] mt-4 p-5">
+                        <p class="mt-1 text-[12px]">
+                            <%= userArticles[i].created_at %>
+                        </p>
+                        <p class="text-[24px]">
+                            <%= userArticles[i].title %>
+                        </p>
+                        <p class="content mt-1" data-max-length="80">
+                            <%= userArticles[i].content %>
+                        </p>
+                        <button onclick="readArticle(<%= userArticles[i].id %>)"
+                            class="text-blue-500 hover:underline">more...</button>
+                    </div>
+                    <% } %>
+                        <% } else { %>
+                            <p>No articles found.</p>
+                            <% } %>
+        </div>
+        <script>
+            function readArticle(id) {
+                const url = `/articles/${id}`;
+                window.location.href = url
+            }
+
+            const paragraphs = document.querySelectorAll('.content');
+
+            paragraphs.forEach((paragraph) => {
+                const maxLength = parseInt(paragraph.getAttribute('data-max-length'), 10);
+
+                if (paragraph.textContent.length > maxLength) {
+                    const truncatedContent = paragraph.textContent.substr(0, maxLength) + '...';
+                    paragraph.textContent = truncatedContent;
+                }
+            });
+
+
+
+        </script>
+</body>
+
+</html>

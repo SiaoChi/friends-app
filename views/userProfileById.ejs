@@ -11,50 +11,56 @@
 <body>
     <%- include('./partials/header') %>
 
-        <div class="flex items-start justify-center border border-red-500 ">
-            <!-- 個人menu -->
-            <div class="w-1/4 p-5 border border-red-500 h-screen">
-                <img src="<%= userProfile[0].picture %>" alt="user-picture"
-                    class="w=[100px] h-[100px] border border-red-500">
-                <ul border border-red-500>
-                    <li>id:<%= userProfile[0].id %>
-                    </li>
-                    <li>稱呼:<%= userProfile[0].name %>
-                    </li>
-                    <li>地區:<%= userProfile[0].location %>
-                    </li>
-                    <li>家人確診年:<%= userProfile[0].sick_year %>
-                    </li>
-                    <li>主要照顧者:<%= userProfile[0].carer %>
-                    </li>
-                    <li>最近的煩惱:<%= userProfile[0].current_problem %>
-                    </li>
-                </ul>
-            </div>
-            <!-- 個人心情留言板 -->
-            <div class="w-3/4 flex justify-center items-start border border-red-300 h-screen ">
-                <div class=" flex-col py-4 border border-red-500">
-                    <div class="border border-red-500">
-                        <a id="send-msg" href=""><p
-                                class="bg-gray-300 mt-4 w-[200px] h-[30px] border border-red-500">傳送訊息</p></a>
-                    </div>
-                    <div class=" flex-col py-4">
-
-                        <% if (userProfile[0].articles && userProfile[0].articles.length> 0) { %>
-                            <% for (let i=0; i < userProfile[0].articles.length; i++) { %>
-                                <div class="bg-gray-100 w-[600px] mt-4 p-5">
-                                    <p class="p-6">
-                                        <%= userProfile[0].articles[i] %>
-                                    </p>
-                                </div>
-                                <% } %>
-                                    <% } else { %>
-                                        <p>No articles found.</p>
-                                        <% } %>
-                    </div>
+    <div class="flex items-start justify-center border border-red-500">
+        <!-- 個人menu -->
+        <div class="w-1/4 p-5 border border-red-500 h-screen">
+          <img src="<%= userProfile[0].picture %>" alt="user-picture" class="w-[100px] h-[100px] border border-red-500">
+          <ul class="border border-red-500">
+            <li>ID: <%= userProfile[0].id %></li>
+            <li>稱呼: <%= userProfile[0].name %></li>
+            <li>地區: <%= userProfile[0].location %></li>
+            <li>家人確診年: <%= userProfile[0].sick_year %></li>
+            <li>主要照顧者: <%= userProfile[0].carer %></li>
+            <li>最近的煩惱: <%= userProfile[0].current_problem %></li>
+          </ul>
+          <div class="flex flex-col mt-4 border border-red-500">
+            <p class="font-medium">家屬病況：</p>
+            <% if (userProfile[0].tags && userProfile[0].tags.length > 0) { %>
+              <% for (let i = 0; i < userProfile[0].tags.length; i++) { %>
+                <div class="mt-1">
+                  <p class="text-gray-700"><%= userProfile[0].tags[i] %></p>
                 </div>
-            </div>
+              <% } %>
+            <% } else { %>
+              <p>無提供家屬症況</p>
+            <% } %>
+          </div>
         </div>
+        <!-- 個人心情留言板 -->
+        <div class="w-3/4 flex justify-center items-start border border-red-300 h-screen">
+          <div class="flex-col py-4 border border-red-500">
+            <div class="border border-red-500">
+              <a id="send-msg" href="">
+                <p class="bg-gray-300 mt-4 w-[200px] h-[30px] border border-red-500 flex items-center justify-center">傳送訊息</p>
+              </a>
+            </div>
+            <div class="flex-col py-4 border border-red-500">
+              <% if (userArticles && userArticles.length > 0) { %>
+                <% for (let i = 0; i < userArticles.length; i++) { %>
+                  <div class="bg-gray-100 w-[600px] mt-4 p-5">
+                    <p class="mt-1 text-[12px]"><%= userArticles[i].created_at %></p>
+                    <p class="text-[24px]"><%= userArticles[i].title %></p>
+                    <p class="mt-1"><%= userArticles[i].content %></p>
+                  </div>
+                <% } %>
+              <% } else { %>
+                <p>No articles found.</p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
         <script>
            const currentURL = window.location.href;
             const regex = /\/(\d+)$/;

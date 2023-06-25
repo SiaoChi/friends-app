@@ -16,10 +16,10 @@ export async function saveMessage(message: string, senderId: number, room: strin
     await pool.query(
         `
         UPDATE rooms
-        SET last_message = ?
+        SET last_message = ? , sender_id = ?
         WHERE room_name = ${room}
         `,
-        [message]
+        [message,senderId]
     )
 }
 

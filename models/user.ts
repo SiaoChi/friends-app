@@ -74,12 +74,13 @@ export async function getUserProfileData(id: number | number[]) {
     return rows;
 }
 
-export async function getUserProfileTagsData(id: number ) {
+
+
+export async function getUserProfileTagsData(id: number) {
     let query;
     let values;
 
     if (Array.isArray(id)) {
-        console.log('3');
         query = `
             SELECT us.*, GROUP_CONCAT(at.content) AS articles
             FROM users us
@@ -89,7 +90,6 @@ export async function getUserProfileTagsData(id: number ) {
         `;
         values = [id];
     } else {
-        console.log('4');
         query = `
             SELECT us.*, GROUP_CONCAT(at.content) AS articles
             FROM users us
@@ -111,26 +111,28 @@ export async function getUserProfileTagsData(id: number ) {
         INNER JOIN tags ON tags.id = users_tags.tag_id
         WHERE user_id = ?
         GROUP BY user_id
-        `,[userId]
+        `, [userId]
     )
-  
+
     console.log(userTags);  // [ { user_id: 1, tags: '生活起居可自理,容易迷路,產生幻想,生活需要他人協助' } ]
 
-     (rows as Array<any> ).forEach(userData => {
+    (rows as Array<any>).forEach(userData => {
         const userTag = (userTags as Array<any>).filter(userTag => userTag.user_id === userData.id);
         let userTagArray;
-        console.log('userTag',userTag);
-        if(Array.isArray(userTag) && userTag.length > 0) {
+        console.log('userTag', userTag);
+        if (Array.isArray(userTag) && userTag.length > 0) {
             userTagArray = userTag[0].tags.split(',');
-            userData['tags'] = userTagArray;}
-        if(userData.articles) userData.articles = userData.articles.split(',');
-        
+            userData['tags'] = userTagArray;
+        }
+        if (userData.articles) userData.articles = userData.articles.split(',');
+
     })
 
     console.log(rows);
 
     return rows;
 }
+
 
 export async function updateUserProfile(
     name: string,
@@ -151,7 +153,7 @@ export async function updateUserProfile(
         SET name=?, picture=?, birth=?, email=?, carer=? ,level=?, location=?, sick_year=?, current_problem=?
         WHERE id=${userId}
         `,
-        [name, picture, birth, email, carer, level, location, sickYear, currentProblems]
+        [name, picture, birth, email, carer,  level, location, sickYear, currentProblems]
     )
 
 
@@ -182,15 +184,52 @@ export async function getTags() {
 
 // })
 
-export async function createUserArticle(title:string , content:string ,date:string, userId:number){
-    console.log(title,content,date,userId);
+export async function createUserArticle(title: string, content: string, date: string, userId: number) {
+    console.log(title, content, date, userId);
     const [rows] = await pool.query(
         `
         INSERT INTO articles (title,content,created_at,user_id)
         VALUES (?,?,?,?)
-        `,[title,content,date,userId])
+        `, [title, content, date, userId])
 
-    console.log(rows);    
-    
+    console.log(rows);
+
     return rows
 }
+
+export async function getUserArticlesData(id: number) {
+    const [results] = await pool.query(
+        `SELECT * FROM articles
+         WHERE user_id = ?
+         ORDER BY created_at DESC
+        `, [id]
+    )
+
+    console.log('articles', results);
+
+    return results
+}
+
+
+export async function getAllUserArticlesData() {
+    const [results] = await pool.query(
+        `SELECT * FROM articles
+         ORDER BY created_at DESC
+        `
+    )
+    console.log('all articles', results);
+    return results
+}
+
+export async function getArticleByID(id:number){
+
+    const [results] = await pool.query(
+        `SELECT * FROM articles
+        WHERE id = ?
+        `,[id]
+    )
+    console.log(results);
+    return results
+}
+
+getArticleByID(14)

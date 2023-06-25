@@ -4,7 +4,8 @@
   <ul>
     <button onclick="profile()" class="cursor-pointer py-2 hover:underline">我的個人專頁</button>
     <li><a href="/user/profile" class="block py-2 hover:underline">編輯個人專頁</a></li>
-    <li><a href="/friends/recommend" class="block py-2 hover:underline">尋找智友</a></li>
+    <li><a href="/user/create-article" class="block py-2 hover:underline">新增心情記事</a></li>
+    <li><a href="/friends/recommend" class="block py-2 hover:underline">推薦智友</a></li>
     <li><a href="/friends" class="block py-2 hover:underline">已追蹤智友</a></li>
     <li><a href="/chatroom" class="block py-2 hover:underline">聊天室</a></li>
 </ul>
@@ -22,12 +23,10 @@
     }
 
       function logout() {
-    // 清除 cookie
     document.cookie.split(";").forEach(function (cookie) {
       document.cookie = cookie.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
     });
 
-    // 重新導向到登出頁面或首頁
     window.location.href = "/";
   }
 </script>

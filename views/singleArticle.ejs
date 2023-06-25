@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/dist/output.css" rel="stylesheet" />
+    <title>你的智友文章</title>
+</head>
+
+<body>
+    <%- include('./partials/header') %>
+
+        <div class="flex flex-col items-center justify-center py-4">
+            <% if (singleArticleData && singleArticleData.length> 0) { %>
+                <div class="bg-gray-100 w-[600px] mt-4 p-5 text-[12px]">
+                    
+                    <p class="mt-1 text-[12px]">
+                        <%= singleArticleData[0].created_at %>
+                    </p>
+                    <p class="text-[24px]">
+                        <%= singleArticleData[0].title %>
+                    </p>
+                    <p class="content mt-1 text-[16px]" data-max-length="80">
+                        <%= singleArticleData[0].content %>
+                    </p>
+                    <button onclick="userProfile(<%= singleArticleData[0].user_id %>)"
+                        class="text-white hover:underline mt-4 bg-black text-[16px]">關心智友</button>
+                </div>
+
+                <% } else { %>
+                    <p>No article found.</p>
+                    <% } %>
+        </div>
+        <script>
+            function userProfile(id) {
+                const url = `/user/profile/${id}`;
+                window.location.href = url
+            }
+        </script>
+</body>
+
+</html>

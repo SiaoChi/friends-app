@@ -17,7 +17,9 @@ export default {
     "./views/createArticle.ejs",
     "./views/admin.ejs",
     "./views/about.ejs",
-    "./views/createTags.ejs"
+    "./views/createTags.ejs",
+    "./views/articles.ejs",
+    "./views/singleArticle.ejs"
 
   ],
   theme: {

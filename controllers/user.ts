@@ -141,17 +141,17 @@ export async function renderUserProfileForm(req: Request, res: Response) {
 export async function renderUserProfile(req: Request, res: Response) {
     const userId = res.locals.userId;
     const userProfile = await userModel.getUserProfileTagsData(userId) as RowDataPacket[];
-    console.log('myProfile->', userProfile);
-    res.render('userProfile', { userProfile })
+    const userArticles = await userModel.getUserArticlesData(userId) as RowDataPacket[];
+    res.render('userProfile', { userProfile , userArticles})
 }
 
 export async function renderUserProfileById(req: Request, res: Response) {
     try {
         const { id } = req.params;
         const userProfile = await userModel.getUserProfileTagsData(parseInt(id)) as RowDataPacket[];
-
+        const userArticles = await userModel.getUserArticlesData(parseInt(id)) as RowDataPacket[];
         if (Array.isArray(userProfile) && userProfile.length > 0) {
-            return res.render('userProfileById', { userProfile })
+            return res.render('userProfileById', { userProfile , userArticles })
         }
         throw new Error("id is not existed")
     } catch (err) {
@@ -183,7 +183,7 @@ export async function fetchUserCreateArticle(req: Request, res: Response) {
             res.status(400).json({ errors: err.message })
             return;
         }
-        res.status(500).json({ errors: "fetchUserCreateArticl failed" })
+        res.status(500).json({ errors: "fetchUserCreateArticle failed" })
     }
 
 

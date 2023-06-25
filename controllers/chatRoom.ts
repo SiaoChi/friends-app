@@ -79,11 +79,3 @@ export async function renderChatroomByRoomName(req: Request, res: Response) {
     }
 }
 
-
-// export async function renderChatroom(req:Request,res:Response){
-//     try{
-//         res.render('chatroom')
-//     }catch(err){
-//         res.status(500).json({errors:err})
-//     }
-// }

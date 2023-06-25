@@ -76,9 +76,16 @@
             padding: 0.5rem 1rem;
         }
 
-        /* .send {
-            color: rgb(29, 124, 150);
-        } */
+        .red-dot {
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
     </style>
 </head>
 
@@ -93,6 +100,7 @@
             </div>
             <div class=" border border-gray-400 h-[560px] p-2 w-[600px] relative overflow-y-scroll" id="chatroom">
                 <div class="bg-black text-white p-2 w-[600px] sticky top-0 ">聊天室</div>
+                <div></div>
                 <ul id="messages" class="">
                     <!-- <li class="flex">
                         <img class="w-[30px] h-[30px]" src="/img/user.png" alt="">
@@ -123,7 +131,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const receiverId = urlParams.get('id');
 
-            if(!receiverId){ alert('請選擇一個好友開始聊天') }
+            if (!receiverId) { alert('請選擇一個好友開始聊天') }
+
+            messageIcon.addEventListener('click', function () {
+                messageIcon.removeChild(redDot);
+            });
 
             socket.emit('joinMyRoom', String(senderId)); // 加入自己socket房間
 
@@ -143,18 +155,15 @@
 
                     let userInput = document.createElement('li');
                     userInput.classList.add('send');
-                    // userInput.textContent = `${input.value}`;
 
-                    
+                    // 主聊天室畫面更新 
                     userInput.classList.add('message-sent');
                     let text = document.createElement('text');
                     text.classList.add('ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
                     text.textContent = `${input.value}`;
                     userInput.appendChild(text);
-                
-
-                    // 主聊天室畫面更新 
                     messages.appendChild(userInput);
+
                     // 下滑到最底部
                     const container = document.getElementById('chatroom');
                     container.scrollTop = container.scrollHeight - container.clientHeight;
@@ -166,18 +175,17 @@
                     if (existingChatPerson !== null && existingChatPerson !== undefined) {
                         const messageElement = existingChatPerson.querySelector('.mt-1');
                         messageElement.textContent = input.value;
-                        existingChatPerson.classList.add('bg-blue-200');
-                        console.log('更新existingChatPerson', existingChatPerson);
+                        // existingChatPerson.classList.replace('bg-gray-100','bg-blue-200');
                         chatList.prepend(existingChatPerson);
                     } else {
                         const chatPerson = `
                                             <div class="mb-2 bg-blue-200 p-2" data-senderid= "${receiverId}">
                                                 <a href="/chatroom/${roomName}?id=${receiverId}" class="flex items-center" >
-                                                    <img class="w-10 h-10" src="${userIcon}" alt="">
+                                                    <img class="w-10 h-10" src="${receiverPicture}" alt="">
                                                     <div class="ml-4">
-                                                    <h5 class="text-lg">${receiverId}</h5>
+                                                    <h5 class="text-lg">${receiverName}</h5>
                                                     <p class="mt-1">${input.value}</p>
-                                                    </div>  
+                                                    </div>   
                                                 </a>
                                             </div>
                                        `;
@@ -191,20 +199,42 @@
             // 聽自己id的socket範圍，如果有訊息就拉出來
             socket.on("message", function (data) {
                 const { nickname, message, senderId, receiverId, room } = data;
+
+                // header chat-icon加入紅點
+                var messageIcon = document.getElementById('messageIcon');
+                var redDot = document.createElement('span');
+                redDot.className = 'red-dot';
+                messageIcon.appendChild(redDot);
+                console.log(messageIcon);
+
                 if (room === roomName) {
                     var item = document.createElement('li');
-                    item.textContent = `${message}`;
+                    item.classList.add('message-received', 'flex');
+                    let img = document.createElement('img');
+                    img.classList.add('w-[30px]', 'h-[30px]', 'rounded-full');
+                    img.src = `${receiverPicture}`;
+                    img.alt = 'picture';
+
+                    let text = document.createElement('text');
+                    text.classList.add('ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
+                    text.textContent = `${message}`;
+
+                    item.appendChild(img);
+                    item.appendChild(text);
+                    // item.textContent = `${message}`;
                     messages.appendChild(item);
                     const container = document.getElementById('chatroom');
                     container.scrollTop = container.scrollHeight - container.clientHeight;
                 }
 
                 const existingChatPerson = document.querySelector(`[data-senderid="${senderId}"]`);
+                
                 if (existingChatPerson) {
                     const messageElement = existingChatPerson.querySelector('.mt-1');
                     messageElement.textContent = message;
-                    existingChatPerson.classList.replace('bg-gray-200', 'bg-blue-200');
+                    existingChatPerson.classList.replace('bg-gray-100', 'bg-blue-200');
                     chatList.prepend(existingChatPerson);
+                    console.log('1.',chatPerson);
                 } else {
                     const chatPerson = ` <div class="mb-2 bg-blue-200 p-2" data-senderid= "${senderId}">
                                                 <a href="/chatroom/${room}?id=${senderId}" class="person flex items-center" >
@@ -213,24 +243,27 @@
                                                 <h5 class="text-lg">${senderId}</h5>
                                                 <p class="mt-1">${message}</p>
                                                 </div>  
+                                                <span class="red-dot"></span> 
                                             </a>
                                             </div>
                                        `;
+                    console.log('2.',chatPerson);
                     chatList.insertAdjacentHTML('afterbegin', chatPerson);
                 }
 
             });
 
-
-
             async function fetchChatList() {
                 try {
                     const fetchData = await fetch(`http://127.0.0.1:3000/api/v1/chatlist/${senderId}`)
                     const fetchChatList = await fetchData.json();
-                    console.log(fetchChatList);
+                    console.log('fetchChatList', fetchChatList);
                     fetchChatList.forEach(item => {
-                        const chatPerson = `
-                                            <div class="items-center mb-2 bg-gray-100 p-2" data-senderid= "${item.receiverId}">
+                        // 如果senderId是自己，不用有小綠點
+                        if (item.sender_id === Number(senderId) || item.sender_id === 0) {
+                            console.log('1', item.sender_id, Number(senderId));
+                            const chatPerson = `
+                                            <div class="items-center mb-2 bg-gray-100 p-2" data-senderid= "${item.receiverId}" id="chat-person">
                                                 <a href="/chatroom/${item.room_name}?id=${item.receiverId}" class="block w-full flex" >
                                                     <img class="w-10 h-10 rounded-full" src="${item.receiverPicture}" alt="">
                                                     <div class="ml-4">
@@ -240,7 +273,24 @@
                                                 </a>
                                             </div>
                                             `;
-                        chatList.insertAdjacentHTML('afterbegin', chatPerson);
+                            chatList.insertAdjacentHTML('afterbegin', chatPerson);
+                        } else {
+                            console.log('2', item.sender_id, Number(senderId));
+                            // 如果senderId 不是自己，要有小紅點
+                            const chatPerson = `
+                                            <div class="items-center mb-2 bg-gray-100 p-2" data-senderid= "${item.receiverId}" id="chat-person">
+                                                <a href="/chatroom/${item.room_name}?id=${item.receiverId}" class="block w-full flex relative" >
+                                                    <img class="w-10 h-10 rounded-full" src="${item.receiverPicture}" alt="">
+                                                    <div class="ml-4">
+                                                    <h5 class="text-lg">${item.receiverName}</h5>
+                                                    <p class="mt-1">${item.last_message}</p>
+                                                    </div> 
+                                                    <span class="red-dot"></span>     
+                                                </a>
+                                            </div>
+                                            `;
+                            chatList.insertAdjacentHTML('afterbegin', chatPerson);
+                        }
                     });
 
                 } catch (err) {
@@ -249,22 +299,25 @@
 
             }
 
+
             const info = document.getElementById('info');
 
             let receiverPicture
+            let receiverName
             async function fetchReceiverInfo() {
                 try {
                     const fetchData = await fetch(`http://127.0.0.1:3000/api/v1/user/profile/${receiverId}`)
                     const receiverInfo = await fetchData.json();
                     console.log('fetchReceiverInfo->', receiverInfo);
                     receiverPicture = receiverInfo[0].picture;
+                    receiverName = receiverInfo[0].name;
                     const fetchInfo = `
                                 <div class="flex-col border border-gray-300">
                                     <img class="p-10"
                                         src="${receiverPicture}"
                                         alt="圖片">
                                     <div class="border border-gray-300 mt-4">
-                                        <div class="text-lg">${receiverInfo[0].name}</div>
+                                        <div class="text-lg">${receiverName}</div>
                                         <ul class="mt-2">
                                             <li>家人狀況:${receiverInfo[0].level}</li>
                                             <li>主要照顧者:${receiverInfo[0].carer}</li>
@@ -287,7 +340,7 @@
 
                     fetchRoomMessages.forEach(item => {
                         let userInput = document.createElement('li');
-                        userInput.classList.add('send');
+                        // userInput.classList.add('send');
 
                         if (item.sender_id === Number(senderId)) {
                             userInput.classList.add('message-sent');
@@ -299,7 +352,7 @@
                         } else {
                             userInput.classList.add('message-received', 'flex');
                             let img = document.createElement('img');
-                            img.classList.add('w-[30px]', 'h-[30px]','rounded-full');
+                            img.classList.add('w-[30px]', 'h-[30px]', 'rounded-full');
                             img.src = `${receiverPicture}`;
                             img.alt = '';
 
@@ -321,16 +374,15 @@
             }
 
 
+
             async function fetchChatPersonData() {
                 await fetchReceiverInfo();
                 await fetchRoomMessages();
-            }
-            
-            fetchChatPersonData();
 
-            if(receiverId){
-                fetchChatList();
             }
+
+            fetchChatPersonData();
+            if (receiverId) fetchChatList();
 
         </script>
 </body>

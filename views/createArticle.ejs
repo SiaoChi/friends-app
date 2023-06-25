@@ -4,21 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/dist/output.css" rel="stylesheet" />
+    
+      <script src="https://cdn.tiny.cloud/1/noojwbb5k17nx69z2jeevq2ytvtc2ickif8sizioqzyqqvk5/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+      tinymce.init({
+        selector: '#content'
+      });
+    </script>
+    
     <title>Document</title>
 </head>
 <body class="bg-gray-100">
   <%- include('./partials/header') %>
-  <div class="container mx-auto p-7 w-vw-40 ">
-    <h1 class="text-3xl font-bold mb-4">照護記事</h1>
+  <div class="container mx-auto p-7 w-vw-50 ">
+    <h1 class="text-3xl font-bold mb-4">新增心情記事</h1>
     <form id="createArticleForm" class="max-w-xl mt-5">
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="title">標題：</label>
         <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" placeholder="請輸入標題" required>
       </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="content">內容：</label>
-        <textarea class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="content" rows="5" placeholder="請輸入內容" required></textarea>
-      </div>
+      <!-- <div class="mb-4"> -->
+        <!-- <label class="block text-gray-700 text-sm font-bold mb-2" for="content">內容：</label> -->
+        <textarea  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="content" rows="10" placeholder="請輸入內容" required></textarea>
+      <!-- </div> -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="date">日期：</label>
         <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="date" type="date" required>
@@ -45,7 +53,7 @@
     // 執行文章創建的 AJAX 請求
     function createArticle(title, content, date) {
       // 使用 fetch API 發送 POST 請求到指定的 API 端點
-      fetch("/api/v1/user/create-article", {
+      fetch("/user/create-article", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -62,7 +70,8 @@
           document.getElementById("title").value = "";
           document.getElementById("content").value = "";
           document.getElementById("date").value = "";
-          return alert("文章已成功新增！");
+          alert("文章已成功新增！");
+          return window.location.href = "/user/profile"
           }
           console.log(data);
           alert("文章新增失敗！");

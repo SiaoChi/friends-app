@@ -60,9 +60,15 @@ export async function fetchFriends(req: Request, res: Response) {
     try {
         const { userId } = res.locals;
         const friendsId = await friendsModels.getFriendsId(userId);
+        
+        if(Array.isArray(friendsId) && friendsId.length === 0){
+            const friendsData = null;
+            return res.render('friends',{ friendsData })
+        }
+
         const friendsData = await userModels.getUserProfileData(friendsId);
         console.log('friendsData',friendsData);
-        if (friendsData) { return res.render('friends',{ friendsData }) };
+        if (friendsId && friendsData) { return res.render('friends',{ friendsData }) };
         throw new Error('no friends, please add friend')
     } catch (err) {
         if (err instanceof Error) {

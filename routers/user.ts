@@ -39,16 +39,16 @@ router
 
 router
     .route("/user/profile/:id")
-    .get(authenticate,renderUserProfileById)
+    .get(authenticate, renderUserProfileById)
+
+router
+    .route("/user/create-article")
+    .get(renderUserCreateArticle)
+    .post(authenticate, fetchUserCreateArticle)
 
 router
     .route("/api/v1/user/profile/:id")
     .get(fetchUserProfileById)
-
-router
-    .route("/api/v1/user/create-article")
-    .get(renderUserCreateArticle)
-    .post(authenticate,fetchUserCreateArticle)
 
 
 export default router;
