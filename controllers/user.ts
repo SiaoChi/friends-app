@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as userLoginModel from "../models/userLogin.js"
 import * as userModel from "../models/user.js"
+import * as articleModel from "../models/articles.js"
 import { generateToken, EXPIRE_TIME } from "../utils/generateToken.js"
 import { RowDataPacket } from 'mysql2';
 
@@ -141,7 +142,7 @@ export async function renderUserProfileForm(req: Request, res: Response) {
 export async function renderUserProfile(req: Request, res: Response) {
     const userId = res.locals.userId;
     const userProfile = await userModel.getUserProfileTagsData(userId) as RowDataPacket[];
-    const userArticles = await userModel.getUserArticlesData(userId) as RowDataPacket[];
+    const userArticles = await articleModel.getUserArticlesData(userId) as RowDataPacket[];
     res.render('userProfile', { userProfile , userArticles})
 }
 
@@ -149,7 +150,7 @@ export async function renderUserProfileById(req: Request, res: Response) {
     try {
         const { id } = req.params;
         const userProfile = await userModel.getUserProfileTagsData(parseInt(id)) as RowDataPacket[];
-        const userArticles = await userModel.getUserArticlesData(parseInt(id)) as RowDataPacket[];
+        const userArticles = await articleModel.getUserArticlesData(parseInt(id)) as RowDataPacket[];
         if (Array.isArray(userProfile) && userProfile.length > 0) {
             return res.render('userProfileById', { userProfile , userArticles })
         }
@@ -161,30 +162,4 @@ export async function renderUserProfileById(req: Request, res: Response) {
         }
         res.status(500).json({ errors: "getUserProfileById failed" })
     }
-}
-
-export async function renderUserCreateArticle(req: Request, res: Response) {
-    res.render('createArticle')
-}
-
-export async function fetchUserCreateArticle(req: Request, res: Response) {
-    try {
-        const { title, content, date } = req.body;
-        const { userId } = res.locals;
-        console.log(title, content, date, userId);
-        const result = await userModel.createUserArticle(title, content, date, userId);
-
-        if (result) {
-            return res.status(200).json({ message: 'success' })
-        }
-        throw new Error('create article failed..')
-    } catch (err) {
-        if (err instanceof Error) {
-            res.status(400).json({ errors: err.message })
-            return;
-        }
-        res.status(500).json({ errors: "fetchUserCreateArticle failed" })
-    }
-
-
 }

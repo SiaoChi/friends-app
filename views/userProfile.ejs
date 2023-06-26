@@ -11,50 +11,99 @@
 <body class="">
     <%- include('./partials/header') %>
 
-    <div class="flex items-start justify-start">
-        <%- include('./partials/sideBar') %>
-        <!-- 個人 -->
-        <div class="w-[30vw] p-5 flex flex-col justify-center border border-red-300 bg-white">
-            <button class="bg-black text-white w-[150px] mb-4"><a href="/user/profile/form">修改個人資料</a></button>
-            <img class="w-[150px] h-[150px] rounded-full mb-4" src="<%= userProfile[0].picture %>" alt="Profile Picture">
-            <ul>
-                <li><strong>稱呼：</strong><%= userProfile[0].name %></li>
-                <li><strong>地區：</strong><%= userProfile[0].location %></li>
-                <li><strong>家屬確診年：</strong><%= userProfile[0].sick_year %></li>
-                <li><strong>家屬診斷病程：</strong><%= userProfile[0].level %></li>
-                <li><strong>現有煩惱：</strong><%= userProfile[0].current_problem %></li>
-            </ul>
+        <div class="flex items-start justify-start">
+            <%- include('./partials/sideBar') %>
+                <!-- 個人 -->
+                <div class="w-[30vw] p-5 flex flex-col justify-center border border-red-300 bg-white">
+                    <button class="bg-black text-white w-[150px] mb-4"><a href="/user/profile/form">修改個人資料</a></button>
+                    <img class="w-[150px] h-[150px] rounded-full mb-4" src="<%= userProfile[0].picture %>"
+                        alt="Profile Picture">
+                    <ul>
+                        <li><strong>稱呼：</strong>
+                            <%= userProfile[0].name %>
+                        </li>
+                        <li><strong>地區：</strong>
+                            <%= userProfile[0].location %>
+                        </li>
+                        <li><strong>家屬確診年：</strong>
+                            <%= userProfile[0].sick_year %>
+                        </li>
+                        <li><strong>家屬診斷病程：</strong>
+                            <%= userProfile[0].level %>
+                        </li>
+                        <li><strong>現有煩惱：</strong>
+                            <%= userProfile[0].current_problem %>
+                        </li>
+                    </ul>
 
-            <p class="mt-4"><strong>病況：</strong></p>
+                    <p class="mt-4"><strong>病況：</strong></p>
 
-            <% if (userProfile[0].tags && userProfile[0].tags.length > 0) { %>
-                <ul>
-                    <% userProfile[0].tags.forEach(function(tag) { %>
-                        <li><%= tag %></li>
-                    <% }); %>
-                </ul>
-            <% } else { %>
-                <p>尚未點選家屬病況</p>
-            <% } %>
+                    <% if (userProfile[0].tags && userProfile[0].tags.length> 0) { %>
+                        <ul>
+                            <% userProfile[0].tags.forEach(function(tag) { %>
+                                <li>
+                                    <%= tag %>
+                                </li>
+                                <% }); %>
+                        </ul>
+                        <% } else { %>
+                            <p>尚未點選家屬病況</p>
+                            <% } %>
+                </div>
+                <div class="p-5 w-[40vw] h-[560px] overflow-y-scroll bg-white">
+                    <button class="bg-black text-white w-[150px] mb-4"><a
+                            href="/user/create-article">新增心情記事</a></button>
+                    <% if (userArticles && userArticles.length> 0) { %>
+                        <% for (let i=0; i < userArticles.length; i++) { %>
+                            <div class="bg-gray-100 w-[450px] mt-4 p-5" id="id:<%= userArticles[i].id %>">
+                                <p class="mt-1 text-sm text-gray-600">
+                                    <%= userArticles[i].created_at %>
+                                </p>
+                                <p class="text-2xl font-bold">
+                                    <%= userArticles[i].title %>
+                                </p>
+                                <p class="mt-4">
+                                    <%- userArticles[i].content %>
+                                </p>
+                                <button class="bg-gray-300 p-2 mt-4 rounded-full top-0 right-0 hover:underline"
+                                    onclick="showConfirmationPopup(<%= userArticles[i].id %>)">delete</button>
+                            </div>
+                            <% } %>
+                                <% } else { %>
+                                    <p class="text-gray-600">No articles found.</p>
+                                    <% } %>
+                </div>
         </div>
-        <div class="p-5 w-[40vw] h-[560px] overflow-y-scroll bg-white">
-            <button class="bg-black text-white w-[150px] mb-4"><a href="/user/create-article">新增心情記事</a></button>
-            <% if (userArticles && userArticles.length > 0) { %>
-                <% for (let i = 0; i < userArticles.length; i++) { %>
-                    <div class="bg-gray-100 w-[450px] mt-4 p-5">
-                        <p class="mt-1 text-sm text-gray-600"><%= userArticles[i].created_at %></p>
-                        <p class="text-2xl font-bold"><%= userArticles[i].title %></p>
-                        <p class="mt-4"><%= userArticles[i].content %></p>
-                    </div>
-                <% } %>
-            <% } else { %>
-                <p class="text-gray-600">No articles found.</p>
-            <% } %>
-        </div>
-    </div>
-    <script>
-    </script>
+        <script>
+
+            function showConfirmationPopup(articleId) {
+                const confirmation = confirm("是否確定刪除？");
+
+                if (confirmation) {
+                    deleteArticle(articleId);
+                }
+            }
+
+
+            function deleteArticle(articleId) {
+                fetch(`/api/v1/articles/${articleId}`, {
+                    method: "DELETE",
+                })
+                    .then(response => {
+                        if (response.ok) return response.json();
+                    }
+                    ).then(data => {
+                        const deleteArticle = document.getElementById(`id:${articleId}`);
+                        deleteArticle.style.display = "none";
+                        alert(data.message);
+                    })
+                    .catch(error => {
+                        console.error("error：", error);
+                        alert('刪除失敗')
+                    });
+            }
+
+        </script>
 </body>
-
 
 </html>

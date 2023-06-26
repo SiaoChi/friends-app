@@ -9,9 +9,11 @@ import {
     renderUserProfileForm,
     renderUserProfileById,
     renderUserProfile,
+} from "../controllers/user.js"
+import {
     renderUserCreateArticle,
     fetchUserCreateArticle
-} from "../controllers/user.js"
+} from "../controllers/articles.js"
 import authenticate from "../middleware/authenticate.js";
 
 

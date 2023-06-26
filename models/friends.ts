@@ -67,6 +67,7 @@ export async function getRecommendFriendsById(userId: number) {
         return acc
     }, {})
 
+    console.log('mapFriends',mapFriends);
 
     // friends unfriends list Id, 排除有一樣Id的  mapFriends
     const [filterFriends] = await pool.query(

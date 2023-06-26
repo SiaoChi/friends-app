@@ -5,6 +5,7 @@ import userRouter from "./routers/user.js"
 import admin from "./routers/admin.js"
 import friends from "./routers/friends.js"
 import index from "./routers/index.js"
+import articles from "./routers/articles.js"
 import bodyParser from "body-parser";
 import { socketHandler } from "./socket/socketHandler.js";
 import { errorHandler } from "./utils/errorHandler.js";
@@ -39,7 +40,8 @@ app.use("/", [
   chatRoomRouter,
   userRouter,
   admin,
-  friends
+  friends,
+  articles
 ])
 
 app.all('*', (req, res) => {
