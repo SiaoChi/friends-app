@@ -6,6 +6,7 @@ import admin from "./routers/admin.js"
 import friends from "./routers/friends.js"
 import index from "./routers/index.js"
 import articles from "./routers/articles.js"
+import search from "./routers/search.js"
 import bodyParser from "body-parser";
 import { socketHandler } from "./socket/socketHandler.js";
 import { errorHandler } from "./utils/errorHandler.js";
@@ -41,7 +42,8 @@ app.use("/", [
   userRouter,
   admin,
   friends,
-  articles
+  articles,
+  search
 ])
 
 app.all('*', (req, res) => {

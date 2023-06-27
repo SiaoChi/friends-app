@@ -23,6 +23,20 @@ export async function saveMessage(message: string, senderId: number, room: strin
     )
 }
 
+
+export async function readMessage(room:string){
+    const result = await pool.query(
+        `
+        UPDATE rooms
+        SET sender_id = ? , updated_at = updated_at
+        WHERE room_name = ? 
+        `, [0,room]
+    )
+    console.log(result);
+    return result
+}
+
+
 export async function getUserRoom(id:number){
     const [result] = await pool.query(
         `
@@ -64,6 +78,8 @@ const MessageSchema = z.object({
     message: z.string()
 })
 
+
+
 export async function getMessagesByRoom(room: string) {
     const [rows] = await pool.query(
         `
@@ -72,19 +88,9 @@ export async function getMessagesByRoom(room: string) {
     ORDER BY created_at
     ` 
     )
-
     const data = z.array(MessageSchema).parse(rows)
-    /*const reduceData = data.reduce((acc:any ,item:any)=>{
-        if(!acc[item.sender_id]) acc[item.sender_id] = [];
-        acc[item.sender_id].push(item.message)
-        return acc
-    },{})*/
     return data
 }
-// const roomNameSchema = z.object({
-//     room_name: z.string()
-// })
-
 
 const ChatListSchema = z.object({
     sender_id: z.number(),
@@ -125,15 +131,12 @@ export async function getChatListById(id: number) {
         `, [id]
     )
 
-    // const checkRows = z.array(ChatListSchema).parse(rows)
-    // console.log('checkRows-->',checkRows);
  
     const receiverIds =(rows as Array<any>).map(item => item.receiverId)
 
     const receiverProfileData = await userModels.getUserProfileData(receiverIds);
 
     console.log('receiverProfileData->',receiverProfileData);
-    console.log(receiverIds);
 
     const newData = (rows as Array<any>).forEach(item =>{
         const receiverData = (receiverProfileData as Array<any>).filter(profileItem => profileItem.id === item.receiverId)
@@ -142,8 +145,6 @@ export async function getChatListById(id: number) {
         return item
     })
 
-    console.log('newData',newData);
-    
     return rows 
 }
 

@@ -23,13 +23,22 @@ export async function getFriendsId(userId: number) {
 }
 
 export async function addFriend(userId: number, friendId: number) {
-    const [result] = await pool.query(
-        `
-        INSERT INTO user_friends (user_id , friend_id)
-        VALUES (?,?)
-        `, [userId, friendId]
-    )
-    return result
+    try{
+        const [result] = await pool.query(
+            `
+            INSERT INTO user_friends (user_id , friend_id)
+            VALUES (?,?)
+            `, [userId, friendId]
+        )
+        console.log(result);
+        return result
+    }catch(err){
+        if(err instanceof Error){
+            console.log(err.message);
+        }
+        throw new Error('add friends failed in model')
+    }
+    
 }
 
 export async function unFriend(userId: number, friendId: number) {

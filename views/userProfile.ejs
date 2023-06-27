@@ -67,6 +67,8 @@
                                 </p>
                                 <button class="bg-gray-300 p-2 mt-4 rounded-full top-0 right-0 hover:underline"
                                     onclick="showConfirmationPopup(<%= userArticles[i].id %>)">delete</button>
+                                <button class="bg-gray-300 p-2 mt-4 rounded-full top-0 right-0 hover:underline"
+                                    onclick="showUpdatePopup(<%= userArticles[i].id %>)">edit</button>
                             </div>
                             <% } %>
                                 <% } else { %>
@@ -75,6 +77,15 @@
                 </div>
         </div>
         <script>
+
+            function showUpdatePopup(articleId) {
+                const confirmation = confirm("編輯此篇文章");
+
+                if (confirmation) {
+                    window.location.href = `/articles/edit/${articleId}`
+                }
+            }
+
 
             function showConfirmationPopup(articleId) {
                 const confirmation = confirm("是否確定刪除？");
@@ -88,6 +99,24 @@
             function deleteArticle(articleId) {
                 fetch(`/api/v1/articles/${articleId}`, {
                     method: "DELETE",
+                })
+                    .then(response => {
+                        if (response.ok) return response.json();
+                    }
+                    ).then(data => {
+                        const deleteArticle = document.getElementById(`id:${articleId}`);
+                        deleteArticle.style.display = "none";
+                        alert(data.message);
+                    })
+                    .catch(error => {
+                        console.error("error：", error);
+                        alert('刪除失敗')
+                    });
+            }
+
+            function updateArticle (articleId){
+                fetch(`/api/v1/articles/${articleId}`, {
+                    method: "PUT",
                 })
                     .then(response => {
                         if (response.ok) return response.json();

@@ -9,10 +9,13 @@
   <script src="https://cdn.tiny.cloud/1/noojwbb5k17nx69z2jeevq2ytvtc2ickif8sizioqzyqqvk5/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
   <script>
+    // 在初始化 TinyMCE 之前，将数据赋值给 textarea
+    // 初始化 TinyMCE
     tinymce.init({
-      selector: 'textarea#content',
-      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+      selector: '#content'
     });
+
+    document.getElementById('content').value = '<%- singleArticleData[0].content ? singleArticleData[0].content : '' %>';
 
   </script>
 
@@ -23,31 +26,34 @@
   <%- include('./partials/header') %>
 
     <div class="container mx-auto p-7 w-vw-50 ">
-      <h1 class="text-3xl font-bold mb-4">新增心情記事</h1>
+      <h1 class="text-3xl font-bold mb-4">編輯心情記事</h1>
       <form id="createArticleForm" class="max-w-xl mt-5">
-        <div class="mb-4">                                         
+        <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="title">標題：</label>
           <input
             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="title" type="text" placeholder="請輸入標題" required>
+            id="title" type="text" placeholder="請輸入標題"
+            value="<%= singleArticleData[0].title ? singleArticleData[0].title : '' %>" required>
         </div>
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="content">內容：</label>
-          <textarea id="content"></textarea>
+          <textarea id="content"><%- singleArticleData[0].content ? singleArticleData[0].content : '' %>
+          </textarea>
           <!-- <textarea  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="content" rows="10" placeholder="請輸入內容" required ></textarea> -->
         </div>
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="date">日期：</label>
           <input
             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="date" type="date" required>
+            id="date" type="date" value="<%= singleArticleData[0].created_at ? singleArticleData[0].created_at : '' %>"
+            required>
         </div>
         <button
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold my-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"><a href="/user/profile">回上一頁</a></button>
         <button id="submitButton"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold ml-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="submit">送出</button>
+          type="submit">更新</button>
       </form>
     </div>
 
@@ -59,42 +65,36 @@
         event.preventDefault(); // 阻止默认的表单提交行为
 
         // 获取输入的标题、内容和日期
+        const id = <%= singleArticleData[0].id %>;
         const title = document.getElementById("title").value;
         const content = tinymce.activeEditor.getContent();
         const date = document.getElementById("date").value;
 
-        console.log('content', content);
-
         // 执行 AJAX 请求或其他操作（这里仅作示例）
-        createArticle(title, content, date);
+        updateArticle(id, title, content, date);
       });
 
-
-      // 執行文章創建的 AJAX 請求
-      function createArticle(title, content, date) {
-        // 使用 fetch API 發送 POST 請求到指定的 API 端點
-        fetch("/user/create-article", {
-          method: "POST",
+      function updateArticle(id, title, content, date) {
+        fetch(`/api/v1/articles/${id}`, {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ title, content, date })
+          body: JSON.stringify({ id, title, content, date })
         })
           .then(response => response.json())
           .then(data => {
-            // 請求成功後的處理
             if (data.message === 'success') {
               console.log(data);
               console.log(data.message);
-              // 清空輸入欄位
               document.getElementById("title").value = "";
               document.getElementById("content").value = "";
               document.getElementById("date").value = "";
-              alert("文章已成功新增！");
+              alert("文章修改完成！");
               return window.location.href = "/user/profile"
             }
             console.log(data);
-            alert("文章新增失敗！");
+            alert("文章修改失敗！");
           })
           .catch(error => {
             // 請求失敗後的處理

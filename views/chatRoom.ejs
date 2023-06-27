@@ -94,7 +94,7 @@
 
         <div class="flex justify-start items-center ">
             <div class="border border-gray-400 h-[560px] p-2 w-[400px] overflow-y-scroll">
-                <div class="bg-black text-white p-2 sticky top-0">好友</div>
+                <div class="bg-black text-white p-2 sticky top-0">聊天清單</div>
                 <div class="mt-2 p-2" id="chatlist">
                 </div>
             </div>
@@ -113,6 +113,7 @@
             </div>
             <div class="flex items-center justify-center border border-gray-400 w-[300px] h-[560px]" id="info">
             </div>
+        </div>
         </div>
 
         <!-- <script src="/socket.io/socket.io.js"></script> -->
@@ -179,13 +180,14 @@
                         chatList.prepend(existingChatPerson);
                     } else {
                         const chatPerson = `
-                                            <div class="mb-2 bg-blue-200 p-2" data-senderid= "${receiverId}">
-                                                <a href="/chatroom/${roomName}?id=${receiverId}" class="flex items-center" >
+                                            <div class="mb-2 p-2" data-senderid= "${receiverId}" >
+                                                <a href="/chatroom/${roomName}?id=${receiverId}" class="flex items-center relative" data-room="${room}" >
                                                     <img class="w-10 h-10" src="${receiverPicture}" alt="">
                                                     <div class="ml-4">
                                                     <h5 class="text-lg">${receiverName}</h5>
                                                     <p class="mt-1">${input.value}</p>
-                                                    </div>   
+                                                    </div>
+                                                    <span class="red-dot"></span>        
                                                 </a>
                                             </div>
                                        `;
@@ -216,38 +218,44 @@
                     img.alt = 'picture';
 
                     let text = document.createElement('text');
-                    text.classList.add('ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
+                    text.classList.add('ml-4','rounded-lg', 'p-2');
                     text.textContent = `${message}`;
 
                     item.appendChild(img);
                     item.appendChild(text);
-                    // item.textContent = `${message}`;
                     messages.appendChild(item);
                     const container = document.getElementById('chatroom');
                     container.scrollTop = container.scrollHeight - container.clientHeight;
                 }
 
                 const existingChatPerson = document.querySelector(`[data-senderid="${senderId}"]`);
-                
+                const aElement = existingChatPerson.querySelector('a');
+
                 if (existingChatPerson) {
                     const messageElement = existingChatPerson.querySelector('.mt-1');
                     messageElement.textContent = message;
-                    existingChatPerson.classList.replace('bg-gray-100', 'bg-blue-200');
+                    // existingChatPerson.classList.replace('bg-gray-100', 'bg-blue-200');
+
+                    let span = document.createElement('span');
+                    span.classList.add('red-dot');
+                    aElement.appendChild(span);
+
+                    console.log('aEle',aElement);
                     chatList.prepend(existingChatPerson);
-                    console.log('1.',chatPerson);
+                    console.log('existingChatPerson', existingChatPerson);
                 } else {
-                    const chatPerson = ` <div class="mb-2 bg-blue-200 p-2" data-senderid= "${senderId}">
-                                                <a href="/chatroom/${room}?id=${senderId}" class="person flex items-center" >
+                    const chatPerson = ` <div class="mb-2 bg-blue-200 p-2" data-senderid="${senderId}" >
+                                            <a href="/chatroom/${room}?id=${senderId}" class="person flex items-center relative" data-room="${room}">
                                                 <img class="w-10 h-10 rounded-full" src="${userIcon}" alt="">
                                                 <div class="ml-4">
-                                                <h5 class="text-lg">${senderId}</h5>
-                                                <p class="mt-1">${message}</p>
+                                                    <h5 class="text-lg">${senderId}</h5>
+                                                    <p class="mt-1">${message}</p>
                                                 </div>  
                                                 <span class="red-dot"></span> 
                                             </a>
                                             </div>
                                        `;
-                    console.log('2.',chatPerson);
+                    console.log('2.', chatPerson);
                     chatList.insertAdjacentHTML('afterbegin', chatPerson);
                 }
 
@@ -264,7 +272,7 @@
                             console.log('1', item.sender_id, Number(senderId));
                             const chatPerson = `
                                             <div class="items-center mb-2 bg-gray-100 p-2" data-senderid= "${item.receiverId}" id="chat-person">
-                                                <a href="/chatroom/${item.room_name}?id=${item.receiverId}" class="block w-full flex" >
+                                                <a href="/chatroom/${item.room_name}?id=${item.receiverId}" class="block w-full flex relative" data-room="${item.room_name}">
                                                     <img class="w-10 h-10 rounded-full" src="${item.receiverPicture}" alt="">
                                                     <div class="ml-4">
                                                     <h5 class="text-lg">${item.receiverName}</h5>
@@ -279,7 +287,7 @@
                             // 如果senderId 不是自己，要有小紅點
                             const chatPerson = `
                                             <div class="items-center mb-2 bg-gray-100 p-2" data-senderid= "${item.receiverId}" id="chat-person">
-                                                <a href="/chatroom/${item.room_name}?id=${item.receiverId}" class="block w-full flex relative" >
+                                                <a href="/chatroom/${item.room_name}?id=${item.receiverId}" class="block w-full flex relative" data-room="${item.room_name}">
                                                     <img class="w-10 h-10 rounded-full" src="${item.receiverPicture}" alt="">
                                                     <div class="ml-4">
                                                     <h5 class="text-lg">${item.receiverName}</h5>
@@ -316,6 +324,7 @@
                                     <img class="p-10"
                                         src="${receiverPicture}"
                                         alt="圖片">
+                                    <button class="bg-black text-white"><a href=/user/profile/${receiverId}>個人專頁</a></button>
                                     <div class="border border-gray-300 mt-4">
                                         <div class="text-lg">${receiverName}</div>
                                         <ul class="mt-2">
@@ -373,6 +382,44 @@
                 }
             }
 
+            const chatListDiv = document.getElementById('chatlist');
+            chatListDiv.addEventListener('click', async (event) => {
+                // event.preventDefault();
+                const roomName = event.target.getAttribute('data-room');
+                const redDot = event.target.querySelector('a .red-dot');
+                if(redDot){
+                redDot.style.display = 'none';
+                };
+                if (roomName) {
+                    await fetchReadMessage(roomName)
+                }
+
+            })
+
+            function fetchReadMessage(room) {
+                console.log('fetchReadMessage');
+                fetch(`/api/v1/chatroom/${room}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ room })
+                }).then(response => response.json())
+                  .then(data => {
+                        if (data.message === 'success') {
+                            console.log('dataMsg',data.message);
+                            return 
+                        }
+                        throw new Error ('reset message status failed')
+                    })
+                  .catch(error => { console.error(error); });
+            }
+
+            /*
+            const messageElement = existingChatPerson.querySelector('.mt-1');
+                    messageElement.textContent = message;
+                    existingChatPerson.classList.replace('bg-gray-100', 'bg-blue-200');
+            */
 
 
             async function fetchChatPersonData() {

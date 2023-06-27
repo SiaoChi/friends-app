@@ -22,7 +22,7 @@
                             <%= userArticles[i].title %>
                         </p>
                         <p class="content mt-1" data-max-length="80">
-                            <%= userArticles[i].content %>
+                            <%- userArticles[i].content %>
                         </p>
                         <button onclick="readArticle(<%= userArticles[i].id %>)"
                             class="text-blue-500 hover:underline">more...</button>

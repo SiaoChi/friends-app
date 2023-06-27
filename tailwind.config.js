@@ -19,7 +19,9 @@ export default {
     "./views/about.ejs",
     "./views/createTags.ejs",
     "./views/articles.ejs",
-    "./views/singleArticle.ejs"
+    "./views/singleArticle.ejs",
+    "./views/editArticle.ejs",
+    "./views/searchArticles.ejs"
 
   ],
   theme: {

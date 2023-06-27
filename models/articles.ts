@@ -38,21 +38,31 @@ export async function getAllUserArticlesData() {
     return results
 }
 
-export async function getArticleByID(id:number){
+export async function getArticleByID(id: number) {
 
     const [results] = await pool.query(
         `SELECT * FROM articles
         WHERE id = ?
-        `,[id]
+        `, [id]
     )
     console.log(results);
     return results
 }
 
-export async function deleteArticleByID(id:number){
-    console.log('delete 1');
-    const result = await pool.query(`DELETE FROM articles WHERE id = ?`,[id])
-    console.log('delete 2');
-    console.log(result);
+export async function updateArticleByID(id: number, title: string, content: string, date: string) {
+    const result = await pool.query(
+        `
+        UPDATE articles
+        SET title = ?, content = ? ,created_at=?
+        WHERE id = ?
+        `,
+        [title, content, date, id]
+    );
+    return result;
+}
+
+
+export async function deleteArticleByID(id: number) {
+    const result = await pool.query(`DELETE FROM articles WHERE id = ?`, [id])
     return result
 }

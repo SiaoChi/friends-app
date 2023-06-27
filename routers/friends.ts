@@ -22,7 +22,6 @@ router
     .route("/api/v1/friends/ignore")
     .post(authenticate, friendsFunctions.unFriend)
 
-
 router
     .route("/api/v1/friends/recommend")
     .get(authenticate, friendsFunctions.fetchRecommendFriends)

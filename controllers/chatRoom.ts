@@ -5,6 +5,7 @@ import * as friendsModels from '../models/friends.js'
 import * as userModels from '../models/user.js'
 
 
+
 export async function fetchMessages(req: Request, res: Response) {
     try {
         const { room } = req.params;
@@ -22,6 +23,24 @@ export async function fetchMessages(req: Request, res: Response) {
         res.status(500).json({ errors: "getMessages failed" })
     }
 
+}
+
+export async function fetchMessagesRead(req: Request, res: Response) {
+    try {
+        const { room } = req.body;
+        const senderMessages = await chatRoomModel.readMessage(room);
+        if (senderMessages) {
+            res.status(400).json({message:"success"});
+            return;
+        }
+        throw new Error('fetchMessagesRead failed.')
+    } catch (err) {
+        if (err instanceof Error) {
+            res.status(400).json({ errors: err.message });
+            return;
+        }
+        res.status(500).json({ errors: "getMessages failed" })
+    }
 }
 
 export async function fetchChatList(req: Request, res: Response) {

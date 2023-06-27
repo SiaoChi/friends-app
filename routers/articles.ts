@@ -9,12 +9,17 @@ router
     .get(articlesFunction.renderArticles)
 
 router
+    .route("/articles/edit/:id")
+    .get(authenticate, articlesFunction.renderUpdateArticleByID)
+
+router
     .route("/articles/:id")
     .get(articlesFunction.renderArticleByID)
 
 router
     .route("/api/v1/articles/:id")
     .delete(authenticate, articlesFunction.deleteArticleById)
+    .put(authenticate, articlesFunction.updateArticleById)
 
 
 export default router;

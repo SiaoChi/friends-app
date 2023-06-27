@@ -29,7 +29,9 @@ export async function renderRecommendFriends(req: Request, res: Response) {
 export async function addFriend(req: Request, res: Response) {
     try {
         const { userId, friendId } = req.body;
+        console.log('test',userId,friendId);
         const result = await friendsModels.addFriend(userId, friendId);
+        console.log('test2',result)
         if (result) { return res.status(200).json({ message: "success" }) };
         throw new Error('add friend failed')
     } catch (err) {
