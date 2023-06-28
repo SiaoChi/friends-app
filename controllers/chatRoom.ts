@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import * as chatRoomModel from "../models/chatRoom.js"
 import { RowDataPacket } from 'mysql2';
-'
+
 
 export async function renderChatroomByRoomNameBata(req: Request, res: Response) {
 
