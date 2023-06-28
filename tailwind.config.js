@@ -21,8 +21,8 @@ export default {
     "./views/articles.ejs",
     "./views/singleArticle.ejs",
     "./views/editArticle.ejs",
-    "./views/searchArticles.ejs"
-
+    "./views/searchArticles.ejs",
+    "./views/test.ejs"
   ],
   theme: {
     extend: {

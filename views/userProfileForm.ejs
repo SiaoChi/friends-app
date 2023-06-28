@@ -13,7 +13,7 @@
     <div class="container">
       <h1 class="py-4 text-center text-lg">填寫個人資料</h1>
       <div class="flex justify-center items-center border border-red-400 p-5 ">
-        <form action="/user/profile/form" method="POST" class="flex-col">
+        <form action="/user/profile/form" method="POST" class="flex-col" id="form">
           <label for="name">姓名：</label>
           <input class="border border-black" type="text" id="name" name="name"
             value="<%= userData[0].name ? userData[0].name : '' %>" required><br><br>
@@ -102,14 +102,17 @@
             value="<%= userData[0].current_problem ? userData[0].current_problem : '' %>" required><%= userData[0].current_problem ? userData[0].current_problem : '' %>
         </textarea><br><br>
 
-          <label for="conditions">家屬病況：</label><br>
-          <% for (let i=0; i < tags.length; i++) { %>
-            <input type="checkbox" id="conditions" name="tags" value="<%= tags[i].id %>">
-            <label for="condition<%= tags[i].id %>">
-              <%= tags[i].name %>
-            </label><br>
-            <% } %><br>
-              <button class="bg-black text-white w-[200px]" type="submit">Submit</button>
+        <label for="conditions">家屬病況：</label><br>
+        <% let count = 0; %>
+        <% for (let i=0; i < tags.length; i++) { %>
+          <input type="checkbox" id="condition<%= tags[i].id %>" name="tags" value="<%= tags[i].id %>" onclick="limitCheckboxes(this)">
+          <label for="condition<%= tags[i].id %>">
+            <%= tags[i].name %>
+          </label><br>
+          <% } %><br>
+      
+        
+                <button class="bg-black text-white w-[200px]" type="submit">Submit</button>
         </form>
       </div>
     </div>
@@ -126,6 +129,21 @@
         previewImage(selectElement);
       };
 
+      function limitCheckboxes(checkbox) {
+          let checkboxes = document.querySelectorAll('input[name="tags"]:checked');
+          if (checkboxes.length > 6) {
+            checkbox.checked = false;
+            alert('請點選最接近的6個病況，以作為最佳配對建議')
+          }
+        }
+        
+        document.getElementById("form").addEventListener("submit", function(event) {
+          let checkboxes = document.querySelectorAll('input[name="tags"]:checked');
+          if (checkboxes.length < 1 || checkboxes.length > 6) {
+            event.preventDefault();
+            alert("請選擇1至6個家屬病況。");
+          }
+        });
 
     </script>
 </body>

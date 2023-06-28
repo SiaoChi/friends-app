@@ -106,14 +106,17 @@ export async function getChatListById(id: number) {
 
     /*
      [
-        {
-    "senderId": 1,
-    "room_name": "14",
-    "last_message": "hh",
-    "updated_at": "2023-06-22T09:10:40.000Z",
-    "attendants": "4,1",
-    "receiverId": 4
-        },
+   {
+    senderId: 1,
+     room_name: '117',
+     last_message: '111',
+     updated_at: 2023-06-27T05:24:35.000Z,
+     attendants: '1,17',
+     sender_id: 0,
+     receiverId: 17,
+     receiverName: 'kelly12',
+     receiverPicture: '/img/users/5.png'
+   },
      */
 
     const [rows] = await pool.query(
@@ -127,7 +130,7 @@ export async function getChatListById(id: number) {
                 WHERE user_id = (?)
             ) AS subQuery
         INNER JOIN users_rooms AS urs ON subQuery.room_name = urs.room_name AND subQuery.senderId <> urs.user_id
-        ORDER BY subQuery.updated_at 
+        ORDER BY subQuery.updated_at DESC
         `, [id]
     )
 
@@ -136,7 +139,7 @@ export async function getChatListById(id: number) {
 
     const receiverProfileData = await userModels.getUserProfileData(receiverIds);
 
-    console.log('receiverProfileData->',receiverProfileData);
+    // console.log('receiverProfileData->',receiverProfileData);
 
     const newData = (rows as Array<any>).forEach(item =>{
         const receiverData = (receiverProfileData as Array<any>).filter(profileItem => profileItem.id === item.receiverId)

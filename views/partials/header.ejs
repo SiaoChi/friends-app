@@ -1,10 +1,25 @@
+<head>
+  <style>
+    .red-dot-header {
+      width: 12px;
+      height: 12px;
+      background-color: rgb(92, 223, 35);
+      border-radius: 50%;
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      right: 0;
+
+    }
+  </style>
+</head>
 <header class="mb-[75px]">
   <div
     class="flex flex-col items-center justify-center  md:flex-row top-0 left-0 w-full  fixed  bg-white md:border-b-[1px] shadow-md ">
     <div class="w-1/5 flex items-center justify-center md:justify-start ]">
       <a href="/" class="flex">
         <img src="/img/logo.svg" alt="你的智友" class=" w-[60px] mx-auto mt-5 md:mt-0 md:ml-6 md:p-2 ">
-        <a href="/" class="p-1 md:tracking-[5px] text-[16px]" >你的智友</a>
+        <a href="/" class="p-1 md:tracking-[5px] text-[16px]">你的智友</a>
       </a>
     </div>
 
@@ -25,29 +40,30 @@
 
     <div class="w-2/5 flex items-center justify-center md:justify-end mt-3 mb-1 md:my-3 md:mr-6 ">
       <!-- search bar border: use flex to let children be flex in a row-->
-     <form action="/api/v1/search/articles">
-      <div
-        class="flex items-center justify-center md:py-1 md:px-2 md:mr-8 rounded-full border border-gray-400 border-1">
-        <!-- search bar text  -->
-        <div class="w-4/5">
-          <input class="flex-1 pl-2 md:px-4 md:py-2 rounded-full outline-none text-gray-600 md:text-m" type="text"
-            placeholder="搜尋文章..." name="keyword">
+      <form action="/api/v1/search/articles">
+        <div
+          class="flex items-center justify-center md:py-1 md:px-2 md:mr-8 rounded-full border border-gray-400 border-1">
+          <!-- search bar text  -->
+          <div class="w-4/5">
+            <input class="flex-1 pl-2 md:px-4 md:py-2 rounded-full outline-none text-gray-600 md:text-m" type="text"
+              placeholder="搜尋文章..." name="keyword">
+          </div>
+          <!-- icon  -->
+          <div class="w-1/5 flex items-center justify-end">
+            <button type="submit">
+              <a href="#" class="flex items-center justify-end">
+                <img src="/img/search.png" alt="search icon" class="w-5 h-5 md:w-8 md:h-8">
+              </a>
+            </button>
+          </div>
         </div>
-        <!-- icon  -->
-        <div class="w-1/5 flex items-center justify-end">
-          <button type="submit">
-            <a href="#" class="flex items-center justify-end">
-              <img src="/img/search.png" alt="search icon" class="w-5 h-5 md:w-8 md:h-8">
-            </a>
-          </button>
-        </div>
-      </div>
-    </form>
+      </form>
 
       <div class="mr-6 hidden md:block relative" id="messageIcon">
         <a href="/chatroom">
           <img class="w-[30px]" src="/img/messenger.svg" alt="message">
         </a>
+        <span id="red-dot-header"></span>
       </div>
 
       <div class="mr-6 hidden md:block ">
@@ -57,5 +73,25 @@
       </div>
 
     </div>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+      const senderId = localStorage.getItem('userId');
+      let socket
+      if (senderId) {
+        socket = io();
+        socket.emit('joinMyRoom', String(senderId));
+      }
+
+      socket.on("message", function (data) {
+        // 如果網址有room,id的邏輯，會因應點擊右方list調整所以使用let
+        const messageIcon = document.getElementById('red-dot-header');
+        messageIcon.classList.add('red-dot-header')
+      })
+
+      messageIcon.addEventListener('click', function () {
+        messageIcon.removeChild('red-dot-header');
+      });
+
+    </script>
 
 </header>

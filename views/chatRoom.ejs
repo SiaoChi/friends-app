@@ -112,9 +112,10 @@
                 </form>
             </div>
             <div class="flex items-center justify-center border border-gray-400 w-[300px] h-[560px]" id="info">
+                
             </div>
         </div>
-        </div>
+        
 
         <!-- <script src="/socket.io/socket.io.js"></script> -->
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
@@ -218,7 +219,7 @@
                     img.alt = 'picture';
 
                     let text = document.createElement('text');
-                    text.classList.add('ml-4','rounded-lg', 'p-2');
+                    text.classList.add('ml-4', 'rounded-lg', 'p-2');
                     text.textContent = `${message}`;
 
                     item.appendChild(img);
@@ -240,7 +241,7 @@
                     span.classList.add('red-dot');
                     aElement.appendChild(span);
 
-                    console.log('aEle',aElement);
+                    console.log('aEle', aElement);
                     chatList.prepend(existingChatPerson);
                     console.log('existingChatPerson', existingChatPerson);
                 } else {
@@ -267,7 +268,7 @@
                     const fetchChatList = await fetchData.json();
                     console.log('fetchChatList', fetchChatList);
                     fetchChatList.forEach(item => {
-                        // 如果senderId是自己，不用有小綠點
+                        // 如果senderId是自己，不用有小紅點
                         if (item.sender_id === Number(senderId) || item.sender_id === 0) {
                             console.log('1', item.sender_id, Number(senderId));
                             const chatPerson = `
@@ -304,7 +305,6 @@
                 } catch (err) {
                     console.error('Error occurred while fetching chat list:', error);
                 }
-
             }
 
 
@@ -340,6 +340,7 @@
                     console.error('Error occurred while fetching fetchRoomMessages:', error);
                 }
             }
+
 
             async function fetchRoomMessages() {
                 try {
@@ -387,11 +388,11 @@
                 // event.preventDefault();
                 const roomName = event.target.getAttribute('data-room');
                 const redDot = event.target.querySelector('a .red-dot');
-                if(redDot){
-                redDot.style.display = 'none';
+                if (redDot) {
+                    redDot.style.display = 'none';
                 };
                 if (roomName) {
-                    await fetchReadMessage(roomName)
+                    const read = await fetchReadMessage(roomName)
                 }
 
             })
@@ -405,14 +406,14 @@
                     },
                     body: JSON.stringify({ room })
                 }).then(response => response.json())
-                  .then(data => {
+                    .then(data => {
                         if (data.message === 'success') {
-                            console.log('dataMsg',data.message);
-                            return 
+                            console.log('dataMsgRead', data.message);
+                            return
                         }
-                        throw new Error ('reset message status failed')
+                        throw new Error('reset message status failed')
                     })
-                  .catch(error => { console.error(error); });
+                    .catch(error => { console.error(error); });
             }
 
             /*

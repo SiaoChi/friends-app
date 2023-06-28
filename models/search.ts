@@ -9,6 +9,17 @@ const SearchArticleSchema = z.object({
     user_id:z.number()
 })
 
+
+export async function getFriendsByKeyword(keyword:string){
+    const [data] = await pool.query(
+        `
+        SELECT * FROM users WHERE name  LIKE '%${keyword}%' 
+        `,[keyword]
+    )   
+    console.log(data);
+    return data
+}
+
 export async function getArticleByKeyword(keyword: string, currPage: number) {
     const [data] = await pool.query(
         `
