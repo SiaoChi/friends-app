@@ -122,7 +122,7 @@ export async function renderChatroomByRoomName(req: Request, res: Response) {
                 }
             }
             // 沒有聊天室的人，回傳空白聊天室
-            return res.render('chatroom')
+            return res.render('chatRoom')
         }
 
         // 有房間號碼，針對id=?傳送訊息
