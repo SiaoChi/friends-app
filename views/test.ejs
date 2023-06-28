@@ -117,7 +117,7 @@
                             <div class="cursor-pointer items-center mb-2 bg-gray-100 chat-person"
                                 data-senderid="<%= chatList[i].receiverId %>" data-room="<%= chatList[i].room_name %>">
                                 <a onclick="fetchMessages(<%= chatList[i].room_name %>,<%= chatList[i].receiverId %>)"
-                                    class="p-2 w-full flex relative" >
+                                    class="p-2 w-full flex relative">
                                     <img class="w-10 h-10 rounded-full" src="<%= chatList[i].receiverPicture %>" alt="">
                                     <div class="ml-4">
                                         <h5 class="text-lg">
@@ -167,6 +167,8 @@
         <script>
 
             // let socket = io();
+            // 加入自己socket房間
+            // socket.emit('joinMyRoom', String(senderId));
 
             // 畫面直接提供的資訊，不透過url or fetch
             const messages = document.getElementById('messages');
@@ -175,9 +177,6 @@
             const chatList = document.getElementById('chatlist')
             // const senderId = localStorage.getItem('userId');
             const nickname = localStorage.getItem('name');
-
-            // 加入自己socket房間
-            // socket.emit('joinMyRoom', String(senderId));
 
             // 如果網址有room,id的邏輯，會因應點擊右方list調整所以使用let
             let roomName = window.location.href.match(/\/chatroom\/(\d+)/)[1];
@@ -273,7 +272,7 @@
                     img.alt = 'picture';
 
                     let text = document.createElement('text');
-                    text.classList.add('ml-4','bg-slate-200', 'rounded-lg', 'p-2');
+                    text.classList.add('ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
                     text.textContent = `${message}`;
 
                     item.appendChild(img);
@@ -315,7 +314,7 @@
                 try {
                     const fetchData = await fetch(`/api/v1/user/profile/${receiverId}`)
                     const receiverInfo = await fetchData.json();
-                    console.log('fetchReceiverInfo->', receiverInfo);
+                    // console.log('fetchReceiverInfo->', receiverInfo);
                     receiverPicture = receiverInfo[0].picture;
                     receiverName = receiverInfo[0].name;
                     const fetchInfo = `
@@ -396,11 +395,12 @@
                 allPersonChat.forEach(item => {
                     item.classList.remove('bg-red-100')
                 });
-                target.classList.add('bg-red-100'); 
+                target.classList.add('bg-red-100');
                 if (redDot) {
                     redDot.style.display = 'none';
-                    console.log('聊天內容已讀');
-                    await fetchReadMessage(roomName); // 
+                    await fetchReadMessage(roomName);
+                    // console.log(Number(senderId), Number(receiverId), roomName);
+                    await setUnreadToZero(Number(senderId), Number(receiverId), roomName)
                 };
             })
 
@@ -409,7 +409,27 @@
                 messageIcon.removeChild(redDot);
             });
 
-            // 點擊chatList其中一個user會觸發的
+            // [chatList] 點擊會通知user已讀所有訊息，reset unread to 0 
+            function setUnreadToZero(senderId, receiverId, roomName) {
+                fetch(`/api/v1/chatroom/read`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ senderId, receiverId, roomName })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'success') {
+                            console.log('reset success');
+                            return
+                        }
+                        throw new Error('reset message status failed')
+                    })
+                    .catch(error => { console.error(error); });
+            }
+
+            // [chatList] 點擊chatList其中一個user會觸發的
             function fetchReadMessage(room) {
                 console.log('fetchReadMessage');
                 fetch(`/api/v1/chatroom/${room}`, {
@@ -424,15 +444,16 @@
                             // console.log('dataMsgRead', data.message);
                             return
                         }
+                        console.log('error',data);
                         throw new Error('reset message status failed')
                     })
                     .catch(error => { console.error(error); });
             }
-            async function fetchChatPersonData(receiverId,room) {
+            async function fetchChatPersonData(receiverId, room) {
                 await fetchReceiverInfo(receiverId);
                 await fetchRoomMessages(room);
             }
-            fetchChatPersonData(receiverId,roomName)
+            fetchChatPersonData(receiverId, roomName)
 
         </script>
 </body>

@@ -26,9 +26,9 @@ export function socketHandler( io: Server ){
       socket.on('send', async (data: data) => {
         const { nickname , message , senderId, receiverId, room} = data;
         console.log('收到訊息-->',nickname , message , senderId, receiverId, room);
-        await chatRoomModel.checkRoom(senderId, receiverId, room)  
-        socket.to(receiverId.toString()).emit("message", { nickname , message , senderId, receiverId, room} )
-        await chatRoomModel.saveMessage( message , senderId ,room)
+        await chatRoomModel.checkRoom(senderId, receiverId, room);  
+        socket.to(receiverId.toString()).emit("message", { nickname , message , senderId, receiverId, room} );
+        await chatRoomModel.saveMessage( message , senderId ,receiverId ,room);
     })
 
     }) 

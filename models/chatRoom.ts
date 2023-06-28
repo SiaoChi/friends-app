@@ -1,10 +1,64 @@
-import { string, z } from "zod";
+import { z } from "zod";
 import pool from "./databasePool.js"
 import * as userModels from "./user.js"
+import { ResultSetHeader } from "mysql2";
 
 
 
-export async function saveMessage(message: string, senderId: number, room: string) {
+// export async function addUnreadMessageNum(senderId: string, receiverId: string, room: string) {
+//     if (Number(senderId) < Number(receiverId)) {
+//         const result = await pool.query(
+//             `UPDATE rooms 
+//          SET lg_id_unread = IFNULL(lg_id_unread, 0) + 1 
+//          WHERE room_name = ?`,
+//             [room]
+//         );
+//         console.log('lg_id_unread +1');
+//     } else {
+//         const result = await pool.query(
+//             `UPDATE rooms 
+//          SET xs_id_unread = IFNULL(xs_id_unread, 0) + 1 
+//          WHERE room_name = ?`,
+//             [room]
+//         );
+//         console.log('xs_id_unread +1');
+//     }
+// }
+
+function instanceOfSetHeader(object: any): object is ResultSetHeader {
+    return "insertId" in object;
+  }
+
+export async function setUnreadToZero(senderId: number, receiverId: number, room: string) {
+    console.log('setUnreadToZero',senderId, receiverId,room);
+    let result
+    if (senderId < receiverId) {
+        result = await pool.query(
+            `UPDATE rooms 
+           SET xs_id_unread = 0
+           WHERE room_name = ?`,
+            [room]
+        );
+        console.log('xs_id_unread 0-->',result);
+    } else {
+        result = await pool.query(
+            `UPDATE rooms 
+           SET lg_id_unread = 0
+           WHERE room_name = ?`,
+            [room]
+        );
+        console.log('lg_id_unread 0-->',result);
+        if (Array.isArray(result) && instanceOfSetHeader(result[0])) {
+            return result[0].changedRows;
+          }
+          throw new Error("setUnreadToZero failed in model");
+    }
+}
+
+
+
+
+export async function saveMessage(message: string, senderId: number ,receiverId:number, room: string) {
     await pool.query(
         `
         INSERT INTO messages ( room_name , message , sender_id )
@@ -19,31 +73,49 @@ export async function saveMessage(message: string, senderId: number, room: strin
         SET last_message = ? , sender_id = ?
         WHERE room_name = ${room}
         `,
-        [message,senderId]
+        [message, senderId]
     )
+    
+    if (senderId < receiverId) {
+        const result = await pool.query(
+            `UPDATE rooms 
+           SET lg_id_unread = IFNULL(lg_id_unread, 0) + 1 
+           WHERE room_name = ?`,
+            [room]
+        );
+        console.log('lg_id_unread +1',result);
+    } else {
+        const [result] = await pool.query(
+            `UPDATE rooms 
+           SET xs_id_unread = IFNULL(xs_id_unread, 0) + 1 
+           WHERE room_name = ?`,
+            [room]
+        );
+        console.log('xs_id_unread +1',result);
+    }
 }
 
 
-export async function readMessage(room:string){
+export async function readMessage(room: string) {
     const result = await pool.query(
         `
         UPDATE rooms
         SET sender_id = ? , updated_at = updated_at
         WHERE room_name = ? 
-        `, [0,room]
+        `, [0, room]
     )
     console.log(result);
     return result
 }
 
 
-export async function getUserRoom(id:number){
+export async function getUserRoom(id: number) {
     const [result] = await pool.query(
         `
         SELECT * FROM users_rooms WHERE user_id = (?)
-        `,[id]
+        `, [id]
     )
-    console.log('getUserRoom->',result);
+    console.log('getUserRoom->', result);
     return result
 }
 
@@ -54,7 +126,6 @@ export async function checkRoom(senderId: number, receiverId: number, room: stri
         SELECT room_name FROM rooms WHERE room_name=${room}
         `
     )
-
     const roomMembers = [[senderId, room], [receiverId, room]];
     const attendants = `${senderId},${receiverId}`;
 
@@ -71,6 +142,7 @@ export async function checkRoom(senderId: number, receiverId: number, room: stri
             console.error('Error occurred while inserting data:', error);
         }
     }
+
 }
 
 const MessageSchema = z.object({
@@ -86,7 +158,7 @@ export async function getMessagesByRoom(room: string) {
     SELECT sender_id , message FROM messages
     WHERE room_name = ${room}
     ORDER BY created_at
-    ` 
+    `
     )
     const data = z.array(MessageSchema).parse(rows)
     return data
@@ -96,9 +168,9 @@ const ChatListSchema = z.object({
     sender_id: z.number(),
     room_name: z.string(),
     updated_at: z.string(),
-    receiverId:z.number(),
-    receiverName:z.string().optional(),
-    receiverPicture:z.string().optional()
+    receiverId: z.number(),
+    receiverName: z.string().optional(),
+    receiverPicture: z.string().optional()
 })
 
 
@@ -134,20 +206,18 @@ export async function getChatListById(id: number) {
         `, [id]
     )
 
- 
-    const receiverIds =(rows as Array<any>).map(item => item.receiverId)
+
+    const receiverIds = (rows as Array<any>).map(item => item.receiverId)
 
     const receiverProfileData = await userModels.getUserProfileData(receiverIds);
 
-    // console.log('receiverProfileData->',receiverProfileData);
-
-    const newData = (rows as Array<any>).forEach(item =>{
+    const newData = (rows as Array<any>).forEach(item => {
         const receiverData = (receiverProfileData as Array<any>).filter(profileItem => profileItem.id === item.receiverId)
         item['receiverName'] = receiverData[0].name;
         item['receiverPicture'] = receiverData[0].picture;
         return item
     })
 
-    return rows 
+    return rows
 }
 

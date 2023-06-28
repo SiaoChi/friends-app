@@ -14,11 +14,14 @@ router.get('/chatroom/:room', [authenticate, chatRoomFunctions.renderChatroomByR
 // router.get('/chatroom/', [authenticate, chatRoomFunctions.renderChatroomByRoomName])
 // router.get('/chatroom/:room', [authenticate, chatRoomFunctions.renderChatroomByRoomName])
 
+router // 要加一個middleware，防止其他人進入
+    .route("/api/v1/chatroom/read")
+    .put([authenticate, chatRoomFunctions.setUnreadToZero])
 
 router // 要加一個middleware，防止其他人進入
     .route("/api/v1/chatroom/:room")
     .get([authenticate, chatRoomFunctions.fetchMessages])
-    .put([authenticate, chatRoomFunctions.fetchMessagesRead]) 
+    .put([authenticate, chatRoomFunctions.fetchMessagesRead])
 
 router
     .route("/api/v1/chatlist/:id")
