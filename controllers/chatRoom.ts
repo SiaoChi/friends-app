@@ -24,7 +24,7 @@ export async function renderChatroomByRoomNameBata(req: Request, res: Response) 
                 }
             }
             // 沒有聊天室的人，回傳空白聊天室
-            return res.render('chatroom')
+            return res.render('chatRoom')
         }
         await chatRoomModel.checkRoom(userId, Number(id), room) 
         // 有房間號碼，針對id=?傳送訊息
