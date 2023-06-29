@@ -13,7 +13,7 @@ const SearchArticleSchema = z.object({
 export async function getFriendsByKeyword(keyword:string){
     const [data] = await pool.query(
         `
-        SELECT * FROM users WHERE name  LIKE '%${keyword}%' 
+        SELECT * FROM users , current_problem WHERE name  LIKE '%${keyword}%' 
         `,[keyword]
     )   
     console.log(data);

@@ -32,9 +32,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/',express.static('./public'));
 app.use("/uploads",express.static("./uploads"))
 
-// app.use("/api/v1", [
-//   chatRoomRouter,
-// ])
 
 app.use("/", [
   index,

@@ -4,33 +4,12 @@ import * as userModels from "./user.js"
 import { ResultSetHeader } from "mysql2";
 
 
-
-// export async function addUnreadMessageNum(senderId: string, receiverId: string, room: string) {
-//     if (Number(senderId) < Number(receiverId)) {
-//         const result = await pool.query(
-//             `UPDATE rooms 
-//          SET lg_id_unread = IFNULL(lg_id_unread, 0) + 1 
-//          WHERE room_name = ?`,
-//             [room]
-//         );
-//         console.log('lg_id_unread +1');
-//     } else {
-//         const result = await pool.query(
-//             `UPDATE rooms 
-//          SET xs_id_unread = IFNULL(xs_id_unread, 0) + 1 
-//          WHERE room_name = ?`,
-//             [room]
-//         );
-//         console.log('xs_id_unread +1');
-//     }
-// }
-
 function instanceOfSetHeader(object: any): object is ResultSetHeader {
     return "insertId" in object;
-  }
+}
 
 export async function setUnreadToZero(senderId: number, receiverId: number, room: string) {
-    console.log('setUnreadToZero',senderId, receiverId,room);
+    console.log('setUnreadToZero', senderId, receiverId, room);
     let result
     if (senderId < receiverId) {
         result = await pool.query(
@@ -39,7 +18,7 @@ export async function setUnreadToZero(senderId: number, receiverId: number, room
            WHERE room_name = ?`,
             [room]
         );
-        console.log('xs_id_unread 0-->',result);
+        console.log('xs_id_unread 0-->', result);
     } else {
         result = await pool.query(
             `UPDATE rooms 
@@ -47,18 +26,18 @@ export async function setUnreadToZero(senderId: number, receiverId: number, room
            WHERE room_name = ?`,
             [room]
         );
-        console.log('lg_id_unread 0-->',result);
+        console.log('lg_id_unread 0-->', result);
         if (Array.isArray(result) && instanceOfSetHeader(result[0])) {
             return result[0].changedRows;
-          }
-          throw new Error("setUnreadToZero failed in model");
+        }
+        throw new Error("setUnreadToZero failed in model");
     }
 }
 
 
 
 
-export async function saveMessage(message: string, senderId: number ,receiverId:number, room: string) {
+export async function saveMessage(message: string, senderId: number, receiverId: number, room: string) {
     await pool.query(
         `
         INSERT INTO messages ( room_name , message , sender_id )
@@ -75,15 +54,16 @@ export async function saveMessage(message: string, senderId: number ,receiverId:
         `,
         [message, senderId]
     )
-    
-    if (senderId < receiverId) {
+    console.log('senderId', senderId, 'receiverId', receiverId);
+
+    if (Number(senderId) < Number(receiverId)) {
         const result = await pool.query(
             `UPDATE rooms 
            SET lg_id_unread = IFNULL(lg_id_unread, 0) + 1 
            WHERE room_name = ?`,
             [room]
         );
-        console.log('lg_id_unread +1',result);
+        console.log('lg_id_unread +1');
     } else {
         const [result] = await pool.query(
             `UPDATE rooms 
@@ -91,7 +71,7 @@ export async function saveMessage(message: string, senderId: number ,receiverId:
            WHERE room_name = ?`,
             [room]
         );
-        console.log('xs_id_unread +1',result);
+        console.log('xs_id_unread +1');
     }
 }
 
@@ -104,7 +84,6 @@ export async function readMessage(room: string) {
         WHERE room_name = ? 
         `, [0, room]
     )
-    console.log(result);
     return result
 }
 
@@ -147,7 +126,8 @@ export async function checkRoom(senderId: number, receiverId: number, room: stri
 
 const MessageSchema = z.object({
     sender_id: z.number(),
-    message: z.string()
+    message: z.string(),
+    time:z.string()
 })
 
 
@@ -155,7 +135,9 @@ const MessageSchema = z.object({
 export async function getMessagesByRoom(room: string) {
     const [rows] = await pool.query(
         `
-    SELECT sender_id , message FROM messages
+    SELECT sender_id , message , 
+    CONCAT(IF(TIME_FORMAT(created_at, '%p') = 'AM', '上午', '下午'), TIME_FORMAT(created_at, '%h:%i'))  AS time 
+    FROM messages
     WHERE room_name = ${room}
     ORDER BY created_at
     `

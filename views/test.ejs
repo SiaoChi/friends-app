@@ -100,7 +100,10 @@
             position: absolute;
             top: 0;
             right: 0;
+        }
 
+        .chat-person:hover {
+            background-color: rgb(255, 224, 224)
         }
     </style>
 </head>
@@ -130,11 +133,33 @@
                                     <% if (chatList[i].sender_id===chatList[i].receiverId) { %>
                                         <span class="red-dot"></span>
                                         <% } %>
-                                            <div class="flex justify-end items-end ml-auto">
-                                                <p class="text-[12px] text-gray-500">
-                                                    <%= chatList[i].updated_at.toISOString().split('T')[0] %>
-                                                </p>
-                                            </div>
+
+                                            <% if (chatList[i].senderId> chatList[i].receiverId) { %>
+
+                                                <% if(chatList[i].lg_id_unread !==0) {%>
+                                                    <div
+                                                        class="ml-3 text-xs flex items-center justify-center w-[34px] h-[21px] rounded-full bg-red-300 text-white">
+                                                        <%= chatList[i].lg_id_unread ? chatList[i].lg_id_unread : '' %>
+                                                    </div>
+                                                    <% } %>
+
+                                                        <% } else { %>
+                                                            <% if(chatList[i].xs_id_unread !==0) {%>
+                                                                <div
+                                                                    class="ml-3 text-xs flex items-center justify-center w-[34px] h-[21px] rounded-full bg-red-300 text-white">
+                                                                    <%= chatList[i].xs_id_unread ?
+                                                                        chatList[i].xs_id_unread : '' %>
+                                                                </div>
+                                                                <% } %>
+                                                                    <% } %>
+
+                                                                        <div
+                                                                            class="flex justify-end items-end ml-auto w-full">
+                                                                            <p class="text-[12px] text-gray-500">
+                                                                                <%=
+                                                                                    chatList[i].updated_at.toISOString().split('T')[0]%>
+                                                                            </p>
+                                                                        </div>
                                 </a>
                             </div>
                             <% } %>
@@ -169,6 +194,13 @@
             // let socket = io();
             // 加入自己socket房間
             // socket.emit('joinMyRoom', String(senderId));
+
+            // timezone
+            const options = {
+                timeZone: 'Asia/Taipei',
+                hour: 'numeric',
+                minute: 'numeric'
+            };
 
             // 畫面直接提供的資訊，不透過url or fetch
             const messages = document.getElementById('messages');
@@ -210,12 +242,19 @@
                 }
                 if (input.value) {
                     socket.emit("send", { nickname, message: input.value, senderId, receiverId, room: roomName });
+                    const time = new Date().toLocaleString('zh-TW', options);
                     let userInput = document.createElement('li');
                     // 主聊天室畫面更新 
                     userInput.classList.add('message-sent', 'mt-1');
                     let text = document.createElement('text');
-                    text.classList.add('ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
-                    text.textContent = `${input.value}`;
+                    text.classList.add('ml-1', 'bg-slate-200', 'rounded-lg', 'p-2');
+                    text.textContent = input.value;
+
+                    let timeStamp = document.createElement('text');
+                    timeStamp.classList.add('rounded-lg', 'text-xs');
+                    timeStamp.textContent = time;
+
+                    userInput.appendChild(timeStamp);
                     userInput.appendChild(text);
                     messages.appendChild(userInput);
 
@@ -254,8 +293,8 @@
 
             // [socket.io]聽自己id的socket範圍，如果有訊息就拉出來
             socket.on("message", function (data) {
-                const { nickname, message, senderId, receiverId, room } = data;
-
+                const { nickname, message, senderId, receiverId, room, time } = data;
+                console.log('time', time);
                 // [header] 新訊息：chat-icon加入紅點
                 const messageIcon = document.getElementById('messageIcon');
                 const redDot = document.createElement('span');
@@ -273,10 +312,15 @@
 
                     let text = document.createElement('text');
                     text.classList.add('ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
-                    text.textContent = `${message}`;
+                    text.textContent = message;
+
+                    let timeStamp = document.createElement('text');
+                    timeStamp.classList.add('ml-1', 'rounded-lg', 'text-xs');
+                    timeStamp.textContent = time;
 
                     item.appendChild(img);
                     item.appendChild(text);
+                    item.appendChild(timeStamp);
                     messages.appendChild(item);
 
                     const container = document.getElementById('chatroom');
@@ -333,7 +377,7 @@
                                     </div>
                                 </div>
                                  `
-                    info.innerHTML = fetchInfo
+                    info.innerHTML = fetchInfo;
                 } catch (err) {
                     console.error('Error occurred while fetching fetchRoomMessages:', error);
                 }
@@ -343,8 +387,7 @@
                 try {
                     const fetchData = await fetch(`/api/v1/chatroom/${room}`);
                     const fetchRoomMessages = await fetchData.json();
-                    // console.log('fetchRoomMessages->', fetchRoomMessages);
-
+                    // console.log('歷史訊息', fetchRoomMessages);
                     let messageUl = document.createElement('ul');
 
                     fetchRoomMessages.forEach(item => {
@@ -353,23 +396,34 @@
                         if (item.sender_id === Number(senderId)) {
                             userInput.classList.add('message-sent');
                             let text = document.createElement('text');
-                            text.classList.add('ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
-                            text.textContent = `${item.message}`;
+                            text.classList.add('ml-1', 'bg-slate-200', 'rounded-lg', 'p-2');
+                            text.textContent = item.message;
+
+                            let timeStamp = document.createElement('text');
+                            timeStamp.classList.add('rounded-lg', 'text-xs');
+                            timeStamp.textContent = item.time;
+
+                            userInput.appendChild(timeStamp);
                             userInput.appendChild(text);
 
                         } else {
                             userInput.classList.add('message-received', 'flex');
                             let img = document.createElement('img');
                             img.classList.add('w-[30px]', 'h-[30px]', 'rounded-full');
-                            img.src = `${receiverPicture}`;
+                            img.src = receiverPicture;
                             img.alt = '';
 
                             let text = document.createElement('text');
                             text.classList.add('ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
-                            text.textContent = `${item.message}`;
+                            text.textContent = item.message;
+
+                            let timeStamp = document.createElement('text');
+                            timeStamp.classList.add('ml-1', 'rounded-lg', 'text-xs');
+                            timeStamp.textContent = item.time;
 
                             userInput.appendChild(img);
                             userInput.appendChild(text);
+                            userInput.appendChild(timeStamp);
                         }
                         messageUl.appendChild(userInput);
                     });
@@ -399,8 +453,9 @@
                 if (redDot) {
                     redDot.style.display = 'none';
                     await fetchReadMessage(roomName);
-                    // console.log(Number(senderId), Number(receiverId), roomName);
+                    console.log(Number(senderId), Number(receiverId), roomName);
                     await setUnreadToZero(Number(senderId), Number(receiverId), roomName)
+                    console.log('reset to 0');
                 };
             })
 
@@ -441,14 +496,15 @@
                 }).then(response => response.json())
                     .then(data => {
                         if (data.message === 'success') {
-                            // console.log('dataMsgRead', data.message);
+                            console.log('dataMsgRead', data.message);
                             return
                         }
-                        console.log('error',data);
+                        console.log('error', data);
                         throw new Error('reset message status failed')
                     })
                     .catch(error => { console.error(error); });
             }
+
             async function fetchChatPersonData(receiverId, room) {
                 await fetchReceiverInfo(receiverId);
                 await fetchRoomMessages(room);
