@@ -22,7 +22,8 @@ export default {
     "./views/singleArticle.ejs",
     "./views/editArticle.ejs",
     "./views/searchArticles.ejs",
-    "./views/test.ejs"
+    "./views/test.ejs",
+    "./views/partials/sideBar.ejs"
   ],
   theme: {
     extend: {
@@ -31,9 +32,12 @@ export default {
         'vh-15':'15vh',
         'vh-20':'20vh',
         'vh-25':'25vh',
+        'vh-30':'30vh',
         'vh-35':'35vh',
         'vh-40':'40vh',
         'vh-50':'50vh',
+        'vh-60':'60vh',
+        'vh-80':'80vh',
         'vh-75':'75vh',
         'vh-90':'90vh',
         'vh-100':'100vh'
@@ -43,9 +47,12 @@ export default {
         'vw-15':'15vw',
         'vw-20':'20vw',
         'vw-25':'25vw',
+        'vw-30':'30vw',
         'vw-35':'35vw',
         'vw-40':'40vw',
         'vw-50':'50vw',
+        'vw-60':'60vw',
+        'vw-70':'70vw',
         'vw-75':'75vw',
         'vw-90':'90vw',
         'vw-100':'100vw'
