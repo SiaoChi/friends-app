@@ -12,36 +12,35 @@
 <body>
     <%- include('./partials/header') %>
 
-        <div class="flex items-start justify-center ">
-            <!-- 個人menu -->
+    <div class="flex items-start justify-center bg-slate-50">
             <%- include('./partials/sideBar') %>
                 <!-- 好友畫面 -->
-                <div class="w-3/4 flex justify-center items-start border border-red-300 h-screen py-5">
+                <div class="w-full flex justify-center items-start  h-screen py-5 overflow-y-scroll">
 
-                    <div class="flex flex-wrap justify-start items-center border border-blue-400 w-[900px]">
+                    <div class="flex flex-wrap justify-start items-center w-[900px]">
 
                         <% if (friendsData && friendsData.length> 0) { %>
                             <% for (let i=0; i < friendsData.length; i++) { %>
-                                <div class="flex-col border border-green-400 w-[400px] h-[200px] m-5 p-5">
-                                    <div class="flex border border-red-400">
+                                <div class="flex-col bg-white w-[400px] h-[230px] m-5 p-5 shadow-md">                                    
+                                    <div class="flex ">
                                         <a href="/user/profile/<%= friendsData[i].id %>"><img
-                                                class="w-[150px] h-[150px] border border-red-400 rounded-full"
+                                                class="w-[150px] h-[150px]  rounded-full"
                                                 src=" <%= friendsData[i].picture %>" alt="user-picture"></a>
-                                        <div class="border border-red-400 ml-3">
-                                            <div class="border border-red-400">
+                                        <div class=" ml-3">
+                                            <div class="">
                                                 <%= friendsData[i].name %>
                                             </div>
-                                            <div class="border border-red-400">現有問題：<%= friendsData[i].current_problem
+                                            <div class="">現有問題：<%= friendsData[i].current_problem
                                                     %>
                                             </div>
-                                            <div class="border border-red-400">家屬確診年：<%= friendsData[i].sick_year %>
+                                            <div class="">家屬確診年：<%= friendsData[i].sick_year %>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flex justify-end border border-red-400">
-                                        <button id="send-msg" class="bg-black text-white ml-2"
+                                    <div class="flex justify-end  mt-3"">
+                                        <button id="send-msg" class="text-sm ml-4 w-[80px] h-[30px] bg-blue rounded-full text-white transition-all delay-100 hover:scale-95"
                                             ><a href="/user/profile/<%= friendsData[i].id %>">查看近況</a></button>
-                                        <button id="send-msg" class="bg-black text-white ml-2"
+                                        <button id="send-msg" class="text-sm ml-4 w-[80px] h-[30px] bg-red rounded-full text-white transition-all delay-100 hover:scale-95"
                                             onclick="sendMsg(<%= friendsData[i].id %>)">傳送訊息</button>
                                     </div>
                                 </div>

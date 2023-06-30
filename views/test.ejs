@@ -5,13 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>聊天室</title>
+    <title>我的智友-聊天室</title>
     <link href="/dist/output.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            padding-bottom: 3rem;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            /* padding-bottom: 3rem; */
+        }
+
+        .talk {
+            overflow-wrap: anywhere;
         }
 
         .message-received {
@@ -24,15 +27,20 @@
             /* 其他相關樣式 */
         }
 
+        .screen-h {
+            height: calc(100% - 98px);
+        }
+
         #form {
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(179, 179, 179, 0.484);
             padding: 0.25rem;
             position: fixed;
             bottom: 0;
-            left: 0;
-            right: 0;
+            /* left: 0;
+            right: 0; */
             display: flex;
-            height: 3rem;
+            width: 50%;
+            height: ;
             box-sizing: border-box;
             backdrop-filter: blur(10px);
         }
@@ -57,7 +65,7 @@
 
 
         #form>button {
-            background: #333;
+            background: #2198DD;
             border: none;
             padding: 0 1rem;
             margin: 0.25rem;
@@ -78,6 +86,10 @@
 
         #messages>li {
             padding: 0.5rem 1rem;
+        }
+
+        #chatroom {
+            height: calc(100vh - 138px);
         }
 
         .red-dot {
@@ -110,19 +122,18 @@
 
 <body>
     <%- include('./partials/header') %>
-
-        <div class="flex justify-start items-center ">
-            <div class="border border-gray-400 h-[560px] p-2 w-[400px] overflow-y-scroll">
-                <div class="bg-black text-white p-2 sticky top-0">聊天清單</div>
-                <div class="mt-2 p-2" id="chatlist">
+        <div class="flex justify-start items-start h-[800px] w-full fixed">
+            <div class="w-1/4 h-[90vh] border-r border-gray-300 pl-2 overflow-auto relative">
+                <div class="w-1/4 bg-gray-800  text-white p-2 fixed z-20">聊天清單</div>
+                <div class="mt-[40px] p-2 " id="chatlist">
                     <% if (chatList && chatList.length> 0) { %>
                         <% for (let i=0; i < chatList.length; i++) { %>
-                            <div class="cursor-pointer items-center mb-2 bg-gray-100 chat-person"
+                            <div class="cursor-pointer items-center mb-2 bg-gray-100 chat-person relative"
                                 data-senderid="<%= chatList[i].receiverId %>" data-room="<%= chatList[i].room_name %>">
                                 <a onclick="fetchMessages(<%= chatList[i].room_name %>,<%= chatList[i].receiverId %>)"
-                                    class="p-2 w-full flex relative">
+                                    class="p-2 w-full flex items-center relative">
                                     <img class="w-10 h-10 rounded-full" src="<%= chatList[i].receiverPicture %>" alt="">
-                                    <div class="ml-4">
+                                    <div class="ml-4 w-[160px] truncate">
                                         <h5 class="text-lg">
                                             <%= chatList[i].receiverName %>
                                         </h5>
@@ -138,7 +149,7 @@
 
                                                 <% if(chatList[i].lg_id_unread !==0) {%>
                                                     <div
-                                                        class="ml-3 text-xs flex items-center justify-center w-[34px] h-[21px] rounded-full bg-red-300 text-white">
+                                                        class="absolute ml-3 text-xs flex items-center justify-center w-[21px] h-[21px] rounded-full bg-red text-white">
                                                         <%= chatList[i].lg_id_unread ? chatList[i].lg_id_unread : '' %>
                                                     </div>
                                                     <% } %>
@@ -146,7 +157,7 @@
                                                         <% } else { %>
                                                             <% if(chatList[i].xs_id_unread !==0) {%>
                                                                 <div
-                                                                    class="ml-3 text-xs flex items-center justify-center w-[34px] h-[21px] rounded-full bg-red-300 text-white">
+                                                                    class="top-2 right-2 absolute ml-3 text-xs flex items-center justify-center w-[21px] h-[21px] rounded-full bg-red text-white">
                                                                     <%= chatList[i].xs_id_unread ?
                                                                         chatList[i].xs_id_unread : '' %>
                                                                 </div>
@@ -154,7 +165,7 @@
                                                                     <% } %>
 
                                                                         <div
-                                                                            class="flex justify-end items-end ml-auto w-full">
+                                                                            class="top-2 right-2 absolute flex justify-end items-end ml-auto w-[100px] h-[60px]  ">
                                                                             <p class="text-[12px] text-gray-500">
                                                                                 <%=
                                                                                     chatList[i].updated_at.toISOString().split('T')[0]%>
@@ -169,23 +180,20 @@
 
                 </div>
             </div>
-            <div class=" border border-gray-400 h-[560px] p-2 w-[600px] relative overflow-y-scroll" id="chatroom">
-                <div class="bg-black text-white p-2 w-[600px] sticky top-0 ">聊天室</div>
-                <div></div>
-                <div id="messages" class="">
-                    <!-- <li class="flex">
-                        <img class="w-[30px] h-[30px]" src="/img/user.png" alt="">
-                        <text class="ml-4 bg-slate-200 rounded-lg p-2">測試文字</text>
-                    </li> -->
+            <div class="w-2/4 border-r border-gray-300 overflow-auto relative" id="chatroom">
+                <div class="w-2/4 bg-blue text-white p-2 fixed z-30">聊天室</div>
+                <div class="" style="padding-top: 40px;">
+                    <div id="messages" style="padding-bottom: 5px;"></div>
+                    <form class="" id="form" action="">
+                        <input id="input" autocomplete="off" /><button>Send</button>
+                    </form>
                 </div>
-                <form class="absolute" id="form" action="">
-                    <input id="input" autocomplete="off" /><button>Send</button>
-                </form>
             </div>
-            <div class="flex items-center justify-center border border-gray-400 w-[300px] h-[560px]" id="info">
+            <div class="w-1/4 h-[90vh] flex flex-col items-center justify-start z-40">
+                <div class="w-1/4 bg-gray-800  text-white p-2 fixed ">個人資訊</div>
+                <div class="pb-3 mt-10 flex flex-col items-center justify-center relative" id="info"></div>
             </div>
         </div>
-
 
         <!-- <script src="/socket.io/socket.io.js"></script> -->
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
@@ -251,7 +259,7 @@
                     text.textContent = input.value;
 
                     let timeStamp = document.createElement('text');
-                    timeStamp.classList.add('rounded-lg', 'text-xs');
+                    timeStamp.classList.add('ml-1', 'rounded-lg', 'text-xs');
                     timeStamp.textContent = time;
 
                     userInput.appendChild(timeStamp);
@@ -311,7 +319,7 @@
                     img.alt = 'picture';
 
                     let text = document.createElement('text');
-                    text.classList.add('ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
+                    text.classList.add('talk', 'ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
                     text.textContent = message;
 
                     let timeStamp = document.createElement('text');
@@ -362,17 +370,17 @@
                     receiverPicture = receiverInfo[0].picture;
                     receiverName = receiverInfo[0].name;
                     const fetchInfo = `
-                                <div class="flex-col border border-gray-300">
+                                <div class="mt-4 flex flex-col justify-center items-center overflow-auto">
                                     <img class="p-10"
                                         src="${receiverPicture}"
                                         alt="圖片">
-                                    <button class="bg-black text-white"><a href=/user/profile/${receiverId}>個人專頁</a></button>
-                                    <div class="border border-gray-300 mt-4">
-                                        <div class="text-lg">${receiverName}</div>
-                                        <ul class="mt-2">
-                                            <li>家人狀況:${receiverInfo[0].level}</li>
-                                            <li>主要照顧者:${receiverInfo[0].carer}</li>
-                                            <li>現有煩惱：${receiverInfo[0].current_problem}</li>
+                                    <button class="flex justify-center items-center mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white transition-all delay-100 hover:scale-95"><a href=/user/profile/${receiverId}>個人專頁</a></button>
+                                    <div class="mt-4 font-medium">
+                                        <div class="text-lg">智友稱呼: ${receiverName}</div>
+                                        <ul class="mt-1">
+                                            <li class="mt-1 ">家人狀況: ${receiverInfo[0].level}</li>
+                                            <li class="mt-1">主要照顧者: ${receiverInfo[0].carer}</li>
+                                            <li class="mt-1">現有煩惱: ${receiverInfo[0].current_problem}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -394,13 +402,13 @@
                         let userInput = document.createElement('li');
 
                         if (item.sender_id === Number(senderId)) {
-                            userInput.classList.add('message-sent');
+                            userInput.classList.add('message-sent', 'flex', 'justify-end');
                             let text = document.createElement('text');
-                            text.classList.add('ml-1', 'bg-slate-200', 'rounded-lg', 'p-2');
+                            text.classList.add('talk', 'ml-1', 'bg-slate-200', 'rounded-lg', 'p-2');
                             text.textContent = item.message;
 
                             let timeStamp = document.createElement('text');
-                            timeStamp.classList.add('rounded-lg', 'text-xs');
+                            timeStamp.classList.add('rounded-lg', 'text-[7px]', 'text-gray-400', 'mt-5', 'mr-2');
                             timeStamp.textContent = item.time;
 
                             userInput.appendChild(timeStamp);
@@ -414,11 +422,11 @@
                             img.alt = '';
 
                             let text = document.createElement('text');
-                            text.classList.add('ml-4', 'bg-slate-200', 'rounded-lg', 'p-2');
+                            text.classList.add('talk', 'ml-2', 'bg-slate-200', 'rounded-lg', 'p-2',);
                             text.textContent = item.message;
 
                             let timeStamp = document.createElement('text');
-                            timeStamp.classList.add('ml-1', 'rounded-lg', 'text-xs');
+                            timeStamp.classList.add('rounded-lg', 'text-[7px]', 'text-gray-400', 'mt-5', 'ml-2');
                             timeStamp.textContent = item.time;
 
                             userInput.appendChild(img);

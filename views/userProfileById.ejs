@@ -2,88 +2,132 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/dist/output.css" rel="stylesheet" />
-    <title>Profile</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/dist/output.css" rel="stylesheet" />
+  <title>Profile</title>
+  <style>
+    
+  </style>
 </head>
 
 <body>
-    <%- include('./partials/header') %>
+  <%- include('./partials/header') %>
 
-    <div class="flex items-start justify-center border border-red-500">
-        <!-- 個人menu -->
-        <div class="w-1/4 p-5 border border-red-500 h-screen">
-          <img src="<%= userProfile[0].picture %>" alt="user-picture" class="w-[100px] h-[100px] border border-red-500">
-          <ul class="border border-red-500">
-            <li>ID: <%= userProfile[0].id %></li>
-            <li>稱呼: <%= userProfile[0].name %></li>
-            <li>地區: <%= userProfile[0].location %></li>
-            <li>家人確診年: <%= userProfile[0].sick_year %></li>
-            <li>主要照顧者: <%= userProfile[0].carer %></li>
-            <li>最近的煩惱: <%= userProfile[0].current_problem %></li>
-          </ul>
-          <div class="flex flex-col mt-4 border border-red-500">
-            <p class="font-medium">家屬病況：</p>
-            <% if (userProfile[0].tags && userProfile[0].tags.length > 0) { %>
-              <% for (let i = 0; i < userProfile[0].tags.length; i++) { %>
-                <div class="mt-1">
-                  <p class="text-gray-700"><%= userProfile[0].tags[i] %></p>
-                </div>
-              <% } %>
-            <% } else { %>
-              <p>無提供家屬症況</p>
-            <% } %>
-          </div>
+    <div class="flex items-start justify-start h-screen bg-slate-100 ">
+      <!-- 個人menu -->
+      <div class="pt-8 h-screen space-y-4 font-medium w-vw-30 flex flex-col justify-start items-center  bg-white">
+        
+        <!-- <div class="ml-2 py-2 w-[140px] bg-red rounded-full text-white transition-all delay-100 hover:scale-95">
+          <a id="send-msg" href="">
+            <p class="text-center">傳送訊息</p>
+          </a>
+        </div> -->
+
+        <div class="transition-all delay-100 hover:scale-105">
+          <a id="send-msg" class=" bg-red rounded-full relative button-wrap
+            ">
+            <div class="flex items-center justify-center w-[100px] h-[40px] text-white md:text-[14px] md:tracking-[1px] 
+            ">傳送訊息</div>
+          </a>
         </div>
-        <!-- 個人心情留言板 -->
-        <div class="w-3/4 flex justify-center items-start border border-red-300 h-screen">
-          <div class="flex-col py-4 border border-red-500">
-            <div class="border border-red-500">
-              <a id="send-msg" href="">
-                <p class="bg-gray-300 mt-4 w-[200px] h-[30px] border border-red-500 flex items-center justify-center">傳送訊息</p>
-              </a>
-            </div>
-            <div class="flex-col py-4 border border-red-500">
-              <% if (userArticles && userArticles.length > 0) { %>
-                <% for (let i = 0; i < userArticles.length; i++) { %>
-                  <div class="bg-gray-100 w-[600px] mt-4 p-5">
-                    <p class="mt-1 text-[12px]"><%= userArticles[i].created_at %></p>
-                    <p class="text-[24px]"><%= userArticles[i].title %></p>
-                    <p class="mt-1"><%- userArticles[i].content %></p>
-                  </div>
-                <% } %>
-              <% } else { %>
-                <p>No articles found.</p>
+
+
+        <img src="<%= userProfile[0].picture %>" alt="user-picture" class="w-[200px] h-[200px] rounded-full mb-2">
+        <ul class=" p-4">
+          <li>ID: <%= userProfile[0].id %>
+          </li>
+          <li>稱呼: <%= userProfile[0].name %>
+          </li>
+          <li>地區: <%= userProfile[0].location %>
+          </li>
+          <li>家人確診年: <%= userProfile[0].sick_year %>
+          </li>
+          <li>主要照顧者: <%= userProfile[0].carer %>
+          </li>
+          <li>最近的煩惱: <%= userProfile[0].current_problem %>
+          </li>
+        </ul>
+        <div class="flex flex-col mt-6  p-2">
+          <p class="font-medium">家屬病況：</p>
+          <% if (userProfile[0].tags && userProfile[0].tags.length> 0) { %>
+            <% for (let i=0; i < userProfile[0].tags.length; i++) { %>
+              <li class="flex mt-2 font-thin bg-white border border-blue py-2 pl-1 pr-2 rounded-lg hover:scale-95 ">
+                <img class="w-[20px]" src="/img/tag.svg" alt="icon">
+                <sapn class="pl-1">
+                  <%= userProfile[0].tags[i] %></span>
+              </li>
               <% } %>
-            </div>
-          </div>
+                <% } else { %>
+                  <p>無提供家屬症況</p>
+                  <% } %>
         </div>
       </div>
+      <!-- 個人心情留言板 -->
+      <div class="w-2/3 flex justify-center items-start  min-h-screen">
+          <div class="flex flex-col items-center justify-center py-6">
+            <% if (userArticles && userArticles.length> 0) { %>
+              <% for (let i=0; i < userArticles.length; i++) { %>
+                <div
+                  class="p-4 pb-1 flex items-center justify-start w-[550px] h-[40px] rounded-t-lg border-b border-gray-200 mt-4 shadow-sm bg-white">
+                  <p class="text-[14px] mb-3">
+                    <%= userArticles[i].created_at %>
+                  </p>
+                  <img src="/img/delete.svg" class="w-[20px] ml-auto pb-3">
+                </div>
+                <div class=" bg-white w-[550px]  p-5 rounded-b-lg  shadow-sm">
+                  <div class="flex items-center">
+                    <img src="/img/users/1.png" alt="picture" class="w-[50px]">
+                    <p class="ml-2 text-[18px] font-medium">Kelly</p>
+                  </div>
+                  <p class="text-[24px] mt-2 ">
+                    <%= userArticles[i].title %>
+                  </p>
+                  <p class="truncate content mt-1 h-[40px] text-[16px] font-light" data-max-length="80">
+                    <%- userArticles[i].content %>
+                  </p>
+                  <div class="flex justify-end items-end">
+                    <button onclick="readArticle(<%= userArticles[i].id %>)"
+                      class="mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95">more</button>
+                  </div>
+                </div>
+                <% } %>
+                  <% } else { %>
+                    <p>No articles found.</p>
+                    <% } %>
+          </div>
       
-        <script>
+      </div>
+    </div>
 
-           const currentURL = window.location.href;
-            const regex = /\/(\d+)$/;
-            const match = currentURL.match(regex);
-            const value = match ? match[1] : null;
-            console.log(value); // 輸出: 從URL中抓取的數字值
-            const receiverId = value;
-            // const senderId = localStorage.getItem('userId');
+    <script>
 
-            let room;
-            if (Number(senderId) > Number(receiverId)) {
-                room = `${receiverId}${senderId}`;
-            } else {
-                room = `${senderId}${receiverId}`;
+      const currentURL = window.location.href;
+      const regex = /\/(\d+)$/;
+      const match = currentURL.match(regex);
+      const value = match ? match[1] : null;
+      console.log(value); // 輸出: 從URL中抓取的數字值
+      const receiverId = value;
+      // const senderId = localStorage.getItem('userId');
+
+      let room;
+      if (Number(senderId) > Number(receiverId)) {
+        room = `${receiverId}${senderId}`;
+      } else {
+        room = `${senderId}${receiverId}`;
+      }
+
+      const url = `/chatroom/${room}?id=${receiverId}`
+      const sendMsg = document.getElementById('send-msg')
+      sendMsg.href = url;
+      console.log('url->', url);
+
+      function readArticle(id) {
+                const url = `/articles/${id}`;
+                window.location.href = url
             }
 
-            const url = `/chatroom/${room}?id=${receiverId}`
-            const sendMsg = document.getElementById('send-msg')
-            sendMsg.href = url;
-            console.log('url->',url);
-
-        </script>
+    </script>
 </body>
 
 </html>

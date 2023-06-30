@@ -2,14 +2,14 @@ import pool from "./databasePool.js";
 import { z } from "zod";
 
 export async function createUserArticle(title: string, content: string, date: string, userId: number) {
-    console.log(title, content, date, userId);
+    // console.log(title, content, date, userId);
     const [rows] = await pool.query(
         `
         INSERT INTO articles (title,content,created_at,user_id)
         VALUES (?,?,?,?)
         `, [title, content, date, userId])
 
-    console.log(rows);
+    // console.log(rows);
 
     return rows
 }
@@ -22,7 +22,7 @@ export async function getUserArticlesData(id: number) {
         `, [id]
     )
 
-    console.log('articles', results);
+    // console.log('articles', results);
 
     return results
 }
@@ -34,7 +34,7 @@ export async function getAllUserArticlesData() {
          ORDER BY created_at DESC
         `
     )
-    console.log('all articles', results);
+    // console.log('all articles', results);
     return results
 }
 
@@ -45,7 +45,7 @@ export async function getArticleByID(id: number) {
         WHERE id = ?
         `, [id]
     )
-    console.log(results);
+    // console.log(results);
     return results
 }
 

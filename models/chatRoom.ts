@@ -9,7 +9,7 @@ function instanceOfSetHeader(object: any): object is ResultSetHeader {
 }
 
 export async function setUnreadToZero(senderId: number, receiverId: number, room: string) {
-    console.log('setUnreadToZero', senderId, receiverId, room);
+    // console.log('setUnreadToZero', senderId, receiverId, room);
     let result
     if (senderId < receiverId) {
         result = await pool.query(
@@ -18,7 +18,7 @@ export async function setUnreadToZero(senderId: number, receiverId: number, room
            WHERE room_name = ?`,
             [room]
         );
-        console.log('xs_id_unread 0-->', result);
+        // console.log('xs_id_unread 0-->', result);
     } else {
         result = await pool.query(
             `UPDATE rooms 
@@ -26,7 +26,7 @@ export async function setUnreadToZero(senderId: number, receiverId: number, room
            WHERE room_name = ?`,
             [room]
         );
-        console.log('lg_id_unread 0-->', result);
+        // console.log('lg_id_unread 0-->', result);
         if (Array.isArray(result) && instanceOfSetHeader(result[0])) {
             return result[0].changedRows;
         }
@@ -54,7 +54,7 @@ export async function saveMessage(message: string, senderId: number, receiverId:
         `,
         [message, senderId]
     )
-    console.log('senderId', senderId, 'receiverId', receiverId);
+    // console.log('senderId', senderId, 'receiverId', receiverId);
 
     if (Number(senderId) < Number(receiverId)) {
         const result = await pool.query(
@@ -63,7 +63,7 @@ export async function saveMessage(message: string, senderId: number, receiverId:
            WHERE room_name = ?`,
             [room]
         );
-        console.log('lg_id_unread +1');
+        // console.log('lg_id_unread +1');
     } else {
         const [result] = await pool.query(
             `UPDATE rooms 
@@ -71,7 +71,7 @@ export async function saveMessage(message: string, senderId: number, receiverId:
            WHERE room_name = ?`,
             [room]
         );
-        console.log('xs_id_unread +1');
+        // console.log('xs_id_unread +1');
     }
 }
 
@@ -94,7 +94,7 @@ export async function getUserRoom(id: number) {
         SELECT * FROM users_rooms WHERE user_id = (?)
         `, [id]
     )
-    console.log('getUserRoom->', result);
+    // console.log('getUserRoom->', result);
     return result
 }
 

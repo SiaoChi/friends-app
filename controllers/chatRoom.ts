@@ -31,7 +31,7 @@ export async function renderChatroomByRoomNameBata(req: Request, res: Response) 
         // const messages = await chatRoomModel.getMessagesByRoom(room);
         const chatList = await chatRoomModel.getChatListById(userId);
         // console.log('messages---->',messages);
-        console.log('chatList---->', chatList);
+        // console.log('chatList---->', chatList);
         res.status(200).render('test', { chatList })
 
     } catch (err) {

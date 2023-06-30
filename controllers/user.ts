@@ -87,8 +87,8 @@ export async function createUserProfile(req: Request, res: Response) {
     const { name, picture, birth, email, location, sickYear, carer, level, currentProblems, tags, } = req.body
 
     const userId = res.locals.userId;
-    console.log('userId', userId);
-    console.log('tags', JSON.stringify(tags));
+    // console.log('userId', userId);
+    // console.log('tags', JSON.stringify(tags));
 
     await userModel.updateUserProfile(
         name,
@@ -131,7 +131,7 @@ export async function renderUserProfileForm(req: Request, res: Response) {
         const { userId } = res.locals;
         const tags = await userModel.getTags();
         const userData = await userModel.getUserProfileTagsData(userId)
-        console.log(userData);
+        // console.log(userData);
         // 如果希望在edict時加入user已知資料
         res.render('userProfileForm', { tags, userData })
     } catch (err) {
