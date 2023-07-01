@@ -93,6 +93,23 @@
             height: calc(100vh - 138px);
         }
 
+        .unread {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            margin-left: 3px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 21px;
+            height: 21px;
+            border-radius: 50%;
+            background-color: #f075c6;
+            color: white;
+        }
+
+
         .red-dot {
             width: 12px;
             height: 12px;
@@ -150,7 +167,7 @@
 
                                                 <% if(chatList[i].lg_id_unread !==0) {%>
                                                     <div
-                                                        class="unread top-2 right-2 absolute ml-3 text-xs flex items-center justify-center w-[21px] h-[21px] rounded-full bg-red text-white">
+                                                        class="unread ">
                                                         <%= chatList[i].lg_id_unread ? chatList[i].lg_id_unread : '' %>
                                                     </div>
                                                     <% } %>
@@ -158,7 +175,7 @@
                                                         <% } else { %>
                                                             <% if(chatList[i].xs_id_unread !==0) {%>
                                                                 <div
-                                                                    class="unread top-2 right-2 absolute ml-3 text-xs flex items-center justify-center w-[21px] h-[21px] rounded-full bg-red text-white">
+                                                                    class="unread ">
                                                                     <%= chatList[i].xs_id_unread ?
                                                                         chatList[i].xs_id_unread : '' %>
                                                                 </div>
@@ -323,7 +340,7 @@
                     text.textContent = message;
 
                     let timeStamp = document.createElement('text');
-                    timeStamp.classList.add('ml-1', 'rounded-lg', 'text-xs');
+                    timeStamp.classList.add('rounded-lg', 'text-[7px]', 'text-gray-400', 'mt-5', 'ml-2');
                     timeStamp.textContent = time;
 
                     item.appendChild(img);
@@ -346,6 +363,37 @@
                     span.classList.add('red-dot');
                     aElement.appendChild(span);
                     chatList.prepend(existingChatPerson);
+
+
+                    const unRead = existingChatPerson.querySelector('a .unread');
+
+                    // 情境1：傳送過來時，已經有未讀訊息的div class=unread
+                    if (unRead) {
+
+                        console.log('unread', unRead);
+                        if (unRead.style.display === 'none') {
+                            unRead.textContent = 1;
+                        } else {
+                            unRead.textContent = (Number(unRead.textContent) || 0) + 1;
+                        }
+                        console.log('unread text', unRead.textContent);
+                        // unRead.style.display = ''; 
+                        unRead.style.display = 'flex';
+                        console.log('unRead after', unRead);
+                    } else {
+                        // 情境２：傳送過來時，沒有未讀訊息的class class=unread，解法：加入一個div呈現unread畫面
+                        console.log('2-->');
+                        let unRead = document.createElement('div');
+                        console.log('2.5', unRead);
+                        unRead.classList.add('unread');
+                        console.log('3', unRead);
+                        aElement.appendChild(unRead);
+                        console.log('a', aElement);
+                        unRead.textContent = 1 ;
+                        unRead.style.display = 'flex';
+                        console.log('創造新unread', unRead);
+                    }
+
                 } else {
                     const chatPerson = ` <div class="mb-2 bg-blue-200 p-2" data-senderid="${senderId}" >
                                             <a href="/chatroom/${room}?id=${senderId}" class="person flex items-center relative" data-room="${room}">
@@ -472,8 +520,8 @@
                     await setUnreadToZero(Number(senderId), Number(receiverId), roomName)
                     console.log('reset to 0');
                 };
-                if(unRead){
-                    unRead.style.display = 'none'
+                if (unRead) {
+                    unRead.style.display = 'none';
                 }
             })
 
