@@ -17,7 +17,7 @@
 <body>
     <%- include('./partials/header') %>
         <div class="flex justify-center items-center h-vh-90" id="signupDiv"
-            style="background-image: url('/img/kv_bg.png'); background-size: cover; z-index:-1 ;">
+            style="background-image: url('/img/kv_bg.png'); background-size: cover; z-index:-1 ;display: none;">
 
             <div id="login" class=" flex flex-wrap justify-center">
                 <div
@@ -54,7 +54,7 @@
 
 
         <div class="flex justify-center h-screen" id="signinDiv"
-            style="background-image: url('/img/kv_bg.png'); background-size: cover; display: none;">
+            style="background-image: url('/img/kv_bg.png'); background-size: cover">
 
             <div id="login" class=" flex flex-wrap justify-center mt-20">
                 <div class="flex justify-center items-start  mx-6 my-4">
@@ -77,7 +77,7 @@
                             type="submit" class="button">立即登入</button>
                         <button id="to-signup-btn"
                             class="bg-blue hover:bg-white hover:border hover:border-blue hover:text-blue text-white w-[268px] h-[38px]  mt-4 rounded-3xl text-[14px] fb-login"
-                            > 沒有帳號，立即註冊</button>
+                            > 還沒有帳號？立即註冊</button>
                     </form>
                 </div>
 
@@ -182,10 +182,12 @@
 
                     if (response.ok) {
                         const data = await response.json();
-                        console.log(data);
-                        console.log(data);
+                        console.log('data',data);
+                        console.log('picture',data.data.user.picture);
+
                         localStorage.setItem('userId', data.data.user.id);
                         localStorage.setItem('name', data.data.user.name);
+                        localStorage.setItem('picture', data.data.user.picture);
 
                         for (let i = 0; i < localStorage.length; i++) {
                             const key = localStorage.key(i);

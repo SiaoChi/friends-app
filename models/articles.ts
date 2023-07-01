@@ -16,7 +16,8 @@ export async function createUserArticle(title: string, content: string, date: st
 
 export async function getUserArticlesData(id: number) {
     const [results] = await pool.query(
-        `SELECT * FROM articles
+        `SELECT articles.* ,users.picture , users.name FROM articles
+         INNER JOIN users ON users.id = articles.user_id
          WHERE user_id = ?
          ORDER BY created_at DESC
         `, [id]
@@ -30,7 +31,8 @@ export async function getUserArticlesData(id: number) {
 
 export async function getAllUserArticlesData() {
     const [results] = await pool.query(
-        `SELECT * FROM articles
+        `SELECT articles.* ,users.picture , users.name FROM articles
+         INNER JOIN users ON users.id = articles.user_id
          ORDER BY created_at DESC
         `
     )
@@ -41,8 +43,10 @@ export async function getAllUserArticlesData() {
 export async function getArticleByID(id: number) {
 
     const [results] = await pool.query(
-        `SELECT * FROM articles
-        WHERE id = ?
+        `SELECT articles.* ,users.picture , users.name FROM articles
+        INNER JOIN users ON users.id = articles.user_id
+        where articles.id = ?
+        ORDER BY created_at DESC;
         `, [id]
     )
     // console.log(results);

@@ -7,13 +7,13 @@
   <link href="/dist/output.css" rel="stylesheet" />
   <script src="https://cdn.tiny.cloud/1/noojwbb5k17nx69z2jeevq2ytvtc2ickif8sizioqzyqqvk5/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
-    <!-- <script>
-      tinymce.init({
-        selector: 'textarea#content',
-        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-      });
-  
-  </script> -->
+  <script>
+    tinymce.init({
+      selector: 'textarea#content',
+      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+    });
+
+  </script>
 
   <title>Document</title>
 </head>
@@ -21,7 +21,7 @@
 <body class="bg-gray-100">
   <%- include('./partials/header') %>
 
-    <div class="container mx-auto p-7 w-vw-50 ">
+  <div class="flex flex-col items-center p-7">
       <h1 class="text-3xl font-bold mb-4">編輯心情記事</h1>
       <form id="createArticleForm" class="max-w-xl mt-5">
         <div class="mb-4">
@@ -33,9 +33,12 @@
         </div>
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="content"></label>
-          <!-- <textarea id="content"><%- singleArticleData[0].content ? singleArticleData[0].content : '' %> -->
-          <!-- </textarea> -->
-          <textarea  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="content" rows="10" placeholder="請輸入內容" required ><%- singleArticleData[0].content ? singleArticleData[0].content : '' %></textarea>
+          <textarea id="content"><%- singleArticleData[0].content ? singleArticleData[0].content : '' %>
+          </textarea>
+          <!-- <textarea
+            class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="content" rows="10" placeholder="請輸入內容"
+            required><%- singleArticleData[0].content ? singleArticleData[0].content : '' %></textarea> -->
         </div>
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="date">日期：</label>
@@ -43,15 +46,15 @@
             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="date" type="date" required>
         </div>
-        
+
         <div class="flex justify-end">
           <button
-          class="w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
+            class="w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
             type="button"><a href="/user/profile">回上一頁</a></button>
           <button id="submitButton"
-          class="ml-4 w-[90px] h-[35px] bg-red rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
+            class="ml-4 w-[90px] h-[35px] bg-red rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
             type="submit">送出</button>
-          </div>
+        </div>
       </form>
     </div>
 
@@ -65,8 +68,8 @@
         // 获取输入的标题、内容和日期
         const id = <%= singleArticleData[0].id %>;
         const title = document.getElementById("title").value;
-        // const content = tinymce.activeEditor.getContent();
-        const content = document.getElementById("content").value;
+        const content = tinymce.activeEditor.getContent();
+        // const content = document.getElementById("content").value;
         const date = document.getElementById("date").value;
 
         // 执行 AJAX 请求或其他操作（这里仅作示例）

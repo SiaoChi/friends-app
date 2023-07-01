@@ -4,34 +4,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
   <link href="/dist/output.css" rel="stylesheet" />
-  <title>Profile</title>
+  <title>你的智友-Profile</title>
   <style>
-    
+
   </style>
 </head>
 
-<body>
+<body class="">
   <%- include('./partials/header') %>
 
-    <div class="flex items-start justify-start h-screen bg-slate-100 ">
+    <div class="flex items-start justify-start bg-slate-100 screen-h">
       <!-- 個人menu -->
-      <div class="pt-8 h-screen space-y-4 font-medium w-vw-30 flex flex-col justify-start items-center  bg-white">
-        
-        <!-- <div class="ml-2 py-2 w-[140px] bg-red rounded-full text-white transition-all delay-100 hover:scale-95">
-          <a id="send-msg" href="">
+      <div class="py-8 space-y-4 font-medium w-vw-40 flex flex-col justify-start items-center bg-white min-h-screen">
+
+        <a id="send-msg"
+          class="cursor-pointer py-2 w-[160px] bg-red rounded-full text-white transition-all delay-100 hover:scale-105">
+          <div class="flex justify-center items-center">
             <p class="text-center">傳送訊息</p>
-          </a>
-        </div> -->
-
-        <div class="transition-all delay-100 hover:scale-105">
-          <a id="send-msg" class=" bg-red rounded-full relative button-wrap
-            ">
-            <div class="flex items-center justify-center w-[100px] h-[40px] text-white md:text-[14px] md:tracking-[1px] 
-            ">傳送訊息</div>
-          </a>
-        </div>
-
+            <img src="/img/send.svg" class="w-[15px] ml-2 hover:translate-x-2">
+          </div>
+        </a>
 
         <img src="<%= userProfile[0].picture %>" alt="user-picture" class="w-[200px] h-[200px] rounded-full mb-2">
         <ul class=" p-4">
@@ -48,55 +42,59 @@
           <li>最近的煩惱: <%= userProfile[0].current_problem %>
           </li>
         </ul>
-        <div class="flex flex-col mt-6  p-2">
-          <p class="font-medium">家屬病況：</p>
-          <% if (userProfile[0].tags && userProfile[0].tags.length> 0) { %>
-            <% for (let i=0; i < userProfile[0].tags.length; i++) { %>
-              <li class="flex mt-2 font-thin bg-white border border-blue py-2 pl-1 pr-2 rounded-lg hover:scale-95 ">
-                <img class="w-[20px]" src="/img/tag.svg" alt="icon">
-                <sapn class="pl-1">
-                  <%= userProfile[0].tags[i] %></span>
-              </li>
-              <% } %>
-                <% } else { %>
-                  <p>無提供家屬症況</p>
-                  <% } %>
+        <div class="flex flex-col items-center mt-6  p-2 w-[240px] h-[220px] ">
+          <p class="my-3"><strong>家屬病況：</strong></p>
+          <div class="">
+            <% if (userProfile[0].tags && userProfile[0].tags.length> 0) { %>
+              <% for (let i=0; i < userProfile[0].tags.length; i++) { %>
+
+                <li class="inline-flex mt-2 p-2 bg-white border border-gray-300
+               rounded-md font-semibold text-xs text-gray-700 hover:scale-95 ">
+                  <img class="w-[16px]" src="/img/tag.svg" alt="icon">
+                  <span class="pl-1">
+                    <%= userProfile[0].tags[i] %></span>
+                </li>
+                <% } %>
+                  <% } else { %>
+                    <p>無提供家屬症況</p>
+                    <% } %>
+          </div>
         </div>
       </div>
       <!-- 個人心情留言板 -->
-      <div class="w-2/3 flex justify-center items-start  min-h-screen">
-          <div class="flex flex-col items-center justify-center py-6">
-            <% if (userArticles && userArticles.length> 0) { %>
-              <% for (let i=0; i < userArticles.length; i++) { %>
-                <div
-                  class="p-4 pb-1 flex items-center justify-start w-[550px] h-[40px] rounded-t-lg border-b border-gray-200 mt-4 shadow-sm bg-white">
-                  <p class="text-[14px] mb-3">
-                    <%= userArticles[i].created_at %>
-                  </p>
-                  <img src="/img/delete.svg" class="w-[20px] ml-auto pb-3">
+      <div class="flex justify-center items-start w-vw-60 h-vh-90 overflow-y-scroll">
+        <div class="flex flex-col items-center justify-center py-6">
+          <% if (userArticles && userArticles.length> 0) { %>
+            <% for (let i=0; i < userArticles.length; i++) { %>
+              <div
+                class="p-4 pb-1 flex items-center justify-start w-[550px] h-[40px] rounded-t-lg border-b border-gray-200 mt-4 shadow-sm bg-white">
+                <p class="text-[14px] mb-3">
+                  <%= userArticles[i].created_at %>
+                </p>
+                <img src="/img/delete.svg" class="w-[20px] ml-auto pb-3">
+              </div>
+              <div class=" bg-white w-[550px]  p-5 rounded-b-lg  shadow-sm">
+                <div class="flex items-center">
+                  <img src="/img/users/1.png" alt="picture" class="w-[50px]">
+                  <p class="ml-2 text-[18px] font-medium">Kelly</p>
                 </div>
-                <div class=" bg-white w-[550px]  p-5 rounded-b-lg  shadow-sm">
-                  <div class="flex items-center">
-                    <img src="/img/users/1.png" alt="picture" class="w-[50px]">
-                    <p class="ml-2 text-[18px] font-medium">Kelly</p>
-                  </div>
-                  <p class="text-[24px] mt-2 ">
-                    <%= userArticles[i].title %>
-                  </p>
-                  <p class="truncate content mt-1 h-[40px] text-[16px] font-light" data-max-length="80">
-                    <%- userArticles[i].content %>
-                  </p>
-                  <div class="flex justify-end items-end">
-                    <button onclick="readArticle(<%= userArticles[i].id %>)"
-                      class="mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95">more</button>
-                  </div>
+                <p class="text-[24px] mt-2 ">
+                  <%= userArticles[i].title %>
+                </p>
+                <p class="truncate content mt-1 h-auto text-[16px] font-light" data-max-length="80">
+                  <%- userArticles[i].content %>
+                </p>
+                <div class="flex justify-end items-end mt-2">
+                  <button onclick="readArticle(<%= userArticles[i].id %>)"
+                    class="mt-2 w-[80px] h-[30px] text-sm bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95">看更多</button>
                 </div>
-                <% } %>
-                  <% } else { %>
-                    <p>No articles found.</p>
-                    <% } %>
-          </div>
-      
+              </div>
+              <% } %>
+                <% } else { %>
+                  <div class="">智友目前還沒發佈動態</div>
+                  <% } %>
+        </div>
+
       </div>
     </div>
 
@@ -123,9 +121,9 @@
       console.log('url->', url);
 
       function readArticle(id) {
-                const url = `/articles/${id}`;
-                window.location.href = url
-            }
+        const url = `/articles/${id}`;
+        window.location.href = url
+      }
 
     </script>
 </body>

@@ -86,7 +86,7 @@
 
   </style>
 </head>
-<header class="md:mb-[98px]">
+<header class="md:mb-[98px] z-40">
   <div
     class="flex flex-col items-center justify-center  md:flex-row md:py-3 top-0 left-0 w-full  fixed  bg-white shadow-md">
     <div class="w-1/6 flex items-center justify-center md:justify-start">
@@ -120,13 +120,13 @@
           <div class="w-4/6">
             <input
               class="flex-1 pl-2 md:px-4 md:py-2 font-thin rounded-full outline-none text-blue md:text-m tracking-widest"
-              type="text" placeholder="搜尋智友" name="keyword">
+              type="text" placeholder="搜尋智友" name="keyword" required>
           </div>
           <!-- icon  -->
           <div class="w-2/6 flex items-center justify-end">
             <button type="submit">
               <a href="#" class="flex items-center justify-end">
-                <img src="/img/search.png" alt="search icon" class="w-5 h-5 md:w-8 md:h-8">
+                <img src="/img/search.png" alt="search-icon" class="w-5 h-5 md:w-8 md:h-8">
               </a>
             </button>
           </div>
@@ -140,28 +140,43 @@
         <span id="red-dot-header"></span>
       </div>
 
-      <div class="mr-6 hidden md:block transition-all delay-100 hover:scale-110">
+      <!-- <div class="mr-6 hidden md:block transition-all delay-100 hover:scale-110">
         <a href="/user/profile">
           <img src="/img/member.svg" class="header-icon" alt="">
         </a>
-      </div>
+      </div> -->
 
 
-      <div class="hidden md:block transition-all delay-100 hover:scale-105">
-        <a href="/user/signin" class=" hover:bg-blue bg-red rounded-full relative button-wrap
-          ">
-          <div class="flex items-center justify-center w-[100px] h-[40px]  text-white md:text-[14px] md:tracking-[1px] 
-          ">sign in</div>
+      <div id="sign-in-btn" class="hidden md:block hover:scale-105" >
+        <a href="/user/signin" class="  relative">
+          <div class="flex items-center justify-center w-[100px] h-[40px] hover:bg-blue bg-red rounded-full text-white md:text-[14px] md:tracking-[1px]" >sign in</div>
           <div class="btn-overlay w-[120px] h-[40px]"></div>
         </a>
       </div>
 
-
+      <div id="sign-in-picture" style="display: none;">
+        <a href="/user/profile"><img src="/img/users/1.png" class="w-[40px]" alt="signin-photo"></a>
+      </div>
 
     </div>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
       const senderId = localStorage.getItem('userId');
+      
+
+      if(senderId){
+        console.log('1');
+        document.getElementById("sign-in-btn").style.display = "none";
+        document.getElementById("sign-in-picture").style.display = "block";
+        const pictureUrl = localStorage.getItem('picture');
+        document.getElementById("sign-in-picture").querySelector('img').src = pictureUrl;
+      
+      }else{
+        console.log('2');
+        document.getElementById("sign-in-btn").style.display = "block";
+        document.getElementById("sign-in-picture").style.display = "none";
+      }
+
       let socket
       if (senderId) {
         socket = io({

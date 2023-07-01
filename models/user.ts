@@ -27,6 +27,7 @@ const UserSchema = z.object({
     id: z.number(),
     name: z.string(),
     email: z.string(),
+    picture: z.string()
 })
 
 export async function findUserByEmail(email: string) {

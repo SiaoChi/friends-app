@@ -7,6 +7,8 @@ import { RowDataPacket } from 'mysql2';
 
 
 export function getLogInPage(req: Request, res: Response) {
+    const userId = res.locals
+    if(userId) return res.redirect('/user/profile')
     res.render('login')
 }
 
@@ -54,8 +56,9 @@ export async function signIn(req: Request, res: Response) {
         if (!isValidPassword) {
             throw new Error("invalid password");
         }
-        const token = generateToken(user.id)
-        const url = "/user/profile"
+        const token = generateToken(user.id);
+        const url = "/user/profile";
+        console.log('user',user);
         res
             .cookie("jwtToken", token)
             .status(200)

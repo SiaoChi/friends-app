@@ -23,7 +23,7 @@ export default {
     "./views/editArticle.ejs",
     "./views/searchArticles.ejs",
     "./views/test.ejs",
-    "./views/partials/sideBar.ejs"
+    "./views/partials/sideBar.ejs",
   ],
   theme: {
     extend: {

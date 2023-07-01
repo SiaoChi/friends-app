@@ -1,4 +1,4 @@
-<div class="w-vw-20 p-4 h-vh-90  bg-gray-50 ">
+<div class="w-vw-20 p-4 h-vh-90  bg-gray-50">
   <div class="">
     <ul class="space-y-2 font-medium p-2 ">
       <li>
@@ -10,13 +10,13 @@
       <li>
         <a href="/friends/recommend" class="flex py-3 pl-3 overflow-y-auto bg-gray-50 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
           <img src="/img/member.svg" class="w-[20px]">
-          <span class="ml-3">推薦智友</span>
+          <span class="ml-3">智能推薦智友</span>
         </a>
       </li>
       <li>
         <a href="/friends" class="flex py-3 pl-3 overflow-y-auto bg-gray-50 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
           <img src="/img/member.svg" class="w-[20px]">
-          <span class="ml-3">已追蹤智友</span>
+          <span class="ml-3">查看追蹤智友</span>
         </a>
       </li>
       <li>
@@ -61,6 +61,7 @@
       document.cookie = cookie.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
     });
 
+    localStorage.clear()
     window.location.href = "/";
   }
 </script>
