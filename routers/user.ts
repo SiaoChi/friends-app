@@ -45,12 +45,12 @@ router
 
 router
     .route("/user/create-article")
-    .get(renderUserCreateArticle)
+    .get(authenticate, renderUserCreateArticle)
     .post(authenticate, fetchUserCreateArticle)
 
 router
     .route("/api/v1/user/profile/:id")
-    .get(fetchUserProfileById)
+    .get(authenticate, fetchUserProfileById)
 
 
 export default router;

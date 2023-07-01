@@ -32,9 +32,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/',express.static('./public'));
 app.use("/uploads",express.static("./uploads"))
 
-// app.use("/api/v1", [
-//   chatRoomRouter,
-// ])
 
 app.use("/", [
   index,
@@ -53,5 +50,5 @@ app.all('*', (req, res) => {
 app.use(errorHandler);
 
 server.listen(3000, () => {
-  console.log('Server listening on *:3000');
+  ('Server listening on *:3000');
 });

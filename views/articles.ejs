@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
     <link href="/dist/output.css" rel="stylesheet" />
     <title>你的智友-心情分享</title>
 </head>
@@ -11,22 +12,34 @@
 <body>
     <%- include('./partials/header') %>
 
-        <div class="flex flex-col items-center justify-center py-4">
+        <div class="flex flex-col items-center justify-center py-4 bg-slate-100">
             <% if (userArticles && userArticles.length> 0) { %>
                 <% for (let i=0; i < userArticles.length; i++) { %>
-                    <div class="bg-gray-100 w-[600px] mt-4 p-5">
-                        <p class="mt-1 text-[12px]">
+                    <div
+                        class="p-4 pb-1 flex items-center justify-start w-[550px] h-[40px] rounded-t-lg border-b border-gray-200 mt-4 shadow-sm bg-white">
+                        <p class="text-[14px] mb-3">
                             <%= userArticles[i].created_at %>
                         </p>
-                        <p class="text-[24px]">
+                        <img src="/img/delete.svg" class="w-[20px] ml-auto pb-3">
+                    </div>
+                    <div class=" bg-white w-[550px]  p-5 rounded-b-lg  shadow-sm">
+                        <div class="flex items-center">
+                            <img src=" <%= userArticles[i].picture %>" alt="picture" class="w-[50px]">
+                            <p class="ml-2 text-[18px] font-medium"> <%= userArticles[i].name %></p>
+                        </div>
+                        <p class="text-[24px] mt-2 ">
                             <%= userArticles[i].title %>
                         </p>
-                        <p class="content mt-1" data-max-length="80">
+                        <div class="content mt-1 h-auto text-[16px] font-light truncate" data-max-length="80">
                             <%- userArticles[i].content %>
-                        </p>
-                        <button onclick="readArticle(<%= userArticles[i].id %>)"
-                            class="text-blue-500 hover:underline">more...</button>
+                        </div>
+                        <div class="flex justify-end items-end mt-4">
+                            
+                            <button onclick="readArticle(<%= userArticles[i].id %>)"
+                                class="mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95">看更多</button>
+                        </div>
                     </div>
+
                     <% } %>
                         <% } else { %>
                             <p>No articles found.</p>

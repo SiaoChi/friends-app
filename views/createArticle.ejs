@@ -11,18 +11,19 @@
   <script>
     tinymce.init({
       selector: 'textarea#content',
-      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px; font-weight: lighter; }'
+
     });
 
   </script>
 
-  <title>Document</title>
+  <title>我的智友-新增文章</title>
 </head>
 
 <body class="bg-gray-100">
   <%- include('./partials/header') %>
 
-    <div class="container mx-auto p-7 w-vw-50 ">
+    <div class="flex flex-col items-center p-7">
       <h1 class="text-3xl font-bold mb-4">新增心情記事</h1>
       <form id="createArticleForm" class="max-w-xl mt-5">
         <div class="mb-4">                                         
@@ -42,12 +43,14 @@
             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="date" type="date" required>
         </div>
+        <div class="flex justify-end">
         <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold my-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        class="w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
           type="button"><a href="/user/profile">回上一頁</a></button>
         <button id="submitButton"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold ml-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        class="ml-4 w-[90px] h-[35px] bg-red rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
           type="submit">送出</button>
+        </div>
       </form>
     </div>
 
@@ -61,6 +64,7 @@
         // 获取输入的标题、内容和日期
         const title = document.getElementById("title").value;
         const content = tinymce.activeEditor.getContent();
+        // const content = document.getElementById("content").value;
         const date = document.getElementById("date").value;
 
         console.log('content', content);

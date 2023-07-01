@@ -5,78 +5,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/dist/output.css" rel="stylesheet" />
-    <title>Profile</title>
+    <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
+    <title>你的智友-Profile</title>
+    <style>
+        .screen-h {
+            height: calc(100% - 98px);
+        }
+    </style>
 </head>
 
 <body class="">
     <%- include('./partials/header') %>
-
-        <div class="flex items-start justify-start">
+        <div class="flex items-start justify-start h-vh-90 ">
             <%- include('./partials/sideBar') %>
-                <!-- 個人 -->
-                <div class="w-[30vw] p-5 flex flex-col justify-center border border-red-300 bg-white">
-                    <button class="bg-black text-white w-[150px] mb-4"><a href="/user/profile/form">修改個人資料</a></button>
-                    <img class="w-[150px] h-[150px] rounded-full mb-4" src="<%= userProfile[0].picture %>"
+                <!-- 個人資料 -->
+                <div
+                    class="space-y-4 font-medium  w-vw-30 h-vh-90 p-6 flex flex-col justify-start items-center  bg-white overflow-y-scroll">
+                    <img class="w-[200px] h-[200px] rounded-full mb-2" src="<%= userProfile[0].picture %>"
                         alt="Profile Picture">
                     <ul>
-                        <li><strong>稱呼：</strong>
+                        <li class="mt-2"><strong>稱呼：</strong>
                             <%= userProfile[0].name %>
                         </li>
-                        <li><strong>地區：</strong>
+                        <li class="mt-2"><strong>地區：</strong>
                             <%= userProfile[0].location %>
                         </li>
-                        <li><strong>家屬確診年：</strong>
+                        <li class="mt-2"><strong>家屬確診年：</strong>
                             <%= userProfile[0].sick_year %>
                         </li>
-                        <li><strong>家屬診斷病程：</strong>
+                        <li class="mt-2"><strong>家屬診斷病程：</strong>
                             <%= userProfile[0].level %>
                         </li>
-                        <li><strong>現有煩惱：</strong>
+                        <li class="mt-2"><strong>現有煩惱：</strong>
                             <%= userProfile[0].current_problem %>
                         </li>
-                    </ul>
 
-                    <p class="mt-4"><strong>病況：</strong></p>
-
-                    <% if (userProfile[0].tags && userProfile[0].tags.length> 0) { %>
-                        <ul>
+                        <p class="mt-2"><strong>家屬病況：</strong></p>
+                        <% if (userProfile[0].tags && userProfile[0].tags.length> 0) { %>
                             <% userProfile[0].tags.forEach(function(tag) { %>
-                                <li>
-                                    <%= tag %>
+                                <li
+                                    class="inline-flex mt-2 px-2 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 hover:scale-95 ">
+                                    <img class="w-[16px]" src="/img/tag.svg" alt="icon">
+                                    <span class="pl-1 ">
+                                        <%= tag %></span>
                                 </li>
                                 <% }); %>
-                        </ul>
-                        <% } else { %>
-                            <p>尚未點選家屬病況</p>
-                            <% } %>
+
+                                    <% } else { %>
+                                        <p>尚未點選家屬病況</p>
+                                        <% } %>
+
+                    </ul>
+
+                    <div class="flex items-end justify-start w-full h-full">
+                        <button class="px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold 
+                        text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 ">
+                            <a href="/user/profile/form">修改個人資料</a>
+                        </button>
+                    </div>
                 </div>
-                <div class="p-5 w-[40vw] h-[560px] overflow-y-scroll bg-white">
-                    <button class="bg-black text-white w-[150px] mb-4"><a
-                            href="/user/create-article">新增心情記事</a></button>
-                    <% if (userArticles && userArticles.length> 0) { %>
-                        <% for (let i=0; i < userArticles.length; i++) { %>
-                            <div class="bg-gray-100 w-[450px] mt-4 p-5" id="id:<%= userArticles[i].id %>">
-                                <p class="mt-1 text-sm text-gray-600">
-                                    <%= userArticles[i].created_at %>
-                                </p>
-                                <p class="text-2xl font-bold">
-                                    <%= userArticles[i].title %>
-                                </p>
-                                <p class="mt-4">
-                                    <%- userArticles[i].content %>
-                                </p>
-                                <button class="bg-gray-300 p-2 mt-4 rounded-full top-0 right-0 hover:underline"
-                                    onclick="showConfirmationPopup(<%= userArticles[i].id %>)">delete</button>
-                                <button class="bg-gray-300 p-2 mt-4 rounded-full top-0 right-0 hover:underline"
-                                    onclick="showUpdatePopup(<%= userArticles[i].id %>)">edit</button>
-                            </div>
-                            <% } %>
-                                <% } else { %>
-                                    <p class="text-gray-600">No articles found.</p>
-                                    <% } %>
+
+
+                <!-- 個人文章區塊 -->
+                <div class="h-vh-90 overflow-y-scroll">
+                    <div
+                        class="flex justify-end cursor-pointer absolute top-32 right-10 transition-all delay-100 hover:scale-110">
+                        <a href="/user/create-article"><img src="/img/add.svg" class="w-[30px]"></a>
+                        <!-- <a class="bg-black text-white w-[150px] mb-4"
+                            href="/user/create-article">新增心情記事</a> -->
+                    </div>
+                    <div class="flex flex-col justify-center items-center  w-vw-50 p-6 bg-white">
+                        <% if (userArticles && userArticles.length> 0) { %>
+                            <% for (let i=0; i < userArticles.length; i++) { %>
+                                <div
+                                    class="p-4 pb-1 flex items-center justify-start w-[450px] h-[40px] rounded-t-lg border border-gray-200 mt-4 shadow-sm bg-white">
+                                    <p class="text-[14px] mb-3">
+                                        <%= userArticles[i].created_at %>
+                                    </p>
+                                </div>
+                                <div class="bg-gray-100 w-[450px] p-5" id="id:<%= userArticles[i].id %>">
+
+                                    <p class="text-2xl font-bold">
+                                        <%= userArticles[i].title %>
+                                    </p>
+                                    <div class="content truncate mt-1 font-light" data-max-length="80">
+                                        <%- userArticles[i].content %>
+                                    </div>
+                                    <div class="flex justify-end mt-6">
+                                        <button
+                                            class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 mt-2 ml-3"
+                                            onclick="showConfirmationPopup(<%= userArticles[i].id %>)">刪除</button>
+
+                                        <button
+                                            class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 mt-2 ml-3"
+                                            onclick="showUpdatePopup(<%= userArticles[i].id %>)">編輯</button>
+
+                                        <button
+                                            class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3"
+                                            onclick="readArticle(<%= userArticles[i].id %>)">看更多</button>
+                                    </div>
+                                    <!-- <div class="flex justify-end items-end">
+                                        <button onclick="readArticle(<%= userArticles[i].id %>)"
+                                            class="mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95">看更多</button>
+                                    </div> -->
+                                </div>
+                                <% } %>
+                                    <% } else { %>
+                                        <p class="text-gray-600">No articles found.</p>
+                                        <% } %>
+                    </div>
                 </div>
         </div>
         <script>
+
+            function readArticle(id) {
+                const url = `/articles/${id}`;
+                window.location.href = url
+            }
 
             function showUpdatePopup(articleId) {
                 const confirmation = confirm("編輯此篇文章");
@@ -114,7 +159,7 @@
                     });
             }
 
-            function updateArticle (articleId){
+            function updateArticle(articleId) {
                 fetch(`/api/v1/articles/${articleId}`, {
                     method: "PUT",
                 })
@@ -131,6 +176,17 @@
                         alert('刪除失敗')
                     });
             }
+
+            const paragraphs = document.querySelectorAll('.content');
+
+            paragraphs.forEach((paragraph) => {
+                const maxLength = parseInt(paragraph.getAttribute('data-max-length'), 10);
+
+                if (paragraph.textContent.length > maxLength) {
+                    const truncatedContent = paragraph.textContent.substr(0, maxLength) + '...';
+                    paragraph.textContent = truncatedContent;
+                }
+            });
 
         </script>
 </body>

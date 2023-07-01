@@ -1,4 +1,9 @@
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
   <style>
     .red-dot-header {
       width: 12px;
@@ -9,76 +14,176 @@
       position: absolute;
       top: 0;
       right: 0;
-
     }
+
+    .header-icon {
+      width: 28px;
+    }
+
+    .body {
+      font-family: 'Roboto', 'Noto Sans TC', sans-serif;
+    }
+
+    .screen-h {
+      height: calc(100% - 98px);
+    }
+
+    .h1 {
+      font-size: 42px;
+      letter-spacing: 12px;
+      color:black;
+      font-weight: 800;
+    }
+
+    .h2{
+      font-size: 40px;
+      letter-spacing: 12px;
+      color:white;
+      text-shadow: #282828;
+    }
+
+    .h3 {
+      text-align: center;
+      font-size: 26px;
+      font-family: sans-serif;
+      color: #282828;
+      letter-spacing: 6px;
+      font-weight: 400;
+    }
+
+    .bg-kv-image {
+      background-image: url('/img/kv_bg.png');
+      background-size: cover;
+    }
+
+    .button-wrap {
+      align-self: center;
+      transition: all .5s;
+      display: inline-block;
+      position: relative;
+    }
+
+    .btn-overlay {
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      border-radius: 30px;
+      display: block;
+      position: absolute;
+      top: 3px;
+      left: 2px
+    }
+
+    .transition-05{
+      transition: all .5s;
+    }
+
+    .text{
+      font-size: 18px;
+      font-weight: 300 ;
+    }
+
   </style>
 </head>
-<header class="mb-[75px]">
+<header class="md:mb-[98px] z-40">
   <div
-    class="flex flex-col items-center justify-center  md:flex-row top-0 left-0 w-full  fixed  bg-white md:border-b-[1px] shadow-md ">
-    <div class="w-1/5 flex items-center justify-center md:justify-start ]">
+    class="flex flex-col items-center justify-center  md:flex-row md:py-3 top-0 left-0 w-full  fixed  bg-white shadow-md">
+    <div class="w-1/6 flex items-center justify-center md:justify-start">
       <a href="/" class="flex">
-        <img src="/img/logo.svg" alt="你的智友" class=" w-[60px] mx-auto mt-5 md:mt-0 md:ml-6 md:p-2 ">
-        <a href="/" class="p-1 md:tracking-[5px] text-[16px]">你的智友</a>
-      </a>
+        <img src="/img/logo1.svg" alt="你的智友" class=" w-[60px] mx-auto mt-5 md:mt-0 md:ml-6 md:p-2 ">
+
+        <img src="/img/logo3.svg" alt="你的智友" class=" w-[120px] mx-auto mt-5 md:mt-0  md:p-2 "></a>
+        <!-- <a href="/"
+          class="header first-line:m-2 p-1 md:tracking-[2px] text-[22px] text-gray-900 font-semibold ">你的智友</a> -->
     </div>
 
     <!-- menu -->
-    <div class="w-2/5 flex items-center justify-center md:justify-start md:ml-[50px] mt-2 md:mt:0">
+    <div class="w-2/6 flex items-center justify-center md:justify-start">
       <nav>
         <ul class="flex items-center justify-center">
-          <a href="/about"
-            class="mx-2 md:mx-5 text-[10px] md:text-[16px] border-r pr-4 md:pr-8 border-black md:tracking-[5px]">關於我們</a>
+          <a href="/about" class="mx-1 md:mx-5 text-[10px]  md:text-[17px] md:tracking-[2px] hover:text-red transition-colors duration-400">關於我們</a>
           <a href="/articles"
-            class="mx-2 md:mx-5 text-[10px] md:text-[16px] border-r pr-4 md:pr-8 border-black md:tracking-[5px]">智友記事</a>
-          <a href="/user/signin" class="mx-2 md:mx-5 text-[10px] md:text-[16px] md:tracking-[5px]">成為智友</a>
+            class="mx-1 md:mx-5 text-[10px]  md:text-[17px]  md:tracking-[2px]  hover:text-red transition-colors duration-500">智友記事</a>
         </ul>
       </nav>
     </div>
 
     <!-- search bar and icon -->
 
-    <div class="w-2/5 flex items-center justify-center md:justify-end mt-3 mb-1 md:my-3 md:mr-6 ">
+    <div class="w-3/6 flex items-center justify-center md:justify-end mt-3 mb-1 md:my-3 md:mr-2 md:pr-5 ">
       <!-- search bar border: use flex to let children be flex in a row-->
-      <form action="/api/v1/search/articles">
+      <form action="/api/v1/search/friends">
         <div
-          class="flex items-center justify-center md:py-1 md:px-2 md:mr-8 rounded-full border border-gray-400 border-1">
+          class="flex items-center justify-center md:py-1 md:px-2 md:mr-8 rounded-full border border-gray-300 border-1">
           <!-- search bar text  -->
-          <div class="w-4/5">
-            <input class="flex-1 pl-2 md:px-4 md:py-2 rounded-full outline-none text-gray-600 md:text-m" type="text"
-              placeholder="搜尋文章..." name="keyword">
+          <div class="w-4/6">
+            <input
+              class="flex-1 pl-2 md:px-4 md:py-2 font-thin rounded-full outline-none text-blue md:text-m tracking-widest"
+              type="text" placeholder="搜尋智友" name="keyword" required>
           </div>
           <!-- icon  -->
-          <div class="w-1/5 flex items-center justify-end">
+          <div class="w-2/6 flex items-center justify-end">
             <button type="submit">
               <a href="#" class="flex items-center justify-end">
-                <img src="/img/search.png" alt="search icon" class="w-5 h-5 md:w-8 md:h-8">
+                <img src="/img/search.png" alt="search-icon" class="w-5 h-5 md:w-8 md:h-8">
               </a>
             </button>
           </div>
         </div>
       </form>
 
-      <div class="mr-6 hidden md:block relative" id="messageIcon">
+      <div class="mr-6 hidden md:block relative transition-all delay-100 hover:scale-110" id="messageIcon">
         <a href="/chatroom">
-          <img class="w-[30px]" src="/img/messenger.svg" alt="message">
+          <img class="header-icon" src="/img/messenger.svg" alt="message">
         </a>
         <span id="red-dot-header"></span>
       </div>
 
-      <div class="mr-6 hidden md:block ">
+      <!-- <div class="mr-6 hidden md:block transition-all delay-100 hover:scale-110">
         <a href="/user/profile">
-          <img src="/img/member.png" alt="">
+          <img src="/img/member.svg" class="header-icon" alt="">
         </a>
+      </div> -->
+
+
+      <div id="sign-in-btn" class="hidden md:block hover:scale-105" >
+        <a href="/user/signin" class="  relative">
+          <div class="flex items-center justify-center w-[100px] h-[40px] hover:bg-blue bg-red rounded-full text-white md:text-[14px] md:tracking-[1px]" >sign in</div>
+          <div class="btn-overlay w-[120px] h-[40px]"></div>
+        </a>
+      </div>
+
+      <div id="sign-in-picture" style="display: none;">
+        <a href="/user/profile"><img src="/img/users/1.png" class="w-[40px]" alt="signin-photo"></a>
       </div>
 
     </div>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
       const senderId = localStorage.getItem('userId');
+      
+
+      if(senderId){
+        console.log('1');
+        document.getElementById("sign-in-btn").style.display = "none";
+        document.getElementById("sign-in-picture").style.display = "block";
+        const pictureUrl = localStorage.getItem('picture');
+        document.getElementById("sign-in-picture").querySelector('img').src = pictureUrl;
+      
+      }else{
+        console.log('2');
+        document.getElementById("sign-in-btn").style.display = "block";
+        document.getElementById("sign-in-picture").style.display = "none";
+      }
+
       let socket
       if (senderId) {
-        socket = io();
+        socket = io({
+          auth: (cb) => {
+            cb({ userId: senderId })
+          }
+        })
         socket.emit('joinMyRoom', String(senderId));
       }
 

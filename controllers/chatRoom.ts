@@ -6,7 +6,7 @@ import { RowDataPacket } from 'mysql2';
 export async function renderChatroomByRoomNameBata(req: Request, res: Response) {
 
     const { room } = req.params;
-    const { id } = req.query as { id:string };
+    const { id } = req.query as { id: string };
     const { userId } = res.locals;
 
     try {
@@ -26,13 +26,13 @@ export async function renderChatroomByRoomNameBata(req: Request, res: Response) 
             // 沒有聊天室的人，回傳空白聊天室
             return res.render('chatRoom')
         }
-        await chatRoomModel.checkRoom(userId, Number(id), room) 
+        await chatRoomModel.checkRoom(userId, Number(id), room)
         // 有房間號碼，針對id=?傳送訊息
         // const messages = await chatRoomModel.getMessagesByRoom(room);
         const chatList = await chatRoomModel.getChatListById(userId);
         // console.log('messages---->',messages);
-        // console.log('chatList---->',chatList);
-        res.status(200).render('test', {chatList})
+        // console.log('chatList---->', chatList);
+        res.status(200).render('test', { chatList })
 
     } catch (err) {
         if (err instanceof Error) {
@@ -81,6 +81,7 @@ export async function fetchMessagesRead(req: Request, res: Response) {
     }
 }
 
+// 等待刪除
 export async function fetchChatList(req: Request, res: Response) {
     try {
         const { id } = req.params;
@@ -99,6 +100,7 @@ export async function fetchChatList(req: Request, res: Response) {
     }
 }
 
+// 等待刪除
 export async function renderChatroomByRoomName(req: Request, res: Response) {
 
     const { room } = req.params;
@@ -117,7 +119,6 @@ export async function renderChatroomByRoomName(req: Request, res: Response) {
                     const receiverId = (chatList[0] as RowDataPacket).receiverId;
                     // const latestRoom = (chatList[chatList.length - 1] as RowDataPacket).room_name;
                     // const receiverId = (chatList[chatList.length - 1] as RowDataPacket).receiverId;
-                    console.log('12',latestRoom,receiverId);
                     return res.redirect(`/chatroom/${latestRoom}?id=${receiverId}`);
                 }
             }
@@ -139,3 +140,20 @@ export async function renderChatroomByRoomName(req: Request, res: Response) {
     }
 }
 
+
+export async function setUnreadToZero(req: Request, res: Response) {
+    try {
+        const { senderId, receiverId, roomName } = req.body;
+        const result = await chatRoomModel.setUnreadToZero(senderId, receiverId, roomName);
+        if (result === 1) {
+            return res.status(200).json({ message: "success" })
+        }
+        throw new Error('reset unread failed')
+    } catch (err) {
+        if (err instanceof Error) {
+            res.status(400).json({ errors: err.message });
+            return;
+        }
+        res.status(500).json({ errors: "setUnreadToZero failed" })
+    }
+}

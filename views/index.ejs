@@ -1,38 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/dist/output.css" rel="stylesheet" />
-    <title>Home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
+  <link href="/dist/output.css" rel="stylesheet" />
+  <title>你的智友 - Home</title>
 </head>
+
 <body>
-    <%- include('./partials/header') %>
-    <div class="flex justify-center items-center border border-red-300 h-vh-90">
-        <div class="flex flex-col items-start justify-center h-full">
-            <div class="flex-col border border-red-300 ">
-                <p class="text-center text-[40px]">尋找你的智友</p>
-                <p class="text-center">搜尋相關心情筆記</p>
-            </div>
-            <form action="/api/v1/search/friends">
-                <div
-                  class="flex items-center justify-center md:py-1 md:px-2 md:mr-8 rounded-full border border-gray-400 border-1">
-                  <!-- search bar text  -->
-                  <div class="w-4/5">
-                    <input class="flex-1 pl-2 md:px-4 md:py-2 rounded-full outline-none text-gray-600 md:text-m" type="text"
-                      placeholder="輸入好友名稱..." name="keyword">
-                  </div>
-                  <!-- icon  -->
-                  <div class="w-1/5 flex items-center justify-end">
-                    <button type="submit">
-                      <a href="#" class="flex items-center justify-end">
-                        <img src="/img/search.png" alt="search icon" class="w-5 h-5 md:w-8 md:h-8">
-                      </a>
-                    </button>
-                  </div>
-                </div>
-              </form>
+  <%- include('./partials/header') %>
+    <div class="flex justify-center items-center h-vh-90 w-100 bg-kv-image">
+      <div class="flex flex-col items-center justify-start h-full w-full py-[150px]">
+
+        <div class="flex-col ">
+          <p class="h3">
+            <span class="h1">尋找你的<span class="text-blue drop-shadow-sm decoration-black">智友</span></span><br>
+            一個專為失智家屬而設計的社群平台
+          </p>
         </div>
+
+        <form class="mt-8 md:p-6 flex flex-col justify-center 
+        items-center w-[450px] h-[220px] border border-gray-500 bg-pink rounded-lg"
+          action="/api/v1/search/articles">
+          <p class="text-center font-thin mb-4 text-[18px]">輸入你的煩惱，尋找相似的好朋友</p>
+          <div class="flex items-center justify-center md:py-1
+           rounded-full border border-gray-400 bg-white border-1 ">
+            <!-- search bar text  -->
+            <div class="w-4/5 ">
+              <input class="flex-1 pl-2 md:px-4 md:py-2 rounded-full outline-none text-blue md:text-m font-light" type="text"
+                placeholder="輸入你的煩惱..." name="keyword">
+            </div>
+            <!-- icon  -->
+            <div class="w-1/5 flex items-center justify-center">
+              <button type="submit">
+                <a href="#" class="flex items-center justify-end transition-all delay-75 hover:scale-95">
+                  <img src="/img/search.png" alt="search icon" class="w-5 h-5 md:w-8 md:h-8">
+                </a>
+              </button>
+            </div>
+          </div>
+        </form>
+
+      </div>
     </div>
 </body>
+
 </html>

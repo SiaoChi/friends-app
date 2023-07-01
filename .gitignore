@@ -4,3 +4,7 @@ uploads/*
 
 backup.sql
 .env
+key.pem
+cert.pem
+
+/ssh/

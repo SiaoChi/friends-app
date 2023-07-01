@@ -41,7 +41,7 @@ export async function renderArticleByID(req: Request, res: Response) {
     try {
         const { id } = req.params;
         const singleArticleData = await articleModels.getArticleByID(parseInt(id));
-        console.log(singleArticleData);
+        // console.log(singleArticleData);
         if (Array.isArray(singleArticleData) && singleArticleData.length > 0) {
             return res.status(200).render('singleArticle', { singleArticleData });
         }
@@ -55,7 +55,7 @@ export async function renderUpdateArticleByID(req: Request, res: Response) {
     try {
         const { id } = req.params;
         const singleArticleData = await articleModels.getArticleByID(parseInt(id));
-        console.log(singleArticleData);
+        // console.log(singleArticleData);
         if (Array.isArray(singleArticleData) && singleArticleData.length > 0) {
             return res.status(200).render('editArticle', { singleArticleData });
         }
@@ -68,9 +68,9 @@ export async function renderUpdateArticleByID(req: Request, res: Response) {
 export async function deleteArticleById(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        console.log('id', id);
+        // console.log('id', id);
         const result = await articleModels.deleteArticleByID(parseInt(id));
-        console.log('result', result);
+        // console.log('result', result);
         if (Array.isArray(result) && result.length > 0) {
             return res.status(200).json({ message: `成功刪除文章:${id}` })
         }
@@ -89,7 +89,7 @@ export async function updateArticleById(req: Request, res: Response) {
     try {
         const { id, title, content, date } = req.body
         const singleArticleData = await articleModels.updateArticleByID(id, title, content, date);
-        console.log(singleArticleData);
+        // console.log(singleArticleData);
         if (Array.isArray(singleArticleData) && singleArticleData.length > 0) {
             return res.status(200).json({ message: 'success' })
         }
