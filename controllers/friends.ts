@@ -47,8 +47,8 @@ export async function unFriend(req: Request, res: Response) {
     try {
         const { userId, friendId } = req.body;
         const result = await friendsModels.unFriend(userId, friendId);
-        if (result) { return res.status(200).json({ message: "ignore success" }) };
-        throw new Error(' unfriend failed')
+        if (result) { return res.status(200).json({ message: "ignore" }) };
+        throw new Error('unfriend failed')
     } catch (err) {
         if (err instanceof Error) {
             res.status(400).json({ errors: err.message });

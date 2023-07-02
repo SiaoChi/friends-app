@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/dist/output.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>你的智友-Profile</title>
     <style>
         .screen-h {
@@ -47,7 +48,8 @@
                                     class="inline-flex mt-2 px-2 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 hover:scale-95 ">
                                     <img class="w-[16px]" src="/img/tag.svg" alt="icon">
                                     <span class="pl-1 ">
-                                        <%= tag %></span>
+                                        <%= tag %>
+                                    </span>
                                 </li>
                                 <% }); %>
 
@@ -77,37 +79,40 @@
                     <div class="flex flex-col justify-center items-center  w-vw-50 p-6 bg-white">
                         <% if (userArticles && userArticles.length> 0) { %>
                             <% for (let i=0; i < userArticles.length; i++) { %>
-                                <div
-                                    class="p-4 pb-1 flex items-center justify-start w-[450px] h-[40px] rounded-t-lg border border-gray-200 mt-4 shadow-sm bg-white">
-                                    <p class="text-[14px] mb-3">
-                                        <%= userArticles[i].created_at %>
-                                    </p>
-                                </div>
-                                <div class="bg-gray-100 w-[450px] p-5" id="id:<%= userArticles[i].id %>">
 
-                                    <p class="text-2xl font-bold">
-                                        <%= userArticles[i].title %>
-                                    </p>
-                                    <div class="content truncate mt-1 font-light" data-max-length="80">
-                                        <%- userArticles[i].content %>
+                                <div id="id:<%= userArticles[i].id %>">
+                                    <div
+                                        class="p-4 pb-1 flex items-center justify-start w-[450px] h-[40px] rounded-t-lg border border-gray-200 mt-4 shadow-sm bg-white">
+                                        <p class="text-[14px] mb-3">
+                                            <%= userArticles[i].created_at %>
+                                        </p>
                                     </div>
-                                    <div class="flex justify-end mt-6">
-                                        <button
-                                            class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 mt-2 ml-3"
-                                            onclick="showConfirmationPopup(<%= userArticles[i].id %>)">刪除</button>
+                                    <div class="bg-gray-100 w-[450px] p-5" >
 
-                                        <button
-                                            class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 mt-2 ml-3"
-                                            onclick="showUpdatePopup(<%= userArticles[i].id %>)">編輯</button>
+                                        <p class="text-2xl font-bold">
+                                            <%= userArticles[i].title %>
+                                        </p>
+                                        <div class="content truncate mt-1 font-light" data-max-length="80">
+                                            <%- userArticles[i].content %>
+                                        </div>
+                                        <div class="flex justify-end mt-6">
+                                            <button
+                                                class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 mt-2 ml-3"
+                                                onclick="showConfirmationPopup(<%= userArticles[i].id %>)">刪除</button>
 
-                                        <button
-                                            class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3"
-                                            onclick="readArticle(<%= userArticles[i].id %>)">看更多</button>
-                                    </div>
-                                    <!-- <div class="flex justify-end items-end">
+                                            <button
+                                                class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 mt-2 ml-3"
+                                                onclick="showUpdatePopup(<%= userArticles[i].id %>)">編輯</button>
+
+                                            <button
+                                                class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3"
+                                                onclick="readArticle(<%= userArticles[i].id %>)">看更多</button>
+                                        </div>
+                                        <!-- <div class="flex justify-end items-end">
                                         <button onclick="readArticle(<%= userArticles[i].id %>)"
                                             class="mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95">看更多</button>
                                     </div> -->
+                                    </div>
                                 </div>
                                 <% } %>
                                     <% } else { %>
@@ -116,6 +121,10 @@
                     </div>
                 </div>
         </div>
+
+
+
+
         <script>
 
             function readArticle(id) {
@@ -124,20 +133,20 @@
             }
 
             function showUpdatePopup(articleId) {
-                const confirmation = confirm("編輯此篇文章");
-
-                if (confirmation) {
                     window.location.href = `/articles/edit/${articleId}`
-                }
             }
 
 
             function showConfirmationPopup(articleId) {
-                const confirmation = confirm("是否確定刪除？");
-
-                if (confirmation) {
-                    deleteArticle(articleId);
-                }
+                swal("是否確定刪除？", {
+                    buttons: ['取消', true],
+                })
+                    .then(value => {
+                        console.log('value', value);
+                        if (value === true) {
+                            deleteArticle(articleId)
+                        }
+                    })
             }
 
 
@@ -151,11 +160,10 @@
                     ).then(data => {
                         const deleteArticle = document.getElementById(`id:${articleId}`);
                         deleteArticle.style.display = "none";
-                        alert(data.message);
                     })
                     .catch(error => {
                         console.error("error：", error);
-                        alert('刪除失敗')
+                        swal('刪除失敗')
                     });
             }
 
@@ -169,11 +177,11 @@
                     ).then(data => {
                         const deleteArticle = document.getElementById(`id:${articleId}`);
                         deleteArticle.style.display = "none";
-                        alert(data.message);
+                        swal(data.message);
                     })
                     .catch(error => {
                         console.error("error：", error);
-                        alert('刪除失敗')
+                        swal('刪除失敗')
                     });
             }
 

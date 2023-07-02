@@ -24,6 +24,7 @@ export default {
     "./views/searchArticles.ejs",
     "./views/test.ejs",
     "./views/partials/sideBar.ejs",
+    "./views/**.ejs"
   ],
   theme: {
     extend: {

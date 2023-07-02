@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/dist/output.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>Profile</title>
 </head>
 
@@ -80,9 +80,14 @@
                         body: JSON.stringify(data)
                     });
                     if (response.ok) {
-                        const data = await response.json();
-                        alert(data.message);
-                        window.location.reload();
+                        const dataJson = await response.json();
+                        console.log(dataJson);
+                        if(dataJson.message === 'success') {
+                            swal('已追蹤智友')
+                            .then(() => { window.location.reload();})
+                        }else{
+                        swal('出現錯誤，請聯絡管理員')
+                        }               
                     } else {
                         throw new Error('Add friend request failed.');
                     }
@@ -105,9 +110,13 @@
                         body: JSON.stringify(data)
                     });
                     if (response.ok) {
-                        const data = await response.json();
-                        alert(data.message);
-                        window.location.reload();
+                        const dataJson = await response.json();
+                        if(dataJson.message == 'ignore') {
+                            swal('已略過智友，將不會再出現在推薦名單')
+                            .then(() => { window.location.reload();})
+                        }else{
+                        swal('出現錯誤，請聯絡管理員')     
+                        }    
                     } else {
                         throw new Error('unfriend request failed.');
                     }
