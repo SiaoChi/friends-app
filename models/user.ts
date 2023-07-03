@@ -49,7 +49,7 @@ export async function getUserProfileData(id: number | number[]) {
     let values;
 
     if (Array.isArray(id)) {
-        console.log('1');
+        // console.log('1');
         query = `
             SELECT us.*, GROUP_CONCAT(at.content) AS articles
             FROM users us
@@ -59,7 +59,7 @@ export async function getUserProfileData(id: number | number[]) {
         `;
         values = [id];
     } else {
-        console.log('2');
+        // console.log('2');
         query = `
             SELECT us.*,  AS articles
             FROM users us
@@ -120,7 +120,7 @@ export async function getUserProfileTagsData(id: number) {
     (rows as Array<any>).forEach(userData => {
         const userTag = (userTags as Array<any>).filter(userTag => userTag.user_id === userData.id);
         let userTagArray;
-        console.log('userTag', userTag);
+        // console.log('userTag', userTag);
         if (Array.isArray(userTag) && userTag.length > 0) {
             userTagArray = userTag[0].tags.split(',');
             userData['tags'] = userTagArray;
@@ -129,7 +129,7 @@ export async function getUserProfileTagsData(id: number) {
 
     })
 
-    console.log(rows);
+    // console.log(rows);
 
     return rows;
 }

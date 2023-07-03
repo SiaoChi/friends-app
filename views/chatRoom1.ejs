@@ -207,7 +207,7 @@
                 var redDot = document.createElement('span');
                 redDot.className = 'red-dot';
                 messageIcon.appendChild(redDot);
-                console.log(messageIcon);
+                // console.log(messageIcon);
 
                 if (room === roomName) {
                     var item = document.createElement('li');
@@ -240,9 +240,9 @@
                     span.classList.add('red-dot');
                     aElement.appendChild(span);
 
-                    console.log('aEle',aElement);
+                    // console.log('aEle',aElement);
                     chatList.prepend(existingChatPerson);
-                    console.log('existingChatPerson', existingChatPerson);
+                    // console.log('existingChatPerson', existingChatPerson);
                 } else {
                     const chatPerson = ` <div class="mb-2 bg-blue-200 p-2" data-senderid="${senderId}" >
                                             <a href="/chatroom/${room}?id=${senderId}" class="person flex items-center relative" data-room="${room}">
@@ -255,7 +255,7 @@
                                             </a>
                                             </div>
                                        `;
-                    console.log('2.', chatPerson);
+                    // console.log('2.', chatPerson);
                     chatList.insertAdjacentHTML('afterbegin', chatPerson);
                 }
 
@@ -265,11 +265,11 @@
                 try {
                     const fetchData = await fetch(`/api/v1/chatlist/${senderId}`)
                     const fetchChatList = await fetchData.json();
-                    console.log('fetchChatList', fetchChatList);
+                    // console.log('fetchChatList', fetchChatList);
                     fetchChatList.forEach(item => {
                         // 如果senderId是自己，不用有小綠點
                         if (item.sender_id === Number(senderId) || item.sender_id === 0) {
-                            console.log('1', item.sender_id, Number(senderId));
+                            // console.log('1', item.sender_id, Number(senderId));
                             const chatPerson = `
                                             <div class="items-center mb-2 bg-gray-100 p-2" data-senderid= "${item.receiverId}" id="chat-person">
                                                 <a href="/chatroom/${item.room_name}?id=${item.receiverId}" class="block w-full flex relative" data-room="${item.room_name}">
@@ -283,7 +283,7 @@
                                             `;
                             chatList.insertAdjacentHTML('afterbegin', chatPerson);
                         } else {
-                            console.log('2', item.sender_id, Number(senderId));
+                            // console.log('2', item.sender_id, Number(senderId));
                             // 如果senderId 不是自己，要有小紅點
                             const chatPerson = `
                                             <div class="items-center mb-2 bg-gray-100 p-2" data-senderid= "${item.receiverId}" id="chat-person">
@@ -315,7 +315,7 @@
                 try {
                     const fetchData = await fetch(`/api/v1/user/profile/${receiverId}`)
                     const receiverInfo = await fetchData.json();
-                    console.log('fetchReceiverInfo->', receiverInfo);
+                    // console.log('fetchReceiverInfo->', receiverInfo);
                     receiverPicture = receiverInfo[0].picture;
                     receiverName = receiverInfo[0].name;
                     const fetchInfo = `
@@ -344,7 +344,7 @@
                 try {
                     const fetchData = await fetch(`/api/v1/chatroom/${roomName}`)
                     const fetchRoomMessages = await fetchData.json();
-                    console.log('fetchRoomMessages->', fetchRoomMessages);
+                    // console.log('fetchRoomMessages->', fetchRoomMessages);
 
                     fetchRoomMessages.forEach(item => {
                         let userInput = document.createElement('li');
@@ -396,7 +396,7 @@
             })
 
             function fetchReadMessage(room) {
-                console.log('fetchReadMessage');
+                // console.log('fetchReadMessage');
                 fetch(`/api/v1/chatroom/${room}`, {
                     method: "PUT",
                     headers: {
@@ -406,7 +406,7 @@
                 }).then(response => response.json())
                   .then(data => {
                         if (data.message === 'success') {
-                            console.log('dataMsgRead',data.message);
+                            // console.log('dataMsgRead',data.message);
                             return 
                         }
                         throw new Error ('reset message status failed')

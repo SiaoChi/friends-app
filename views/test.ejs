@@ -271,13 +271,13 @@
                     const time = new Date().toLocaleString('zh-TW', options);
                     let userInput = document.createElement('li');
                     // 主聊天室畫面更新 
-                    userInput.classList.add('message-sent', 'mt-1');
+                    userInput.classList.add('message-sent', 'flex', 'justify-end');
                     let text = document.createElement('text');
-                    text.classList.add('ml-1', 'bg-slate-200', 'rounded-lg', 'p-2');
+                    text.classList.add('talk','ml-1', 'bg-slate-200', 'rounded-lg', 'p-2');
                     text.textContent = input.value;
 
                     let timeStamp = document.createElement('text');
-                    timeStamp.classList.add('ml-1', 'rounded-lg', 'text-xs');
+                    timeStamp.classList.add('rounded-lg', 'text-[7px]', 'text-gray-400', 'mt-5', 'mr-2');
                     timeStamp.textContent = time;
 
                     userInput.appendChild(timeStamp);
@@ -364,10 +364,11 @@
                     aElement.appendChild(span);
                     chatList.prepend(existingChatPerson);
 
+                    // 如果傳送來的訊息，不是現在的聊天房間，就要新增未讀的資訊
+                    if((Number(room) !== Number(roomName))){
+                        const unRead = existingChatPerson.querySelector('a .unread');
 
-                    const unRead = existingChatPerson.querySelector('a .unread');
-
-                    // 情境1：傳送過來時，已經有未讀訊息的div class=unread
+                    // 情境1：傳送過來時，已經有未讀訊息的div class=unread，抓取unread的value +=1
                     if (unRead) {
 
                         console.log('unread', unRead);
@@ -377,21 +378,17 @@
                             unRead.textContent = (Number(unRead.textContent) || 0) + 1;
                         }
                         console.log('unread text', unRead.textContent);
-                        // unRead.style.display = ''; 
                         unRead.style.display = 'flex';
                         console.log('unRead after', unRead);
                     } else {
-                        // 情境２：傳送過來時，沒有未讀訊息的class class=unread，解法：加入一個div呈現unread畫面
-                        console.log('2-->');
+                        // 情境２：傳送過來時，沒有未讀訊息的class class=unread，解法：加入一個div呈現unread畫面 unread value = 1
                         let unRead = document.createElement('div');
-                        console.log('2.5', unRead);
                         unRead.classList.add('unread');
-                        console.log('3', unRead);
                         aElement.appendChild(unRead);
-                        console.log('a', aElement);
                         unRead.textContent = 1 ;
                         unRead.style.display = 'flex';
                         console.log('創造新unread', unRead);
+                    }
                     }
 
                 } else {

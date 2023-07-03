@@ -53,8 +53,8 @@ app.use(express.json());
 app.use(cors());
 app.enable("trust proxy");
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/', express.static('./public'));
-app.use("/uploads", express.static("./uploads"))
+app.use('/',express.static('./public'));
+app.use("/uploads",express.static("./public/uploads"))
 
 
 app.use("/", [

@@ -94,27 +94,27 @@
 
             toSignIn.addEventListener("click", (e) => {
                 e.preventDefault();
-                console.log('click toSignIn');
+                // console.log('click toSignIn');
                 signinDiv.style.display = "flex";
                 signupDiv.style.display = "none";
             })
 
             toSignUp.addEventListener("click", (e) => {
                 e.preventDefault();
-                console.log('click toSignUp');
+                // console.log('click toSignUp');
                 signinDiv.style.display = "none";
                 signupDiv.style.display = "flex";
             })
 
             // 送出註冊signUp
             $('#signup-form').submit(async (event) => {
-                console.log('submit')
+                // console.log('submit')
                 event.preventDefault();
                 const name = $('#signup-name').val();
                 const email = $('#signup-mail').val();
                 const password = $('#signup-password').val();
-                console.log(name, email, password)
-                console.log('-----')
+                // console.log(name, email, password)
+                // console.log('-----')
                 const data = {
                     name: name,
                     email: email,
@@ -132,7 +132,7 @@
 
                     if (response.ok) {
                         const data = await response.json();
-                        console.log(data);
+                        // console.log(data);
                         localStorage.setItem('userId', data.data.user.id);
                         localStorage.setItem('name', data.data.user.name);
 
