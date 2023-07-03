@@ -40,11 +40,8 @@ const httpsServer = createServer({
 
 const io = new Server(httpsServer);
 
-io.on("connection", (socket) => {
-  console.log('socket connect');
-})
 
-// socketHandler(io);
+socketHandler(io);
 
 app.set('view engine', 'ejs');
 
