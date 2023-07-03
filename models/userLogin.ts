@@ -44,6 +44,6 @@ const ProviderSchema = z.object({
     );
     const provider = z.array(ProviderSchema).parse(results[0]);
     const isValidPassword = await argon2.verify(provider[0].token, password);
-    console.log('isValidPassword-->',isValidPassword );
+    // console.log('isValidPassword-->',isValidPassword );
     return isValidPassword;  // 因為argon2 create token, 所以驗證時要丟進去token + password
   }

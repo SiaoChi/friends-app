@@ -7,7 +7,7 @@ import { RowDataPacket } from 'mysql2';
 
 
 export function getLogInPage(req: Request, res: Response) {
-    const userId = res.locals
+    const userId = res.locals;
     if(userId) return res.redirect('/user/profile')
     res.render('login')
 }
@@ -58,7 +58,7 @@ export async function signIn(req: Request, res: Response) {
         }
         const token = generateToken(user.id);
         const url = "/user/profile";
-        console.log('user',user);
+        // console.log('user',user);
         res
             .cookie("jwtToken", token)
             .status(200)
@@ -82,20 +82,22 @@ export async function signIn(req: Request, res: Response) {
     }
 }
 
-// export function useLogout(req: Request, res: Response){
-//     res.render('logout')
-// }
-
 export async function createUserProfile(req: Request, res: Response) {
     const { name, picture, birth, email, location, sickYear, carer, level, currentProblems, tags, } = req.body
-
+    let userPhotoPath = picture;
+    console.log('userPhotoPath-->',userPhotoPath);
+    const uploadImages = res.locals.imagePath;
+    console.log('Profile->imagePath-->',uploadImages);
     const userId = res.locals.userId;
-    // console.log('userId', userId);
-    // console.log('tags', JSON.stringify(tags));
+
+    if(uploadImages){
+        console.log('uploads-->',uploadImages);
+            userPhotoPath = uploadImages;     
+    }
 
     await userModel.updateUserProfile(
         name,
-        picture,
+        userPhotoPath,
         birth,
         email,
         location,

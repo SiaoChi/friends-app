@@ -9,7 +9,7 @@ export async function fetchUserCreateArticle(req: Request, res: Response) {
     try {
         const { title, content, date } = req.body;
         const { userId } = res.locals;
-        console.log(title, content, date, userId);
+        // console.log(title, content, date, userId);
         const result = await articleModels.createUserArticle(title, content, date, userId);
 
         if (result) {
