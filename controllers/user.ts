@@ -85,9 +85,9 @@ export async function signIn(req: Request, res: Response) {
 export async function createUserProfile(req: Request, res: Response) {
     const { name, picture, birth, email, location, sickYear, carer, level, currentProblems, tags, } = req.body
     let userPhotoPath = picture;
-    console.log('userPhotoPath-->',userPhotoPath);
+    // console.log('userPhotoPath-->',userPhotoPath);
     const uploadImages = res.locals.imagePath;
-    console.log('Profile->imagePath-->',uploadImages);
+    // console.log('Profile->imagePath-->',uploadImages);
     const userId = res.locals.userId;
 
     if(uploadImages){

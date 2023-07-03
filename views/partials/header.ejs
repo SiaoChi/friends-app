@@ -31,14 +31,14 @@
     .h1 {
       font-size: 42px;
       letter-spacing: 12px;
-      color:black;
+      color: black;
       font-weight: 800;
     }
 
-    .h2{
+    .h2 {
       font-size: 40px;
       letter-spacing: 12px;
-      color:white;
+      color: white;
       text-shadow: #282828;
     }
 
@@ -75,15 +75,14 @@
       left: 2px
     }
 
-    .transition-05{
+    .transition-05 {
       transition: all .5s;
     }
 
-    .text{
+    .text {
       font-size: 18px;
-      font-weight: 300 ;
+      font-weight: 300;
     }
-
   </style>
 </head>
 <header class="md:mb-[98px] z-40">
@@ -94,7 +93,7 @@
         <img src="/img/logo1.svg" alt="你的智友" class=" w-[60px] mx-auto mt-5 md:mt-0 md:ml-6 md:p-2 ">
 
         <img src="/img/logo3.svg" alt="你的智友" class=" w-[120px] mx-auto mt-5 md:mt-0  md:p-2 "></a>
-        <!-- <a href="/"
+      <!-- <a href="/"
           class="header first-line:m-2 p-1 md:tracking-[2px] text-[22px] text-gray-900 font-semibold ">你的智友</a> -->
     </div>
 
@@ -102,7 +101,8 @@
     <div class="w-2/6 flex items-center justify-center md:justify-start">
       <nav>
         <ul class="flex items-center justify-center">
-          <a href="/about" class="mx-1 md:mx-5 text-[10px]  md:text-[17px] md:tracking-[2px] hover:text-red transition-colors duration-400">關於我們</a>
+          <a href="/about"
+            class="mx-1 md:mx-5 text-[10px]  md:text-[17px] md:tracking-[2px] hover:text-red transition-colors duration-400">關於我們</a>
           <a href="/articles"
             class="mx-1 md:mx-5 text-[10px]  md:text-[17px]  md:tracking-[2px]  hover:text-red transition-colors duration-500">智友記事</a>
         </ul>
@@ -147,32 +147,41 @@
       </div> -->
 
 
-      <div id="sign-in-btn" class="hidden md:block hover:scale-105" >
+      <div id="sign-in-btn" class="hidden md:block hover:scale-105">
         <a href="/user/signin" class="  relative">
-          <div class="flex items-center justify-center w-[100px] h-[40px] hover:bg-blue bg-red rounded-full text-white md:text-[14px] md:tracking-[1px]" >sign in</div>
+          <div
+            class="flex items-center justify-center w-[100px] h-[40px] hover:bg-blue bg-red rounded-full text-white md:text-[14px] md:tracking-[1px]">
+            sign in</div>
           <div class="btn-overlay w-[120px] h-[40px]"></div>
         </a>
       </div>
 
       <div id="sign-in-picture" style="display: none;">
-        <a href="/user/profile"><img src="/img/users/1.png" class="w-[40px] h-[40px] rounded-full" alt="signin-photo"></a>
+        <a href="/user/profile"><img src="/img/users/1.png" class="w-[40px] h-[40px] rounded-full"
+            alt="signin-photo"></a>
       </div>
 
     </div>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
       const senderId = localStorage.getItem('userId');
-      
 
-      if(senderId){
+
+      if (senderId) {
         console.log('1');
         document.getElementById("sign-in-btn").style.display = "none";
         document.getElementById("sign-in-picture").style.display = "block";
-        const pictureUrl = localStorage.getItem('picture');
-        document.getElementById("sign-in-picture").querySelector('img').src = pictureUrl;
-      
-      }else{
-        console.log('2');
+
+        fetch(`/api/v1/user/profile/${senderId}`)
+          .then(response =>response.json())
+          .then(data => {
+            if (data) {
+              const pictureUrl = data[0].picture;
+              document.getElementById("sign-in-picture").querySelector('img').src = pictureUrl;
+            }
+          })
+          .catch(error => { console.log(error); });
+      } else {
         document.getElementById("sign-in-btn").style.display = "block";
         document.getElementById("sign-in-picture").style.display = "none";
       }
