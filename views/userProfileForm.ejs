@@ -246,7 +246,8 @@ ul.boxtags li input[type="checkbox"]:focus + label {
                   <li><input
                     class=""
                     type="checkbox" id="condition<%= tags[i].id %>" name="tags" value="<%= tags[i].id %>"
-                    onclick="limitCheckboxes(this)" <% if (userData[0].tags.includes(tags[i].name)) { %> checked <% } %>
+                    onclick="limitCheckboxes(this)"
+                    <% if (userData && userData[0]?.tags?.includes(tags[i].name)) { %> checked <% } %>
                     >
                     <label for="condition<%= tags[i].id %>"
                       class="ml-2 text-md font-medium text-gray-900 dark:text-gray-300 cursor-pointer">
@@ -276,7 +277,6 @@ ul.boxtags li input[type="checkbox"]:focus + label {
         const pictureImage = document.getElementById('pictureImage');
         const pictureRadios = document.getElementsByName('picture');
         const uploadedpictureInput = document.getElementById('uploadedpicture');
-
 
 
         let currentpictureIndex = 0;
