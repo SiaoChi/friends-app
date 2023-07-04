@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "builds": "npx tsc --build  --verbose",
+    "build": "npx tsc --build  --verbose",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"node dist/index.js\"",
     "queue": "node --watch queue",
