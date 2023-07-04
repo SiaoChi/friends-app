@@ -136,7 +136,7 @@ export async function renderUserProfileForm(req: Request, res: Response) {
         const { userId } = res.locals;
         const tags = await userModel.getTags();
         const userData = await userModel.getUserProfileTagsData(userId)
-        // console.log(userData);
+        console.log('userDataAndTags->',userData);
         // 如果希望在edict時加入user已知資料
         res.render('userProfileForm', { tags, userData })
     } catch (err) {

@@ -13,16 +13,91 @@
       width: 130px;
       height: 130px;
     }
+
+    body,
+html {
+    margin: 0;
+    padding: 0;
+}
+
+ul.boxtags {
+    list-style: none;
+    padding: 20px;
+}
+ul.boxtags li{
+  display: inline;
+}
+ul.boxtags li label{
+    display: inline-block;
+    background-color: rgba(255, 255, 255, .9);
+    border: 2px solid rgba(139, 139, 139, .3);
+    color: #adadad;
+    border-radius: 25px;
+    white-space: nowrap;
+    margin: 3px 0px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+}
+
+ul.boxtags li label {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+/* ul.boxtags li label::before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    padding: 2px 6px 2px 2px;
+    content: "\f067";
+    transition: transform .3s ease-in-out;
+} */
+
+/* ul.boxtags li input[type="checkbox"]:checked + label::before {
+    content: "\f00c";
+    transform: rotate(-360deg);
+    transition: transform .3s ease-in-out;
+} */
+
+ul.boxtags li input[type="checkbox"]:checked + label {
+    border: 2px solid #1bdbf8;
+    background-color: #2198DD;
+    color: #fff;
+    transition: all .1s;
+}
+
+ul.boxtags li input[type="checkbox"] {
+  display: absolute;
+}
+ul.boxtags li input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+ul.boxtags li input[type="checkbox"]:focus + label {
+  border: 2px solid #e9a1ff;
+}
+
   </style>
 </head>
 
 <body>
   <%- include('./partials/header') %>
     <div class="flex items-center justify-center mb-6  ">
-      <div class="flex flex-col items-center w-vw-40 ">
+      <div class="flex flex-col items-center w-vw-50 ">
         <h1 class="py-6 text-center font-medium text-[28px] tracking-wide">填寫個人資料</h1>
         <div class="flex justify-center items-center p-5 ">
-          <form action="/user/profile/form" method="POST" class="flex-col w-vw-25" id="form" enctype="multipart/form-data">
+          <form action="/user/profile/form" method="POST" class="flex-col w-vw-30" id="form"
+            enctype="multipart/form-data">
 
             <div class="flex items-center justify-center mb-5">
               <button type="button" id="prevButton" class="mr-6">◀</button>
@@ -48,7 +123,7 @@
                 </label>
                 <p class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">請選擇一張大頭貼或上傳圖片</p>
               </div>
-              <input type="file" id="uploadedpicture" name="upload"  style="display: none;">
+              <input type="file" id="uploadedpicture" name="upload" style="display: none;">
             </div>
 
             <label for="name" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">暱稱：</label>
@@ -160,27 +235,36 @@
         </textarea><br>
 
             <label class="block text-md font-medium text-gray-900 dark:text-white" for="conditions">家屬病況：</label>
-            <p class="text-xs mb-4 text-gray-700 text-red">*病況為重要智慧媒合資訊，請妥善勾選</p>
+            <p class="text-xs mb-4 text-gray-700 text-red">*病況為重要智慧媒合資訊，請點選最符合的6個狀況</p>
 
+            
+        <div class="flex items-center justify-center w-full ">
             <% let count=0; %>
+            <ul class="boxtags">
               <% for (let i=0; i < tags.length; i++) { %>
-                <div class="flex-inline items-center mr-4">
-                  <input
-                    class="w-4 h-4 text-yellow-400 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500 dark:focus:ring-yellow-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                <!-- <div class="flex-inline items-center mr-4"> -->
+                  <li><input
+                    class=""
                     type="checkbox" id="condition<%= tags[i].id %>" name="tags" value="<%= tags[i].id %>"
-                    onclick="limitCheckboxes(this)">
-                  <label for="condition<%= tags[i].id %>"
-                    class="ml-2 text-md font-medium text-gray-900 dark:text-gray-300">
-                    <%= tags[i].name %>
-                  </label>
-                </div>
+                    onclick="limitCheckboxes(this)" <% if (userData[0].tags.includes(tags[i].name)) { %> checked <% } %>
+                    >
+                    <label for="condition<%= tags[i].id %>"
+                      class="ml-2 text-md font-medium text-gray-900 dark:text-gray-300 cursor-pointer">
+                      <%= tags[i].name %>
+                    </label></li>
+                <!-- </div> -->
+              
+              
                 <% } %><br>
+              </ul>
+            </div>
                   <div class="flex justify-center">
                     <button
                       class=" mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
                       type="submit">Submit</button>
                   </div>
           </form>
+
         </div>
       </div>
     </div>
@@ -193,7 +277,7 @@
         const pictureRadios = document.getElementsByName('picture');
         const uploadedpictureInput = document.getElementById('uploadedpicture');
 
-        
+
 
         let currentpictureIndex = 0;
 
@@ -215,10 +299,10 @@
             const reader = new FileReader();
 
             pictureRadios.forEach(radio => {
-          if (radio.value !== 'upload') {
-            radio.removeAttribute('name');
-          }
-        });
+              if (radio.value !== 'upload') {
+                radio.removeAttribute('name');
+              }
+            });
 
             reader.onload = function (e) {
               pictureImage.src = e.target.result;
@@ -286,6 +370,9 @@
           alert("請選擇1至6個家屬病況。");
         }
       });
+
+
+      
 
     </script>
 </body>
