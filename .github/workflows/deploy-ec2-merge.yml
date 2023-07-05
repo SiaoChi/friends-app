@@ -16,7 +16,7 @@ jobs:
           key: '${{ secrets.EC2_SSH_KEY }}'
           script: |
             echo "Hello from github action, start deploy main to ec2"
-            cd /home/ubuntu/friends-app
+            cd friends-app
             git switch main
             git pull
             echo "git pull done"
