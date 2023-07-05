@@ -18,7 +18,8 @@ jobs:
             echo "Hello from github action, start deploy main to ec2"
             cd /home/ubuntu/friends-app
             git switch main
-						git pull
+            git pull
+            docker kill friends
             docker rm friends
             docker build -t friends . 
-           
+            docker run -d -p 443:3000 --name friends friends

@@ -8,4 +8,3 @@ key.pem
 cert.pem
 
 /ssh/
-/.github/workflows/deploy-ec2-merge.yml
