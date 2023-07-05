@@ -19,7 +19,6 @@ jobs:
             cd /home/ubuntu/friends-app
             git switch main
             git pull
-            docker kill friends
-            docker rm friends
+            echo "git pull done"
             docker build -t friends . 
             docker run -d -p 443:3000 --name friends friends
