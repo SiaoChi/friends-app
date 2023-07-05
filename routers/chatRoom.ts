@@ -4,9 +4,8 @@ import authenticate from "../middleware/authenticate.js";
 
 const router = Router();
 
-router.get('/chat1', (req, res) => res.render('chatRoom1'))
-router.get('/chat2', (req, res) => res.render('chatRoom2'))
-router.get('/chat3', (req, res) => res.render('chatRoom3'))
+router.get('/chat1', (req, res) => res.render('chatRoomTest1'))
+router.get('/chat2', (req, res) => res.render('chatRoomTest2'))
 
 router.get('/chatroom/', [authenticate, chatRoomFunctions.renderChatroomByRoomNameBata])
 router.get('/chatroom/:room', [authenticate, chatRoomFunctions.renderChatroomByRoomNameBata])

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
+    <title>你的智友-聊天室</title>
+    <link href="/dist/output.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .talk {
+            overflow-wrap: anywhere;
+        }
+
+        .message-received {
+            text-align: left;
+            /* 其他相關樣式 */
+        }
+
+        .message-sent {
+            text-align: right;
+            /* 其他相關樣式 */
+        }
+
+        .screen-h {
+            height: calc(100% - 98px);
+        }
+
+        #form {
+            background: rgba(179, 179, 179, 0.484);
+            padding: 0.25rem;
+            position: fixed;
+            bottom: 0;
+            /* left: 0;
+            right: 0; */
+            display: flex;
+            width: 50%;
+            height: 3rem;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
+
+        #input {
+            border: none;
+            padding: 0 1rem;
+            flex-grow: 1;
+            border-radius: 2rem;
+            margin: 0.25rem;
+        }
+
+        #input:focus {
+            outline: none;
+        }
+
+        #nickname-label {
+            list-style-type: none;
+            margin: 0;
+            padding: 0.5rem 1rem;
+        }
+
+
+        #form>button {
+            background: #2198DD;
+            border: none;
+            padding: 0 1rem;
+            margin: 0.25rem;
+            border-radius: 3px;
+            outline: none;
+            color: #fff;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages>ul>li {
+            padding: 0.5rem 1rem;
+        }
+
+        #messages>li {
+            padding: 0.5rem 1rem;
+        }
+
+        #chatroom {
+            height: calc(100vh - 138px);
+        }
+
+        .unread {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            margin-left: 3px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 21px;
+            height: 21px;
+            border-radius: 50%;
+            background-color: #f075c6;
+            color: white;
+        }
+
+
+        /* .red-dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgb(92, 223, 35);
+            border-radius: 50%;
+            display: inline-block;
+            position: absolute;
+            top: 2;
+            right: 2;
+        } */
+
+        .red-dot-header {
+            width: 12px;
+            height: 12px;
+            background-color: rgb(92, 223, 35);
+            border-radius: 50%;
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .chat-person:hover {
+            background-color: #ffe0e0
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('./partials/header') %>
+        <div class="flex justify-start items-start h-[800px] w-full fixed">
+            <div class="w-1/4 h-[90vh] border-r border-gray-300 overflow-auto relative">
+                <!-- <div class="w-1/4 shadow-md p-2 fixed z-20">聊天清單</div> -->
+                <div class="p-2 " id="chatlist">
+                    <% if (chatList && chatList.length> 0) { %>
+                        <% for (let i=0; i < chatList.length; i++) { %>
+                            <div class="cursor-pointer items-center mb-2 bg-gray-100 chat-person relative h-[72px]"
+                                data-senderid="<%= chatList[i].receiverId %>" data-room="<%= chatList[i].room_name %>">
+                                <a onclick="fetchMessages(<%= chatList[i].room_name %>,<%= chatList[i].receiverId %>)"
+                                    class="p-2 w-full flex items-center relative">
+                                    <img class="w-10 h-10 rounded-full" src="<%= chatList[i].receiverPicture %>" alt="">
+                                    <div class="ml-4 w-[160px] truncate">
+                                        <h5 class="text-lg">
+                                            <%= chatList[i].receiverName %>
+                                        </h5>
+                                        <p class="mt-1 truncate">
+                                            <%= chatList[i].last_message %>
+                                        </p>
+                                    </div>
+                                  
+
+                                            <% if (chatList[i].senderId> chatList[i].receiverId) { %>
+
+                                                <% if(chatList[i].lg_id_unread !==0) {%>
+                                                    <div class="unread ">
+                                                        <%= chatList[i].lg_id_unread ? chatList[i].lg_id_unread : '' %>
+                                                    </div>
+                                                    <% } %>
+
+                                                        <% } else { %>
+                                                            <% if(chatList[i].xs_id_unread !==0) {%>
+                                                                <div class="unread ">
+                                                                    <%= chatList[i].xs_id_unread ?
+                                                                        chatList[i].xs_id_unread : '' %>
+                                                                </div>
+                                                                <% } %>
+                                                                    <% } %>
+
+                                                                        <div
+                                                                            class="top-2 right-2 absolute flex justify-end items-end ml-auto w-[100px] h-[60px]  ">
+                                                                            <p class="text-[12px] text-gray-500">
+                                                                                <%=
+                                                                                    chatList[i].updated_at.toISOString().split('T')[0]%>
+                                                                            </p>
+                                                                        </div>
+                                </a>
+                            </div>
+                            <% } %>
+                                <% } %>
+
+                </div>
+            </div>
+            <div class="w-2/4 border-r border-gray-300 overflow-auto relative" id="chatroom">
+                <!-- <div class="w-2/4   shadow-md p-2 fixed z-30">聊天室</div> -->
+                <div class="" style="padding-top: 20px;">
+                    <div id="messages" style="padding-bottom: 5px;"></div>
+                    <form class="" id="form" action="">
+                        <input id="input" autocomplete="off" /><button>Send</button>
+                    </form>
+                </div>
+            </div>
+            <div class="w-1/4 h-[90vh] flex flex-col items-center justify-start z-40 ">
+                <!-- <div class="w-1/4   text-gray-800 p-2 fixed shadow-md">個人資訊</div> -->
+                <div class="pb-3 mt-10 flex flex-col items-center justify-center relative" id="info"></div>
+            </div>
+        </div>
+
+        <!-- <script src="/socket.io/socket.io.js"></script> -->
+        <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+        <script>
+
+            // timezone
+            const options = {
+                timeZone: 'Asia/Taipei',
+                hour: 'numeric',
+                minute: 'numeric'
+            };
+
+            // 畫面直接提供的資訊，不透過url or fetch
+            const messages = document.getElementById('messages');
+            const form = document.getElementById('form');
+            const input = document.getElementById('input');
+            const chatList = document.getElementById('chatlist')
+            const name = localStorage.getItem('name');
+            console.log('username', name);
+            const userPicture = localStorage.getItem('userPicture');
+            console.log('userPicture', userPicture);
+
+
+
+            // 如果網址有room,id的邏輯，會因應點擊右方list調整所以使用let
+            let roomName = null;
+            let roomNameMatch = window.location.href.match(/\/chatroom\/(\d+)/);
+
+            if (roomNameMatch) {
+                roomName = roomNameMatch[1];
+                console.log('roomName', roomName);
+            } else {
+                // 处理没有"chatroom"的情况
+                // 可以在这里给出一个默认的roomName值或者执行其他逻辑
+            }
+            let urlParams = new URLSearchParams(window.location.search);
+            let receiverId = urlParams.get('id');
+
+
+            // 點擊ChatList後需要被fetchInfo更新的資訊
+            const info = document.getElementById('info');
+            let receiverPicture
+            let receiverName
+
+            async function fetchMessages(room, newReceiverId) {
+                console.log('room:', room, '收訊人ID', newReceiverId);
+                receiverId = newReceiverId;
+                roomName = room;
+                await fetchReceiverInfo(receiverId);
+                await fetchRoomMessages(room, receiverId);
+            }
+
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                if (!roomName) {
+                    if (senderId > receiverId) {
+                        roomName = `${receiverId}${senderId}`;
+                    }
+                    else {
+                        roomName = `${senderId}${receiverId}`;
+                    }
+                }
+                if (input.value) {
+                    socket.emit("send", { name, message: input.value, senderId, receiverId, room: roomName, senderPicture: userPicture });
+                    const time = new Date().toLocaleString('zh-TW', options);
+                    let userInput = document.createElement('li');
+                    // 主聊天室畫面更新 
+                    userInput.classList.add('message-sent', 'flex', 'justify-end');
+                    let text = document.createElement('text');
+                    text.classList.add('talk', 'ml-1', 'bg-slate-200', 'rounded-lg', 'p-2');
+                    text.textContent = input.value;
+
+                    let timeStamp = document.createElement('text');
+                    timeStamp.classList.add('rounded-lg', 'text-[7px]', 'text-gray-400', 'mt-5', 'mr-2');
+                    timeStamp.textContent = time;
+
+                    userInput.appendChild(timeStamp);
+                    userInput.appendChild(text);
+                    messages.appendChild(userInput);
+
+                    // 下滑到最底部
+                    const container = document.getElementById('chatroom');
+                    container.scrollTop = container.scrollHeight - container.clientHeight;
+
+                    // [ChatList] 畫面更新
+                    const existingChatPerson = document.querySelector(`[data-senderid="${receiverId}"]`);
+                    const userIcon = '/img/user.png'
+
+                    if (existingChatPerson !== null && existingChatPerson !== undefined) {
+                        const messageElement = existingChatPerson.querySelector('.mt-1');
+                        messageElement.textContent = input.value;
+                        chatList.prepend(existingChatPerson);
+                    } else {
+                        const chatPerson = `
+                                            <div class="chat-person mb-2 p-2" data-senderid= "${receiverId}" >
+                                                <a href="/chatroom/${roomName}?id=${receiverId}" class="flex items-center relative" data-room="${roomName}" >
+                                                    <img class="w-10 h-10" src="${receiverPicture}" alt="">
+                                                    <div class="ml-4">
+                                                    <h5 class="text-lg">${receiverName}</h5>
+                                                    <p class="mt-1">${input.value}</p>
+                                                    </div>
+                                                           
+                                                </a>
+                                            </div>
+                                       `;
+                        chatList.insertAdjacentHTML('afterbegin', chatPerson);
+                    }
+                    input.value = '';
+                }
+            });
+
+
+            // [socket.io]聽自己id的socket範圍，如果有訊息就拉出來
+            socket.on("message", function (data) {
+                const { nickname, message, senderId, receiverId, room, time, senderPicture } = data;
+                console.log('新訊息', time);
+                // [header] 新訊息：chat-icon加入紅點
+                const messageIcon = document.getElementById('messageIcon');
+                const redDot = document.createElement('span');
+                redDot.className = 'red-dot-header';
+                messageIcon.appendChild(redDot);
+
+                // [chatroom] 新訊息：如果user正在傳送的聊天室中，畫面會更新文字
+                if (Number(room) === Number(roomName)) {
+                    let item = document.createElement('li');
+                    item.classList.add('message-received', 'flex');
+                    let img = document.createElement('img');
+                    img.classList.add('w-[30px]', 'h-[30px]', 'rounded-full');
+                    img.src = `${receiverPicture}`;
+                    img.alt = 'picture';
+
+                    let text = document.createElement('text');
+                    text.classList.add('talk', 'ml-2', 'bg-slate-200', 'rounded-lg', 'p-2');
+                    text.textContent = message;
+
+                    let timeStamp = document.createElement('text');
+                    timeStamp.classList.add('rounded-lg', 'text-[7px]', 'text-gray-400', 'mt-5', 'ml-2');
+                    timeStamp.textContent = time;
+
+                    item.appendChild(img);
+                    item.appendChild(text);
+                    item.appendChild(timeStamp);
+                    messages.appendChild(item);
+
+                    const container = document.getElementById('chatroom');
+                    container.scrollTop = container.scrollHeight - container.clientHeight;
+                }
+
+                // [chatList] 新訊息：(1) 已經存在的user更新文字與小綠點 (2)沒存在的user需要建立新的div
+                const existingChatPerson = document.querySelector(`[data-senderid="${senderId}"]`);
+                console.log('existingChatPerson', existingChatPerson);
+
+                if (existingChatPerson) {
+                    const aElement = existingChatPerson.querySelector('a');
+                    console.log('aElement', aElement);
+                    const messageElement = existingChatPerson.querySelector('.mt-1');
+                    messageElement.textContent = message;
+                    // let span = document.createElement('span');
+                    // span.classList.add('red-dot');
+                    // aElement.appendChild(span);
+                    chatList.prepend(existingChatPerson);
+
+                    // 如果傳送來的訊息，不是現在的聊天房間，就要新增未讀的資訊
+                    if ((Number(room) !== Number(roomName))) {
+                        const unRead = existingChatPerson.querySelector('a .unread');
+
+                        // 情境1：傳送過來時，已經有未讀訊息的div class=unread，抓取unread的value +=1
+                        if (unRead) {
+
+                            console.log('unread', unRead);
+                            if (unRead.style.display === 'none') {
+                                unRead.textContent = 1;
+                            } else {
+                                unRead.textContent = (Number(unRead.textContent) || 0) + 1;
+                            }
+                            console.log('unread text', unRead.textContent);
+                            unRead.style.display = 'flex';
+                            console.log('unRead after', unRead);
+                        } else {
+                            // 情境２：傳送過來時，沒有未讀訊息的class class=unread，解法：加入一個div呈現unread畫面 unread value = 1
+                            let unRead = document.createElement('div');
+                            unRead.classList.add('unread');
+                            aElement.appendChild(unRead);
+                            unRead.textContent = 1;
+                            unRead.style.display = 'flex';
+                            console.log('創造新unread', unRead);
+                        }
+                    }
+
+                } else {
+                    console.log('新聊天者');
+                    const chatPerson = ` <div class="cursor-pointer items-center mb-2 bg-gray-100 chat-person relative h-[72px]" data-senderid="${senderId}" >
+                                           <a onclick="fetchMessages(${room},${senderId})"
+                                                class="p-2 w-full flex items-center relative">
+                                                <img class="w-10 h-10 rounded-full" src="${senderPicture}" alt="">
+                                                <div class="ml-4">
+                                                    <h5 class="text-lg">${senderId}</h5>
+                                                    <p class="mt-1">${message}</p>
+                                                </div>  
+                                                
+                                                <div class="unread">1</div>
+                                            </a>
+                                         </div>
+                                       `;
+                    chatList.insertAdjacentHTML('afterbegin', chatPerson);
+                }
+            });
+
+            async function fetchReceiverInfo(receiverId) {
+                try {
+                    const fetchData = await fetch(`/api/v1/user/profile/${receiverId}`)
+                    const receiverInfo = await fetchData.json();
+                    // console.log('fetchReceiverInfo->', receiverInfo);
+                    receiverPicture = receiverInfo[0].picture;
+                    receiverName = receiverInfo[0].name;
+                    const fetchInfo = `
+                                <div class="mt-4 flex flex-col justify-center items-center overflow-auto">
+                                    <img class="p-10 w-[300px]"
+                                        src="${receiverPicture}"
+                                        alt="圖片" >
+
+                                         <div class="cursor-pointer py-2 w-[160px] bg-red rounded-full text-white transition-all delay-100 hover:scale-105">
+                                            <a  href="/user/profile/${receiverId}" class="flex justify-center items-center" href="">
+                                                <p class="text-center">查看專頁</p>
+                                                <img src="/img/send.svg" class="w-[15px] ml-2">
+                                            </a>
+                                        </div>     
+                                    <div class="mt-4 font-medium">
+                                        <div class="">智友稱呼: ${receiverName}</div>
+                                        <ul class="mt-1">
+                                            <li class="mt-1 ">家人狀況: ${receiverInfo[0].level}</li>
+                                            <li class="mt-1">主要照顧者: ${receiverInfo[0].carer}</li>
+                                            <li class="mt-1">現有煩惱: ${receiverInfo[0].current_problem}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                 `
+                    info.innerHTML = fetchInfo;
+                } catch (err) {
+                    console.error('Error occurred while fetching fetchRoomMessages:', error);
+                }
+            }
+
+            async function fetchRoomMessages(room) {
+                try {
+                    const fetchData = await fetch(`/api/v1/chatroom/${room}`);
+                    const fetchRoomMessages = await fetchData.json();
+                    // console.log('歷史訊息', fetchRoomMessages);
+                    let messageUl = document.createElement('ul');
+
+                    fetchRoomMessages.forEach(item => {
+                        let userInput = document.createElement('li');
+
+                        if (item.sender_id === Number(senderId)) {
+                            userInput.classList.add('message-sent', 'flex', 'justify-end');
+                            let text = document.createElement('text');
+                            text.classList.add('talk', 'ml-1', 'bg-slate-200', 'rounded-lg', 'p-2');
+                            text.textContent = item.message;
+
+                            let timeStamp = document.createElement('text');
+                            timeStamp.classList.add('rounded-lg', 'text-[7px]', 'text-gray-400', 'mt-5', 'mr-2');
+                            timeStamp.textContent = item.time;
+
+                            userInput.appendChild(timeStamp);
+                            userInput.appendChild(text);
+
+                        } else {
+                            userInput.classList.add('message-received', 'flex');
+                            let img = document.createElement('img');
+                            img.classList.add('w-[30px]', 'h-[30px]', 'rounded-full');
+                            img.src = receiverPicture;
+                            img.alt = '';
+
+                            let text = document.createElement('text');
+                            text.classList.add('talk', 'ml-2', 'bg-slate-200', 'rounded-lg', 'p-2',);
+                            text.textContent = item.message;
+
+                            let timeStamp = document.createElement('text');
+                            timeStamp.classList.add('rounded-lg', 'text-[7px]', 'text-gray-400', 'mt-5', 'ml-2');
+                            timeStamp.textContent = item.time;
+
+                            userInput.appendChild(img);
+                            userInput.appendChild(text);
+                            userInput.appendChild(timeStamp);
+                        }
+                        messageUl.appendChild(userInput);
+                    });
+                    messages.innerHTML = ''; // 清空messages容器
+                    messages.appendChild(messageUl); // 添加新的messageUl
+
+                    const container = document.getElementById('chatroom');
+                    container.scrollTop = container.scrollHeight - container.clientHeight;
+                } catch (err) {
+                    console.error('Error occurred while fetching fetchRoomMessages:', err);
+                }
+            }
+            // 未讀通知的小綠點
+            // [chatroom] 點擊後抓取 div data-room的資料，再把資訊刪除
+            const chatListDiv = document.getElementById('chatlist');
+            chatListDiv.addEventListener('click', async (event) => {
+                // event.preventDefault();
+
+                const target = event.target.closest('.chat-person');
+                console.log(target);
+                const roomName = target.getAttribute('data-room');
+                // const redDot = target.querySelector('a .red-dot');
+                const unRead = target.querySelector('a .unread');
+                const allPersonChat = document.querySelectorAll('.chat-person');
+                // 點擊的改紅色，其他保持灰色
+                allPersonChat.forEach(item => {
+                    item.classList.remove('bg-pink')
+                });
+                target.classList.add('bg-pink');
+                // if (redDot) {
+                //     redDot.style.display = 'none';
+                //     await fetchReadMessage(roomName);
+                //     console.log(Number(senderId), Number(receiverId), roomName);
+                //     await setUnreadToZero(Number(senderId), Number(receiverId), roomName)
+                //     console.log('reset to 0');
+                // };
+                if (unRead) {
+                    await setUnreadToZero(Number(senderId), Number(receiverId), roomName)
+                    unRead.style.display = 'none';
+                }
+            })
+
+            // [header] 點擊後，畫面綠點消失
+            // messageIcon.addEventListener('click', function () {
+            //     messageIcon.removeChild(redDot);
+            // });
+
+            // [chatList] 點擊會通知user已讀所有訊息，reset unread to 0 
+            function setUnreadToZero(senderId, receiverId, roomName) {
+                fetch(`/api/v1/chatroom/read`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ senderId, receiverId, roomName })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'success') {
+                            console.log('reset success');
+                            return
+                        }
+                        throw new Error('reset message status failed')
+                    })
+                    .catch(error => { console.error(error); });
+            }
+
+            // [chatList] 點擊chatList其中一個user會觸發的
+            function fetchReadMessage(room) {
+                console.log('fetchReadMessage');
+                fetch(`/api/v1/chatroom/${room}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ room })
+                }).then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'success') {
+                            console.log('dataMsgRead', data.message);
+                            return
+                        }
+                        console.log('error', data);
+                        throw new Error('reset message status failed')
+                    })
+                    .catch(error => { console.error(error); });
+            }
+
+            async function fetchChatPersonData(receiverId, room) {
+                await fetchReceiverInfo(receiverId);
+                await fetchRoomMessages(room);
+            }
+            fetchChatPersonData(receiverId, roomName)
+
+        </script>
+</body>
+
+</html>

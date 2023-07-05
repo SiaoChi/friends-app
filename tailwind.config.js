@@ -4,8 +4,8 @@ export default {
     "./views/partials/header.ejs",
     "./views/partials/footer.ejs",
     "./views/chatRoom.ejs",
-    "./views/chatRoom1.ejs",
-    "./views/chatRoom2.ejs",
+    "./views/chatRoomTest1.ejs",
+    "./views/chatRoomTest2.ejs",
     "./views/chatRoom3.ejs",
     "./views/login.ejs",
     "./views/userProfile.ejs",
@@ -62,7 +62,7 @@ export default {
         'transparent':'transparent',
         'blue':'#2198DD',
         'red':'#f075c6',
-        'pink':'#ffcdba'
+        'pink':'#ffe0e0'
       },
       fontFamily: {
         sans: ['Graphik', 'sans-serif'],

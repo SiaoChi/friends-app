@@ -49,7 +49,6 @@ export async function getUserProfileData(id: number | number[]) {
     let values;
 
     if (Array.isArray(id)) {
-        // console.log('1');
         query = `
             SELECT us.*, GROUP_CONCAT(at.content) AS articles
             FROM users us
@@ -59,7 +58,6 @@ export async function getUserProfileData(id: number | number[]) {
         `;
         values = [id];
     } else {
-        // console.log('2');
         query = `
             SELECT us.*,  AS articles
             FROM users us
@@ -71,7 +69,7 @@ export async function getUserProfileData(id: number | number[]) {
     }
 
     const [rows] = await pool.query(query, values);
-
+    if(rows === null) return [];
     return rows;
 }
 

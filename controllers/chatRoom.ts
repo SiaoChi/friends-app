@@ -14,7 +14,6 @@ export async function renderChatroomByRoomNameBata(req: Request, res: Response) 
         if (!room) {
             // 查詢是不是曾經有聊過天
             const userRoom = await chatRoomModel.getUserRoom(userId);
-
             if (Array.isArray(userRoom) && userRoom.length > 0) {
                 const chatList = await chatRoomModel.getChatListById(userId);
                 if (Array.isArray(chatList) && chatList.length > 0) {
@@ -24,7 +23,9 @@ export async function renderChatroomByRoomNameBata(req: Request, res: Response) 
                 }
             }
             // 沒有聊天室的人，回傳空白聊天室
-            return res.render('chatRoom')
+            const chatList:any = [];
+            // const chatList = await chatRoomModel.getChatListById(userId);
+            return res.render('chatRoomMain',{ chatList })
         }
         await chatRoomModel.checkRoom(userId, Number(id), room)
         // 有房間號碼，針對id=?傳送訊息
@@ -32,7 +33,7 @@ export async function renderChatroomByRoomNameBata(req: Request, res: Response) 
         const chatList = await chatRoomModel.getChatListById(userId);
         // console.log('messages---->',messages);
         // console.log('chatList---->', chatList);
-        res.status(200).render('test', { chatList })
+        res.status(200).render('chatRoomMain', { chatList })
 
     } catch (err) {
         if (err instanceof Error) {
@@ -102,9 +103,7 @@ export async function fetchChatList(req: Request, res: Response) {
 
 // 等待刪除
 export async function renderChatroomByRoomName(req: Request, res: Response) {
-
     const { room } = req.params;
-
     try {
         // 網址沒有房間號碼
         if (!room) {
@@ -123,13 +122,13 @@ export async function renderChatroomByRoomName(req: Request, res: Response) {
                 }
             }
             // 沒有聊天室的人，回傳空白聊天室
-            return res.render('chatRoom')
+            return res.render('chatRoomMain')
         }
 
         // 有房間號碼，針對id=?傳送訊息
         const messages = await chatRoomModel.getMessagesByRoom(room)
         // console.log(messages);
-        res.status(200).render('chatRoom', { messages })
+        res.status(200).render('chatRoomMain', { messages })
 
     } catch (err) {
         if (err instanceof Error) {

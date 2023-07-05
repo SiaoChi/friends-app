@@ -20,6 +20,7 @@ export async function renderRecommendFriends(req: Request, res: Response) {
         const { userId } = res.locals;
         const friendsId = await friendsModels.getRecommendFriendsById(userId);
         const friendsData = await userModels.getUserProfileData(friendsId);
+        // const friendsData:any = [];
         res.render('recommendFriends', { friendsData })
     } catch (err) {
         res.status(500).json({ errors: err })

@@ -133,7 +133,7 @@
         </div>
       </form>
 
-      <div class="mr-6 hidden md:block relative transition-all delay-100 hover:scale-110" id="messageIcon">
+      <div class="mr-6 block relative transition-all delay-100 hover:scale-110" id="messageIcon">
         <a href="/chatroom">
           <img class="header-icon" src="/img/messenger.svg" alt="message">
         </a>
@@ -157,7 +157,7 @@
       </div>
 
       <div id="sign-in-picture" style="display: none;">
-        <a href="/user/profile"><img src="/img/users/1.png" class="w-[40px] h-[40px] rounded-full"
+        <a href="/user/profile"><img src="" class="w-[40px] h-[40px] rounded-full"
             alt="signin-photo"></a>
       </div>
 
@@ -170,14 +170,19 @@
       if (senderId) {
         console.log('1');
         document.getElementById("sign-in-btn").style.display = "none";
-        document.getElementById("sign-in-picture").style.display = "block";
+        // document.getElementById("sign-in-picture").style.display = "block";
 
         fetch(`/api/v1/user/profile/${senderId}`)
           .then(response => response.json())
           .then(data => {
             if (data) {
               const pictureUrl = data[0].picture;
-              document.getElementById("sign-in-picture").querySelector('img').src = pictureUrl;
+              console.log(pictureUrl);
+              if(pictureUrl) {
+                document.getElementById("sign-in-picture").querySelector('img').src = pictureUrl;
+                document.getElementById("sign-in-picture").style.display = "block";
+                localStorage.setItem('userPicture', pictureUrl);
+              } 
             }
           })
           .catch(error => { console.log(error); });
@@ -209,20 +214,18 @@
       // 當頁面可見性改變時的處理函式
       function handleVisibilityChange() {
         if (document.visibilityState === 'visible') {
-          // 使用者回到頁面，重新載入
-          location.reload();
+          socket = io({
+          auth: (cb) => {
+            cb({ userId: senderId })
+          }
+        })
+        socket.emit('joinMyRoom', String(senderId));
+          // location.reload();
         }
       }
 
       // 監聽可見性改變事件
       document.addEventListener('visibilitychange', handleVisibilityChange);
-
-      // 監聽 window.onfocus 事件
-      window.onfocus = function () {
-        // 使用者回到頁面，重新載入
-        location.reload();
-      };
-
 
     </script>
 

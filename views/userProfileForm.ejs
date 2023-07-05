@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <link href="/dist/output.css" rel="stylesheet" />
   <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
 
@@ -41,33 +42,13 @@ ul.boxtags li label{
     -ms-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
-    transition: all .2s;
+    transition: all .1s;
 }
 
 ul.boxtags li label {
     padding: 8px 12px;
     cursor: pointer;
 }
-
-/* ul.boxtags li label::before {
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    font-size: 12px;
-    padding: 2px 6px 2px 2px;
-    content: "\f067";
-    transition: transform .3s ease-in-out;
-} */
-
-/* ul.boxtags li input[type="checkbox"]:checked + label::before {
-    content: "\f00c";
-    transform: rotate(-360deg);
-    transition: transform .3s ease-in-out;
-} */
 
 ul.boxtags li input[type="checkbox"]:checked + label {
     border: 2px solid #1bdbf8;
@@ -101,9 +82,8 @@ ul.boxtags li input[type="checkbox"]:focus + label {
 
             <div class="flex items-center justify-center mb-5">
               <button type="button" id="prevButton" class="mr-6">◀</button>
-              <img class="user-picture " id="pictureImage" src="/img/users/1.png" alt="大頭照">
+              <img class="user-picture " id="pictureImage" src=" <%= userData[0].picture ? userData[0].picture : '/img/users/1.png' %>" alt="大頭照">
               <button type="button" id="nextButton" class="ml-6">►</button>
-
             </div>
             <div>
               <input type="radio" name="picture" value="/img/users/1.png" checked style="display: none;">
@@ -183,6 +163,9 @@ ul.boxtags li input[type="checkbox"]:focus + label {
               <option value="嘉義市">嘉義市</option>
               <option value="嘉義縣">嘉義縣</option>
               <option value="屏東縣">屏東縣</option>
+              <option value="花蓮縣">澎湖縣</option>
+              <option value="台東縣">澎湖縣</option>
+              <option value="金門縣">連江縣</option>
               <option value="澎湖縣">澎湖縣</option>
               <option value="澎湖縣">連江縣</option>
             </select>
@@ -229,15 +212,13 @@ ul.boxtags li input[type="checkbox"]:focus + label {
             <label class="block mb-2 text-md font-medium text-gray-900 dark:text-white"
               for="currentProblems">你目前遇到的問題：</label>
             <textarea
-              class="block w-full h-[100px] p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 "
+              class="block w-full h-[100px] p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500"
               id="currentProblems" name="currentProblems"
-              value="<%= userData[0].current_problem ? userData[0].current_problem : '' %>" required><%= userData[0].current_problem ? userData[0].current_problem : '' %>
-        </textarea><br>
+              required><%= userData[0].current_problem%></textarea><br>
 
             <label class="block text-md font-medium text-gray-900 dark:text-white" for="conditions">家屬病況：</label>
-            <p class="text-xs mb-4 text-gray-700 text-red">*病況為重要智慧媒合資訊，請點選最符合的6個狀況</p>
+            <p class="text-xs mb-4  text-red">*病況為重要智慧媒合資訊，請點選最符合的6個狀況</p>
 
-            
         <div class="flex items-center justify-center w-full ">
             <% let count=0; %>
             <ul class="boxtags">
@@ -339,17 +320,6 @@ ul.boxtags li input[type="checkbox"]:focus + label {
         }
       });
 
-
-      // updatePreview();
-
-
-      // function previewImage(input) {
-      //   var preview = document.getElementById('preview');
-      //   if (input.value) {
-      //     preview.src = input.value;
-      //   }
-      // }
-
       window.onload = function () {
         var selectElement = document.getElementById("picture");
         previewImage(selectElement);
@@ -359,7 +329,7 @@ ul.boxtags li input[type="checkbox"]:focus + label {
         let checkboxes = document.querySelectorAll('input[name="tags"]:checked');
         if (checkboxes.length > 6) {
           checkbox.checked = false;
-          alert('請點選最接近的6個病況，以作為最佳配對建議')
+          swal('請點選最接近的6個病況，以作為最佳配對建議')
         }
       }
 
@@ -367,7 +337,7 @@ ul.boxtags li input[type="checkbox"]:focus + label {
         let checkboxes = document.querySelectorAll('input[name="tags"]:checked');
         if (checkboxes.length < 1 || checkboxes.length > 6) {
           event.preventDefault();
-          alert("請選擇1至6個家屬病況。");
+          swal("請選擇1至6個家屬病況。");
         }
       });
 

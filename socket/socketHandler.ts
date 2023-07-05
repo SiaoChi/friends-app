@@ -4,11 +4,12 @@ import * as chatRoomModel from "../models/chatRoom.js"
 
 
 interface data {
-  nickname: string;
+  name: string;
   message: string;
   senderId: number;
   receiverId: number;
   room: string;
+  senderPicture: string
 }
 
 
@@ -31,20 +32,19 @@ export function socketHandler(io: Server) {
 
     // send message to friend 
     socket.on('send', async (data: data) => {
-      const { nickname, message, senderId, receiverId, room } = data;
+      const { name, message, senderId, receiverId, room , senderPicture } = data;
+      console.log('圖片',senderPicture);
       const time: string = new Date().toLocaleString('zh-TW',options);
-      console.log('收到訊息-->', nickname, message, senderId, receiverId, room, time);
+      console.log('收到訊息-->' , name , '發出訊息：' , message, '傳送人ID:', senderId,'收訊人ID:', receiverId,"聊天房間", room, time);
       await chatRoomModel.checkRoom(senderId, receiverId, room);
-      socket.to(receiverId.toString()).emit("message", { nickname, message, senderId, receiverId, room ,time });
+      socket.to(receiverId.toString()).emit("message", { name, message, senderId, receiverId, room ,time ,senderPicture });
       await chatRoomModel.saveMessage(message, senderId, receiverId, room);
     })
 
     // 離開聊天室(待修改邏輯)
     socket.on('disconnect', (e: any) => {
       const time: string = new Date().toLocaleString('zh-TW',options);
-      console.log(time);
       const userId = socket.handshake.auth.userId;
-      // io.emit('leave', { nickname: 'user', message: '離開聊天室', room: userId, time });
       console.log(`userId:${userId} 於${time}離開聊天室`);
     })
 

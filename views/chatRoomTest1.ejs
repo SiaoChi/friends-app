@@ -145,6 +145,7 @@
         var input = document.getElementById('input');
         var nicknameInput = document.getElementById('nickname-input');
         var receiverInput = document.getElementById('receiverId')
+        const senderPicture = '/img/users/1.png'
 
         // 以下為房間號碼設定，senderId需要抓userId的資料，receiverId需要抓收件人Id 
         const senderId = "3";
@@ -163,7 +164,7 @@
                 room = `${senderId}${receiverId}`;
             }
             if (input.value) {
-                socket.emit("send", { nickname, message: input.value, senderId, receiverId, room });
+                socket.emit("send", { nickname, message: input.value, senderId, receiverId, room ,senderPicture});
                 // socket.emit("send", "hi");
 
                 console.log('send');

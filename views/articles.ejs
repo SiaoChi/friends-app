@@ -9,7 +9,7 @@
     <title>你的智友-心情分享</title>
 </head>
 
-<body>
+<body class="bg-slate-100">
     <%- include('./partials/header') %>
 
         <div class="flex flex-col items-center justify-center py-4 bg-slate-100">
@@ -20,7 +20,7 @@
                         <p class="text-[14px] mb-3">
                             <%= userArticles[i].created_at %>
                         </p>
-                        <img src="/img/delete.svg" class="w-[20px] ml-auto pb-3">
+                        <img src="./img/delete.svg" class="w-[20px] ml-auto pb-3">
                     </div>
                     <div class=" bg-white w-[550px]  p-5 rounded-b-lg  shadow-sm">
                         <div class="flex items-center">

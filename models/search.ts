@@ -6,8 +6,10 @@ const SearchArticleSchema = z.object({
     title:z.string(),
     content:z.string(),
     created_at:z.string(),
-    user_id:z.number()
-})
+    user_id:z.number(),
+    name:z.string(),
+    picture:z.string()
+})  
 
 
 export async function getFriendsByKeyword(keyword:string){
@@ -23,16 +25,18 @@ export async function getFriendsByKeyword(keyword:string){
 export async function getArticleByKeyword(keyword: string, currPage: number) {
     const [data] = await pool.query(
         `
-        SELECT * FROM articles WHERE title  LIKE '%${keyword}%' OR content  LIKE '%${keyword}%' 
+        SELECT articles.* , users.picture , users.name FROM articles
+        INNER JOIN users ON users.id = articles.user_id 
+        WHERE title  LIKE '%${keyword}%' OR content  LIKE '%${keyword}%' 
         ORDER BY created_at limit 10 offset ?
-        `,[currPage * 10]
+        `,[currPage * 20]
     )
 
     const [next] = await pool.query(
         `
         SELECT id FROM articles WHERE title  LIKE '%${keyword}%' OR content  LIKE '%${keyword}%' 
         ORDER BY created_at limit 1 offset ?
-        `,[((currPage + 1) * 10)]
+        `,[((currPage + 1) * 20)]
     )
 
     if (data) {

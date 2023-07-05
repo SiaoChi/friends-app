@@ -6,7 +6,6 @@ export async function getArticleByKeyword(req: Request, res: Response) {
         const { keyword } = req.query as { keyword: string }
         const  currPage  = Number(req.query.paging) || 0
         const data = await searchModels.getArticleByKeyword(keyword, currPage);
-        // console.log('result',data);
         res.render('articles', { userArticles: data.userArticles , nextPaging: data.nextPaging })
 
     } catch (err) {
