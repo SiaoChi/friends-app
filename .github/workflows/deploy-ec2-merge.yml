@@ -9,16 +9,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: deploy to ec2
+      - name: deploy to ec2 
         uses: SiaoChi/friends-app@yml
+      - run : cd friends-app
+      - run : pwd
+      - run : echo 'Try to deploy yml'
         with:
           host: '${{ secrets.HOST_DNS }}'
           username: '${{ secrets.EC2_USERNAME }}'
           key: '${{ secrets.EC2_SSH_KEY }}'
-          script: |
-            echo "Hello from github action, start deploy main to ec2"
-            cd friends-app
-            git switch yml
-            git pull
-            echo "git pull done"
             
