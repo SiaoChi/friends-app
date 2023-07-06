@@ -9,8 +9,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-            path: friends-app
       - name: deploy to ec2
         uses: SiaoChi/friends-app@main
         with:
@@ -18,11 +16,9 @@ jobs:
           username: '${{ secrets.EC2_USERNAME }}'
           key: '${{ secrets.EC2_SSH_KEY }}'
           script: |
+            echo "Hello from github action, start deploy main to ec2"
             cd friends-app
-            pwd
-            echo "Hello from github action, start deploy main to ec2" 
             git switch main
             git pull
             echo "git pull done"
-            docker build -t friends . 
-            docker run -d -p 443:3000 --name friends friends
+            
