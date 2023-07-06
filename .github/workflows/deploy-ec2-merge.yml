@@ -9,20 +9,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run a one-line script
-        run: echo Hello from Octo Organization
-      - name: deploy to ec2
+        run:  echo Hello from Octo Organization
+      - name: Navigate to friends-app directory
+        run : cd /home/ubuntu/friends-app
+      - name: Switch to the yml branch
+        run : git switch yml
+      - name: Pull latest changes
+        run : git pull
+      - name: Run container
+        run : docker run -d -p 443:3000 --name friends friends
+      - name: Build container
+        run : docker build -t friends .
+      - name: Deploy to EC2
         uses: SiaoChi/friends-app@yml
         with:
           host: '${{ secrets.HOST_DNS }}'
           username: '${{ secrets.EC2_USERNAME }}'
           key: '${{ secrets.EC2_SSH_KEY }}'
-          script: |
-            echo "Hello from github action, start deploy main to ec2"
-            cd /home/ubuntu/friends-app
-            git switch main
-            git pull
-            docker kill friends
-            docker rm friends
-            docker build -t friends . 
-            docker run -d -p 443:3000 --name friends friends
-            
