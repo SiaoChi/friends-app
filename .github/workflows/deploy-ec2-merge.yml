@@ -2,7 +2,7 @@ name: Deploy to EC2 on merge
 'on':
   push:
     branches:
-      - main
+      - yml
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -10,7 +10,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: deploy to ec2
-        uses: SiaoChi/friends-app@main
+        uses: SiaoChi/friends-app@yml
         with:
           host: '${{ secrets.HOST_DNS }}'
           username: '${{ secrets.EC2_USERNAME }}'
@@ -18,7 +18,7 @@ jobs:
           script: |
             echo "Hello from github action, start deploy main to ec2"
             cd friends-app
-            git switch main
+            git switch yml
             git pull
             echo "git pull done"
             
