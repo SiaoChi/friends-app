@@ -22,7 +22,6 @@ jobs:
             docker volume prune -f
             git switch yml
             git pull
-            echo "git pull done"
             docker build -t friends . 
             docker run -d -p 443:3000 --name friends friends 
             
