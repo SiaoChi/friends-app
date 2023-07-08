@@ -40,7 +40,7 @@
                             <img src="/img/back.svg" class="w-[15px] ml-2 hover:translate-x-2">
                         </button>
                         <button onclick="userProfile(<%= singleArticleData[0].user_id %>)" class="ml-4 flex justify-center items-center mt-2 w-[120px] h-[35px] bg-blue rounded-full
-                             text-blue-500">
+                             text-blue-500" id="send-msg"> 
                             <p class=" text-white">關心智友</p>
                             <img src="/img/send.svg" class="w-[15px] ml-2 hover:translate-x-2">
                         </button>
@@ -62,6 +62,13 @@
             function goBack() {
                 window.history.back();
             }
+
+            const receiverId = <%= singleArticleData[0].user_id %>;
+            const sendBtn =  document.getElementById('send-msg');
+            console.log(receiverId , senderId , sendBtn);
+            if (Number(receiverId) === Number(senderId)){
+                sendBtn.style.display = 'none'}
+
         </script>
 </body>
 
