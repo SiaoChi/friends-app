@@ -40,18 +40,31 @@ export async function getAllUserArticlesData() {
     return results
 }
 
-export async function getArticleByID(id: number) {
+export async function getArticleByID(id: number | number[]) {
+    let query = `
+      SELECT articles.*, users.picture, users.name
+      FROM articles
+      INNER JOIN users ON users.id = articles.user_id
+      WHERE articles.id `;
+    
+    if (Array.isArray(id)) {
+      query += `IN (?)`;
+    } else {
+      query += `= ?`;
+    }
+  
+    query += ` ORDER BY created_at DESC`;
+  
+    const [results] = await pool.query(query, [id]);
+    return results;
+  }
 
-    const [results] = await pool.query(
-        `SELECT articles.* ,users.picture , users.name FROM articles
-        INNER JOIN users ON users.id = articles.user_id
-        where articles.id = ?
-        ORDER BY created_at DESC;
-        `, [id]
-    )
-    // console.log(results);
-    return results
-}
+// async function printArticle(){
+//   console.log(await getArticleByID(56))
+//   console.log(await getArticleByID([56,67]))
+// }
+
+// printArticle()
 
 export async function updateArticleByID(id: number, title: string, content: string, date: string) {
     const result = await pool.query(

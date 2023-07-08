@@ -16,6 +16,11 @@ export function getLogInPage(req: Request, res: Response) {
 export async function signUp(req: Request, res: Response) {
     try {
         const { name, email, password } = req.body;
+        const isUser = await userModel.checkUser(email);
+        console.log('isUser',isUser);
+        if(isUser){
+            return res.status(400).json({message:"This email already exists."})
+        }
         const userId = await userModel.createUser(name, email);
         await userLoginModel.createNativeProvider(userId, password);
         const token = generateToken(userId);
@@ -36,6 +41,7 @@ export async function signUp(req: Request, res: Response) {
                     redirectUrl: url
                 }
             })
+        
     } catch (err) {
         if (err instanceof Error) {
             res.status(400).json({ errors: err.message });
@@ -49,16 +55,15 @@ export async function signIn(req: Request, res: Response) {
     try {
         const { email, password } = req.body;
         const user = await userModel.findUserByEmail(email);
-        if (!user) {
+        if (typeof user === 'undefined') {
             throw new Error("user not exist");
-        }
+        }  
         const isValidPassword = await userLoginModel.checkNativeProviderToken(user.id, password);
         if (!isValidPassword) {
             throw new Error("invalid password");
         }
         const token = generateToken(user.id);
         const url = "/user/profile";
-        // console.log('user',user);
         res
             .cookie("jwtToken", token)
             .status(200)
@@ -75,8 +80,8 @@ export async function signIn(req: Request, res: Response) {
             })
     } catch (err) {
         if (err instanceof Error) {
-            res.status(400).json({ errors: err.message })
-            return;
+            return res.status(400).json({ errors: err.message })
+            
         }
         res.status(500).json({ errors: "sign in failed" })
     }

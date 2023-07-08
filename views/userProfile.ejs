@@ -21,10 +21,10 @@
             <%- include('./partials/sideBar') %>
                 <!-- 個人資料 -->
                 <div
-                    class="space-y-4 font-medium  w-vw-30 h-vh-90 p-6 flex flex-col justify-start items-center  bg-white overflow-y-scroll">
+                    class="mt-6 space-y-4 font-medium  w-vw-30 h-vh-90 p-6 flex flex-col justify-start items-center  bg-white overflow-y-scroll">
                     <img class="w-[200px] h-[200px] rounded-full mb-2" src="<%= userProfile[0].picture %>"
                         alt="Profile Picture">
-                    <ul>
+                    <ul class="flex flex-col items-start w-[210px]">
                         <li class="mt-2"><strong>稱呼：</strong>
                             <%= userProfile[0].name %>
                         </li>
@@ -59,7 +59,7 @@
 
                     </ul>
 
-                    <div class="flex items-end justify-start w-full h-full">
+                    <div class="flex items-end justify-center w-full h-full">
                         <button class="px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold 
                         text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 ">
                             <a href="/user/profile/form">修改個人資料</a>

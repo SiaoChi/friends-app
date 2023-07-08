@@ -18,7 +18,6 @@ export async function getFriendsByKeyword(keyword:string){
         SELECT * FROM users WHERE name LIKE '%${keyword}%' 
         `,[keyword]
     )   
-    console.log(data);
     return data
 }
 
@@ -32,6 +31,8 @@ export async function getArticleByKeyword(keyword: string, currPage: number) {
         `,[currPage * 20]
     )
 
+    console.log('data->',data);
+
     const [next] = await pool.query(
         `
         SELECT id FROM articles WHERE title  LIKE '%${keyword}%' OR content  LIKE '%${keyword}%' 
@@ -44,7 +45,6 @@ export async function getArticleByKeyword(keyword: string, currPage: number) {
         if (Array.isArray(next) && next.length > 0) nextPaging = Number(currPage) + 1;
         nextPaging = null;
         const userArticles = z.array(SearchArticleSchema).parse(data);
-        console.log(userArticles , nextPaging);
         return { userArticles , nextPaging }
     } else {
         console.log('沒有這個關鍵字');

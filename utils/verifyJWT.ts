@@ -21,18 +21,3 @@ export default function verifyJWT(req: Request, res: Response, token: string) {
     }
 }
 
-// type Decoded = z.infer<typeof DecodeSchema>;
-
-// export default function verifyJWT(token:string):Promise<Decoded>{
-//     return new Promise((resolve, reject)=>{
-//         jwt.verify(token,JWT_SECRET,(err,decoded)=>{
-//             try{
-//                 if (err) reject(err);
-//                 const result =DecodeSchema.parse(decoded);
-//                 resolve(result);  
-//             }catch(err){
-//                 reject(new Error("invalid decode value"))
-//             }
-//         })
-//     })
-// }

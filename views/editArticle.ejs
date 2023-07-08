@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="/dist/output.css" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="https://cdn.tiny.cloud/1/noojwbb5k17nx69z2jeevq2ytvtc2ickif8sizioqzyqqvk5/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
   <script>
@@ -60,19 +62,16 @@
 
     <script>
 
-
-      // 監聽表單提交事件x
       document.getElementById("createArticleForm").addEventListener("submit", function (event) {
-        event.preventDefault(); // 阻止默认的表单提交行为
+        event.preventDefault(); 
 
-        // 获取输入的标题、内容和日期
         const id = <%= singleArticleData[0].id %>;
         const title = document.getElementById("title").value;
         const content = tinymce.activeEditor.getContent();
         // const content = document.getElementById("content").value;
         const date = document.getElementById("date").value;
 
-        // 执行 AJAX 请求或其他操作（这里仅作示例）
+       
         updateArticle(id, title, content, date);
       });
 
@@ -96,7 +95,7 @@
               return window.location.href = "/user/profile"
             }
             console.log(data);
-            alert("文章修改失敗！");
+            swal("文章修改失敗！");
           })
           .catch(error => {
             // 請求失敗後的處理

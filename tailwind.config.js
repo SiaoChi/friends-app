@@ -62,7 +62,8 @@ export default {
         'transparent':'transparent',
         'blue':'#2198DD',
         'red':'#f075c6',
-        'pink':'#ffe0e0'
+        'light-pink':'#ffe0e0',
+        'orange':'#FDCDB9'
       },
       fontFamily: {
         sans: ['Graphik', 'sans-serif'],

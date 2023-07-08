@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link href="/dist/output.css" rel="stylesheet" />
+    <title>login</title>
+    
     <style>
         * {
             box-sizing: border-box;
@@ -70,7 +72,7 @@
                             type="email " placeholder="Email" name="email" required>
                         <input id="signin-password"
                             class="input-field border border-gray-300  mt-4 h-[38px] w-[268px] rounded-sm px-2 text-sm"
-                            type="text" placeholder="Password" name="password" required>
+                            type="password" placeholder="Password" name="password" required>
 
                         <button
                             class="bg-red hover:bg-white hover:border hover:border-red hover:text-red w-[268px] h-[38px] text-white mt-6 rounded-3xl text-[14px]"
@@ -113,8 +115,6 @@
                 const name = $('#signup-name').val();
                 const email = $('#signup-mail').val();
                 const password = $('#signup-password').val();
-                // console.log(name, email, password)
-                // console.log('-----')
                 const data = {
                     name: name,
                     email: email,
@@ -137,24 +137,16 @@
                         localStorage.setItem('name', data.data.user.name);
                         localStorage.setItem('userPicture', data.data.user.picture);
 
-
-                        for (let i = 0; i < localStorage.length; i++) {
-                            const key = localStorage.key(i);
-                            const value = localStorage.getItem(key);
-                            console.log(key + ": " + value);
-                        }
-
                         const redirectUrl = data.data.redirectUrl;
                         window.location.href = redirectUrl;
                     } else {
                         const data = await response.json();
-                        alert(data.message); //顯示登入失敗錯誤訊息
+                        console.log('ok',data.message);
+                        swal(data.message); //顯示登入失敗錯誤訊息
                     }
-
-
                 } catch (error) {
                     console.log(error)
-                    alert('error')
+                    swal(error.message)
                 }
 
             });
@@ -183,6 +175,7 @@
 
 
                     if (response.ok) {
+                        console.log('1');
                         const data = await response.json();
                         console.log('data',data);
                         console.log('picture',data.data.user.picture);
@@ -191,28 +184,18 @@
                         localStorage.setItem('name', data.data.user.name);
                         localStorage.setItem('picture', data.data.user.picture);
 
-                        for (let i = 0; i < localStorage.length; i++) {
-                            const key = localStorage.key(i);
-                            const value = localStorage.getItem(key);
-                            console.log(key + ": " + value);
-                        }
                         const redirectUrl = data.redirectUrl;
-                        if (redirectUrl) {
-                            window.location.href = redirectUrl;
-                        } else {
-                            alert('this account is not existed');
-                        }
-                    } else {
+                        window.location.href = redirectUrl;
+                       
+                    } 
+                    else {
+                        console.log('2');
                         const data = await response.json();
-                        alert(data.message); //顯示登入失敗錯誤訊息
+                        swal(data.errors); 
                     }
 
-
                 } catch (error) {
-
-                    console.log('error,status', error.status)
-                    console.log(error.message)
-                    alert(error.message)
+                    swal(error.message)
                 }
 
             });

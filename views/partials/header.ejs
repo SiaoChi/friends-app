@@ -1,7 +1,7 @@
 <head>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&family=Noto+Sans+TC&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
   <style>
@@ -20,8 +20,14 @@
       width: 28px;
     }
 
-    .body {
-      font-family: 'Roboto', 'Noto Sans TC', sans-serif;
+    body .h1 .h2 .h3 .h4 .h5 p {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+
+    p {
+      color:rgb(19, 19, 19);
+      font-weight: 300;
     }
 
     .screen-h {
@@ -50,6 +56,7 @@
       letter-spacing: 6px;
       font-weight: 400;
     }
+
 
     .bg-kv-image {
       background-image: url('/img/kv_bg.png');
@@ -85,41 +92,42 @@
     }
   </style>
 </head>
-<header class="md:mb-[98px] z-40">
+<header class="mb-[140px] md:mb-[95px] z-40">
   <div
     class="flex flex-col items-center justify-center  md:flex-row md:py-3 top-0 left-0 w-full  fixed  bg-white shadow-md">
-    <div class="w-1/6 flex items-center justify-center md:justify-start">
+    <div class="w-1/6 flex items-center justify-center md:justify-end">
       <a href="/" class="flex">
-        <img src="/img/logo1.svg" alt="你的智友" class=" w-[60px] mx-auto mt-5 md:mt-0 md:ml-6 md:p-2 ">
 
-        <img src="/img/logo3.svg" alt="你的智友" class=" w-[120px] mx-auto mt-5 md:mt-0  md:p-2 "></a>
+        <img src="/img/logo1.svg" alt="你的智友" class="hidden md:block md:w-[60px] md:h-auto mx-auto mt-5 md:mt-0 md:ml-6 md:p-2 ">
+
+        <img src="/img/logo3.svg" alt="你的智友" class="h-[40px] md:w-[120px] md:h-auto mt-5 md:mt-0  md:p-2 mr-4"></a>
       <!-- <a href="/"
           class="header first-line:m-2 p-1 md:tracking-[2px] text-[22px] text-gray-900 font-semibold ">你的智友</a> -->
     </div>
 
     <!-- menu -->
-    <div class="w-2/6 flex items-center justify-center md:justify-start">
+    <div class="mt-2 w-2/6 flex items-center justify-center md:justify-start">
       <nav>
         <ul class="flex items-center justify-center">
           <a href="/about"
-            class="mx-1 md:mx-5 text-[10px]  md:text-[17px] md:tracking-[2px] hover:text-red transition-colors duration-400">關於我們</a>
+            class="mx-1 md:mx-5 text-[14px]  md:text-[17px] md:tracking-[2px] hover:text-red transition-colors duration-400">關於我們</a>
           <a href="/articles"
-            class="mx-1 md:mx-5 text-[10px]  md:text-[17px]  md:tracking-[2px]  hover:text-red transition-colors duration-500">智友記事</a>
+            class="mx-1 md:mx-5 text-[14px]  md:text-[17px]  md:tracking-[2px]  hover:text-red transition-colors duration-500">智友記事</a>
         </ul>
       </nav>
     </div>
 
     <!-- search bar and icon -->
 
-    <div class="w-3/6 flex items-center justify-center md:justify-end mt-3 mb-1 md:my-3 md:mr-2 md:pr-5 ">
+    <div class=" w-3/6 flex items-center justify-center md:justify-end mt-3 mb-1 md:my-3 md:mr-2 md:pr-5 ">
       <!-- search bar border: use flex to let children be flex in a row-->
-      <form action="/api/v1/search/friends">
+      <form action="/api/v1/search/friends" class="hidden md:block">
         <div
-          class="flex items-center justify-center md:py-1 md:px-2 md:mr-8 rounded-full border border-gray-300 border-1">
+          class=" flex items-center justify-center md:py-1 md:px-2 md:mr-8 rounded-full border border-gray-300 border-1">
           <!-- search bar text  -->
           <div class="w-4/6">
             <input
-              class="flex-1 pl-2 md:px-4 md:py-2 font-thin rounded-full outline-none text-blue md:text-m tracking-widest"
+              class="text-sm flex-1 pl-2 md:px-4 md:py-2 font-thin rounded-full outline-none text-blue md:text-m tracking-widest"
               type="text" placeholder="搜尋智友" name="keyword" required>
           </div>
           <!-- icon  -->
@@ -133,7 +141,7 @@
         </div>
       </form>
 
-      <div class="mr-6 block relative transition-all delay-100 hover:scale-110" id="messageIcon">
+      <div class="mx-4 md:mr-6 block relative transition-all delay-100 hover:scale-110" id="messageIcon">
         <a href="/chatroom">
           <img class="header-icon" src="/img/messenger.svg" alt="message">
         </a>
@@ -147,7 +155,7 @@
       </div> -->
 
 
-      <div id="sign-in-btn" class="hidden md:block hover:scale-105">
+      <div id="sign-in-btn" class="hidden md:block hover:scale-105 md:mr-0">
         <a href="/user/signin" class="  relative">
           <div
             class="flex items-center justify-center w-[100px] h-[40px] hover:bg-blue bg-red rounded-full text-white md:text-[14px] md:tracking-[1px]">
@@ -156,7 +164,7 @@
         </a>
       </div>
 
-      <div id="sign-in-picture" style="display: none;">
+      <div id="sign-in-picture" style="display: none;" class="mr-2 md:mr-0">
         <a href="/user/profile"><img src="" class="w-[40px] h-[40px] rounded-full"
             alt="signin-photo"></a>
       </div>

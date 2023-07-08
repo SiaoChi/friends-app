@@ -7,6 +7,24 @@ function instanceOfSetHeader(object: any): object is ResultSetHeader {
     return "insertId" in object;
 }
 
+export async function checkUser(email:string) {
+    console.log('check user');
+
+    const checkEmail = await pool.query(
+        `
+         SELECT id FROM users
+         WHERE email = ?
+        `,
+        [email]
+    )
+    console.log(checkEmail);
+    console.log(typeof checkEmail);
+    if(Array.isArray(checkEmail) && checkEmail.length > 1){
+        return true
+    }
+    return false
+}
+
 export async function createUser(
     name: string,
     email: string) {
@@ -39,6 +57,7 @@ export async function findUserByEmail(email: string) {
         [email]
     );
     const user = z.array(UserSchema).parse(results[0]);
+    console.log('user',user);
     return user[0];
 }
 

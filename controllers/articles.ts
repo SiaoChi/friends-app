@@ -31,7 +31,7 @@ export async function renderArticles(req: Request, res: Response) {
     try {
         const { userId } = res.locals;
         const userArticles = await articleModels.getAllUserArticlesData()
-        res.status(200).render('articles', { userArticles })
+        res.status(200).render('articles', { userArticles , searchResult:null })
     } catch (err) {
         res.status(500).json({ errors: err })
     }

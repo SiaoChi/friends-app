@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
     <link href="/dist/output.css" rel="stylesheet" />
     <title>你的智友-文章</title>
 </head>
@@ -23,22 +24,27 @@
                 <div class=" bg-white w-[650px]  p-5 rounded-b-lg  shadow-sm">
                     <div class="flex items-center">
                         <img src=" <%= singleArticleData[0].picture %>" alt="picture" class="w-[50px]">
-                        <p class="ml-2 text-[18px] font-medium"><%= singleArticleData[0].name %></p>
+                        <p class="ml-2 text-[18px] font-medium">
+                            <%= singleArticleData[0].name %>
+                        </p>
                     </div>
-                    <p class="text-[24px] mt-2 ">
+                    <p class="text-[28px] mt-2 font-medium">
                         <%= singleArticleData[0].title %>
                     </p>
-                    <p class="content mt-1 h-auto text-[16px] font-light">
+                    <p class="content mt-1 h-auto text-[16px] font-light text-gray-700">
                         <%- singleArticleData[0].content %>
                     </p>
                     <div class="flex justify-end items-end mt-6">
-                        <button  onclick="userProfile(<%= singleArticleData[0].user_id %>)" 
-                            class="flex justify-center items-center mt-2 w-[120px] h-[35px] bg-blue rounded-full
-                             text-white text-blue-500">
-                            <p>關心智友</p>
-                            <img src="/img/send.svg" class="w-[15px] ml-2 hover:translate-x-2" >
+                        <button onclick="goBack()" class="flex justify-center items-center mt-2 w-[120px] h-[35px] bg-white text-blue border border-blue rounded-full">
+                            <p class=" text-blue">上一頁</p>
+                            <img src="/img/back.svg" class="w-[15px] ml-2 hover:translate-x-2">
                         </button>
-                       
+                        <button onclick="userProfile(<%= singleArticleData[0].user_id %>)" class="ml-4 flex justify-center items-center mt-2 w-[120px] h-[35px] bg-blue rounded-full
+                             text-blue-500">
+                            <p class=" text-white">關心智友</p>
+                            <img src="/img/send.svg" class="w-[15px] ml-2 hover:translate-x-2">
+                        </button>
+
                     </div>
                 </div>
 
@@ -51,6 +57,10 @@
             function userProfile(id) {
                 const url = `/user/profile/${id}`;
                 window.location.href = url
+            }
+
+            function goBack() {
+                window.history.back();
             }
         </script>
 </body>

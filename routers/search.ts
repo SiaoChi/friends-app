@@ -1,17 +1,15 @@
 import { Router } from "express";
-import { getArticleByKeyword,
-    getFriendsByKeyword
-} from "../controllers/search.js"
+import * as searchFunction from "../controllers/search.js"
 
 const router = Router();
 
 router
     .route("/api/v1/search/articles")
-    .get(getArticleByKeyword)
+    .get(searchFunction.getArticleByElasticSearch)
 
 router
     .route("/api/v1/search/friends")
-    .get(getFriendsByKeyword)
+    .get(searchFunction.getFriendsByKeyword)
 
 
 export default router;

@@ -36,8 +36,6 @@
             padding: 0.25rem;
             position: fixed;
             bottom: 0;
-            /* left: 0;
-            right: 0; */
             display: flex;
             width: 50%;
             height: 3rem;
@@ -139,8 +137,8 @@
 
 <body>
     <%- include('./partials/header') %>
-        <div class="flex justify-start items-start h-[800px] w-full fixed">
-            <div class="w-1/4 h-[90vh] border-r border-gray-300 overflow-auto relative">
+        <div class="flex justify-start items-start md:h-[800px] w-full fixed">
+            <div class="w-1/3 md:w-1/4 h-[90vh] border-r border-gray-300 overflow-auto relative">
                 <!-- <div class="w-1/4 shadow-md p-2 fixed z-20">聊天清單</div> -->
                 <div class="p-2 " id="chatlist">
                     <% if (chatList && chatList.length> 0) { %>
@@ -189,7 +187,7 @@
 
                 </div>
             </div>
-            <div class="w-2/4 border-r border-gray-300 overflow-auto relative" id="chatroom">
+            <div class="w-2/3 md:w-2/4 border-r border-gray-300 overflow-auto relative" id="chatroom">
                 <!-- <div class="w-2/4   shadow-md p-2 fixed z-30">聊天室</div> -->
                 <div class="" style="padding-top: 20px;">
                     <div id="messages" style="padding-bottom: 5px;"></div>
@@ -198,7 +196,7 @@
                     </form>
                 </div>
             </div>
-            <div class="w-1/4 h-[90vh] flex flex-col items-center justify-start z-40 ">
+            <div class="hidden w-1/4 h-[90vh] md:flex flex-col items-center justify-start z-40 ">
                 <div class="pb-3 mt-10 flex flex-col items-center justify-center relative" id="info"></div>
             </div>
         </div>
@@ -503,9 +501,9 @@
                 const allPersonChat = document.querySelectorAll('.chat-person');
                 // 點擊的改紅色，其他保持灰色
                 allPersonChat.forEach(item => {
-                    item.classList.remove('bg-pink')
+                    item.classList.remove('bg-light-pink')
                 });
-                target.classList.add('bg-pink');
+                target.classList.add('bg-light-pink');
                 if (unRead) {
                     await setUnreadToZero(Number(senderId), Number(receiverId), roomName)
                     unRead.style.display = 'none';
