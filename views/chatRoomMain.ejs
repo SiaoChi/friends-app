@@ -106,29 +106,6 @@
             color: white;
         }
 
-
-        /* .red-dot {
-            width: 12px;
-            height: 12px;
-            background-color: rgb(92, 223, 35);
-            border-radius: 50%;
-            display: inline-block;
-            position: absolute;
-            top: 2;
-            right: 2;
-        } */
-
-        .red-dot-header {
-            width: 12px;
-            height: 12px;
-            background-color: rgb(92, 223, 35);
-            border-radius: 50%;
-            display: inline-block;
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-
         .chat-person:hover {
             background-color: #ffe0e0
         }
@@ -313,10 +290,10 @@
                 const { nickname, message, senderId, receiverId, room, time, senderPicture } = data;
                 console.log('新訊息', time);
                 // [header] 新訊息來了：chat-icon加入紅點
-                const messageIcon = document.getElementById('messageIcon');
-                const redDot = document.createElement('span');
-                redDot.className = 'red-dot-header';
-                messageIcon.appendChild(redDot);
+                // const messageIcon = document.getElementById('messageIcon');
+                // const redDot = document.createElement('span');
+                // redDot.className = 'red-dot-header';
+                // messageIcon.appendChild(redDot);
 
                 // [chatroom] 新訊息：如果user正在傳送的聊天室中，畫面會更新文字
                 if (Number(room) === Number(roomName)) {
@@ -409,7 +386,7 @@
                     receiverName = receiverInfo[0].name;
                     const fetchInfo = `
                                 <div class="mt-4 flex flex-col justify-center items-center overflow-auto">
-                                    <img class="p-10 w-[300px]"
+                                    <img class="p-10 w-[300px] rounded-full"
                                         src="${receiverPicture}"
                                         alt="圖片" >
 

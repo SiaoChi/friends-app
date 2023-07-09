@@ -24,6 +24,6 @@ router
 
 router
     .route("/api/v1/friends/recommend")
-    .get(authenticate, friendsFunctions.fetchRecommendFriends)
+    .get(friendsFunctions.fetchRecommendFriends)
 
 export default router;

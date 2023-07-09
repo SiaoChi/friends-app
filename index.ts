@@ -13,6 +13,7 @@ import { errorHandler } from "./utils/errorHandler.js";
 import cors from "cors";
 import * as dotenv from "dotenv"
 
+
 dotenv.config();
 
 const app = express();
@@ -52,6 +53,7 @@ app.enable("trust proxy");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/',express.static('./public'));
 app.use("/uploads",express.static("./public/uploads"))
+
 
 
 app.use("/", [

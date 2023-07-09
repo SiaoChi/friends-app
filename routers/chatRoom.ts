@@ -13,16 +13,16 @@ router.get('/chatroom/:room', [authenticate, chatRoomFunctions.renderChatroomByR
 
 router // 要加一個middleware，防止其他人進入
     .route("/api/v1/chatroom/read")
-    .put([authenticate, chatRoomFunctions.setUnreadToZero])
+    .put(authenticate, chatRoomFunctions.setUnreadToZero)
 
 router // 要加一個middleware，防止其他人進入
     .route("/api/v1/chatroom/:room")
-    .get([authenticate, chatRoomFunctions.fetchMessages])
-    .put([authenticate, chatRoomFunctions.fetchMessagesRead])
+    .get( authenticate, chatRoomFunctions.fetchMessages)
+    .put(authenticate, chatRoomFunctions.fetchMessagesRead)
 
-router
+router  // fetchChatList 是否sender有不是自己的，如果有header右上角會跳出綠點點
     .route("/api/v1/chatlist/:id")
-    .get([authenticate, chatRoomFunctions.fetchChatList]);  // 要加一個middleware，防止其他人進入
+    .get(authenticate, chatRoomFunctions.fetchChatList);  // 要加一個middleware，防止其他人進入
 
 
 

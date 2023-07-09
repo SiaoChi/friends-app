@@ -20,6 +20,9 @@ jobs:
             cd /home/ubuntu/friends-app
             docker system prune -a -f
             docker volume prune -f
+            docker kill friends
+            docker rm friends
+            docker rmi friends
             git switch yml
             git pull
             docker build -t friends . 

@@ -6,9 +6,9 @@
   <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
   <style>
     .red-dot-header {
-      width: 12px;
-      height: 12px;
-      background-color: rgb(92, 223, 35);
+      width: 13px;
+      height: 13px;
+      background-color: rgb(35, 223, 76);
       border-radius: 50%;
       display: inline-block;
       position: absolute;
@@ -171,14 +171,14 @@
 
     </div>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <script>
+      const token = Cookies.get('jwtToken');
       const senderId = localStorage.getItem('userId');
 
-
-      if (senderId) {
-        console.log('1');
-        document.getElementById("sign-in-btn").style.display = "none";
+      if (token) {
         // document.getElementById("sign-in-picture").style.display = "block";
+        document.getElementById("sign-in-btn").style.display = "none";
 
         fetch(`/api/v1/user/profile/${senderId}`)
           .then(response => response.json())

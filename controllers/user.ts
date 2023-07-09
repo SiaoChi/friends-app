@@ -8,7 +8,7 @@ import { RowDataPacket } from 'mysql2';
 
 export function getLogInPage(req: Request, res: Response) {
     const userId = res.locals;
-    if(userId) return res.redirect('/user/profile')
+    if (userId) return res.redirect('/user/profile')
     res.render('login')
 }
 
@@ -17,9 +17,9 @@ export async function signUp(req: Request, res: Response) {
     try {
         const { name, email, password } = req.body;
         const isUser = await userModel.checkUser(email);
-        console.log('isUser',isUser);
-        if(isUser){
-            return res.status(400).json({message:"This email already exists."})
+        console.log('isUser', isUser);
+        if (isUser) {
+            return res.status(400).json({ message: "This email already exists." })
         }
         const userId = await userModel.createUser(name, email);
         await userLoginModel.createNativeProvider(userId, password);
@@ -41,7 +41,7 @@ export async function signUp(req: Request, res: Response) {
                     redirectUrl: url
                 }
             })
-        
+
     } catch (err) {
         if (err instanceof Error) {
             res.status(400).json({ errors: err.message });
@@ -57,13 +57,16 @@ export async function signIn(req: Request, res: Response) {
         const user = await userModel.findUserByEmail(email);
         if (typeof user === 'undefined') {
             throw new Error("user not exist");
-        }  
+        }
         const isValidPassword = await userLoginModel.checkNativeProviderToken(user.id, password);
         if (!isValidPassword) {
             throw new Error("invalid password");
         }
         const token = generateToken(user.id);
         const url = "/user/profile";
+        // 登录成功后将会话数据存储在会话中
+
+
         res
             .cookie("jwtToken", token)
             .status(200)
@@ -81,7 +84,7 @@ export async function signIn(req: Request, res: Response) {
     } catch (err) {
         if (err instanceof Error) {
             return res.status(400).json({ errors: err.message })
-            
+
         }
         res.status(500).json({ errors: "sign in failed" })
     }
@@ -95,9 +98,9 @@ export async function createUserProfile(req: Request, res: Response) {
     // console.log('Profile->imagePath-->',uploadImages);
     const userId = res.locals.userId;
 
-    if(uploadImages){
-        console.log('uploads-->',uploadImages);
-            userPhotoPath = uploadImages;     
+    if (uploadImages) {
+        console.log('uploads-->', uploadImages);
+        userPhotoPath = uploadImages;
     }
 
     await userModel.updateUserProfile(
@@ -141,7 +144,7 @@ export async function renderUserProfileForm(req: Request, res: Response) {
         const { userId } = res.locals;
         const tags = await userModel.getTags();
         const userData = await userModel.getUserProfileTagsData(userId)
-        console.log('userDataAndTags->',userData);
+        console.log('userDataAndTags->', userData);
         // 如果希望在edict時加入user已知資料
         res.render('userProfileForm', { tags, userData })
     } catch (err) {
@@ -153,7 +156,7 @@ export async function renderUserProfile(req: Request, res: Response) {
     const userId = res.locals.userId;
     const userProfile = await userModel.getUserProfileTagsData(userId) as RowDataPacket[];
     const userArticles = await articleModel.getUserArticlesData(userId) as RowDataPacket[];
-    res.render('userProfile', { userProfile , userArticles})
+    res.render('userProfile', { userProfile, userArticles })
 }
 
 export async function renderUserProfileById(req: Request, res: Response) {
@@ -162,7 +165,7 @@ export async function renderUserProfileById(req: Request, res: Response) {
         const userProfile = await userModel.getUserProfileTagsData(parseInt(id)) as RowDataPacket[];
         const userArticles = await articleModel.getUserArticlesData(parseInt(id)) as RowDataPacket[];
         if (Array.isArray(userProfile) && userProfile.length > 0) {
-            return res.render('userProfileById', { userProfile , userArticles })
+            return res.render('userProfileById', { userProfile, userArticles })
         }
         throw new Error("id is not existed")
     } catch (err) {

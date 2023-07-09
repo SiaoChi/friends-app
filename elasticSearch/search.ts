@@ -22,6 +22,7 @@ client.info()
 interface Document {
     title: string
     content: string
+    highlight:string[]
 }
 
 const elasticSearchDataSchema = z.object({
@@ -32,25 +33,35 @@ const elasticSearchDataSchema = z.object({
             id: z.string(),
             title: z.string(),
           }),
+          highlight:z.object({
+            content: z.array(z.string()), // 修改此行
+          })
         })
       ),
     }),
   });
 
 export async function searchByElastic(keywords: string[]){
-    const matchData = keywords.map((ele) => ({match : { content: ele }}))
+    const matchData = keywords.map((ele) => ({ match : { content: ele }}))
     const data = await client.search<Document>({
         index: 'search-friends',
         // index: process.env.ELASTIC_SEARCH_INDEX || 'search-chichi',
         query: {
-            bool:{
-               must: matchData
-            },       
-        },
+          bool:{
+             must:matchData
+          },       
+      },
+        highlight: {
+          fields: {
+            content: {}
+          }
+        }
     })
 
-    // console.log('1',data);
-    // console.log('2',data.hits.hits)
+    console.log('符合關鍵字的document-->',data.hits.hits)
+    // data.hits.hits.forEach((hit) => {
+    //   console.log('與關鍵字相符的文字highlight-->', hit.highlight);
+    // });
 
     const checkData = elasticSearchDataSchema.parse(data)
     const hitsArray = checkData.hits.hits;
@@ -60,60 +71,3 @@ export async function searchByElastic(keywords: string[]){
     console.log('articleId->',articleId );
     return articleId
 }
-
-//測試輸入資料
-// async function run() {
-//     // Let's start by indexing some data
-//     await client.index({
-//         index: 'search-chichi',
-//         document: {
-//             title: '想問問',
-//             content: '家人生病'
-//         }
-//     })
-//     // here we are forcing an index refresh, otherwise we will not
-//     // get any result in the consequent search
-//     await client.indices.refresh({ index: 'search-chichi' })
-
-// }
-
-// run().catch(console.log)
-
-
-// searchByElastic(['飲食','媽媽']).catch(console.log)
-
-// async function searchByElastic(keywords: string[]){
-//     const data = await client.search<Document>({
-//         index: 'search-chichi',
-//         query: {
-//             match:{
-//                 content: `${keywords}`,
-//             },       
-//         }
-//     })
-//     console.log('1',data);
-//     console.log('2',data.hits.hits)
-// }
-
-// async function read(){
-//     const result = await client.search<Document>({
-//         index: 'search-chichi',
-//         query: {
-//             match: { content: '生病' }
-//         }
-//     })
-//     console.log('1',result);
-//     console.log('2',result.hits.hits)
-// }
-
-// read().catch(console.log)
-
-// 刪除功能
-// async function deleteIndex() {
-//     const result = await client.indices.delete({ index: 'game-of-thrones' });
-//     console.log(result);
-//   }
-  
-//   deleteIndex().catch(console.log);
-  
-
