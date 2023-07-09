@@ -5,7 +5,6 @@ dotenv.config()
 import { Client } from '@elastic/elasticsearch'
 
 
-
 const cloudId = process.env.ELASTIC_SEARCH_CLOUD_ID || ''
 const apiKey = process.env.ELASTIC_SEARCH_API_KEY || ''
  
@@ -58,7 +57,7 @@ export async function searchByElastic(keywords: string[]){
         }
     })
 
-    console.log('符合關鍵字的document-->',data.hits.hits)
+    // console.log('符合關鍵字的document-->',data.hits.hits)
     // data.hits.hits.forEach((hit) => {
     //   console.log('與關鍵字相符的文字highlight-->', hit.highlight);
     // });

@@ -24,7 +24,7 @@ jobs:
             docker rm friends
             docker rmi friends
             git switch yml
-            git pull
+            git pull origin yml
             docker build --no-cache -t friends . 
             docker run -d -p 443:3000 --name friends friends 
             
