@@ -952,6 +952,10 @@ video {
   width: 1.25rem;
 }
 
+.w-6 {
+  width: 1.5rem;
+}
+
 .w-\[100px\] {
   width: 100px;
 }
@@ -1082,6 +1086,10 @@ video {
 
 .w-vw-60 {
   width: 60vw;
+}
+
+.w-\[10px\] {
+  width: 10px;
 }
 
 .max-w-xl {
@@ -1255,11 +1263,6 @@ video {
 .border-gray-500 {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
-}
-
-.border-red {
-  --tw-border-opacity: 1;
-  border-color: rgb(240 117 198 / var(--tw-border-opacity));
 }
 
 .border-white {
