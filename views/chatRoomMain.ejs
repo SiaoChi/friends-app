@@ -109,6 +109,12 @@
         .chat-person:hover {
             background-color: #ffe0e0
         }
+
+        #loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 
@@ -161,10 +167,12 @@
                             </div>
                             <% } %>
                                 <% } %>
-
                 </div>
             </div>
             <div class="w-2/3 md:w-2/4 border-r border-gray-300 overflow-auto relative" id="chatroom">
+                <div id="loading">
+                    <p class="mt-6 font-medium text-lg text-center">loading...</p>
+                </div>
                 <!-- <div class="w-2/4   shadow-md p-2 fixed z-30">聊天室</div> -->
                 <div class="" style="padding-top: 20px;">
                     <div id="messages" style="padding-bottom: 5px;"></div>
@@ -288,14 +296,6 @@
             // [socket.io]聽自己id的socket範圍，如果有訊息就拉出來
             socket.on("message", async function (data) {
                 const { nickname, message, senderId, receiverId, room, time, senderPicture } = data;
-                console.log('新訊息', time);
-                // [header] 新訊息來了：chat-icon加入紅點
-                // const messageIcon = document.getElementById('messageIcon');
-                // const redDot = document.createElement('span');
-                // redDot.className = 'red-dot-header';
-                // messageIcon.appendChild(redDot);
-
-                // [chatroom] 新訊息：如果user正在傳送的聊天室中，畫面會更新文字
                 if (Number(room) === Number(roomName)) {
                     console.log('1');
                     let item = document.createElement('li');
@@ -554,6 +554,7 @@
             async function getNextPage() {
 
                 const apiUrl = `/api/v1/chatroom/${roomName}?paging=${nextPaging}`;
+                console.log(apiUrl);
                 try {
                     const response = await fetch(apiUrl);
                     const fetchDataJson = await response.json();
@@ -563,7 +564,7 @@
                     console.log('nextPageData', nextPageData);
                     console.log('nextPaging', nextPageNumber);
 
-                    if (nextPaging === null) return console.log('沒有更多資料');
+                    if (nextPageNumber === null) return console.log('沒有更多資料');  // 但還會有下一頁這邊已經return沒有
                     nextPaging = nextPageNumber
                     // 将获取到的数据添加到聊天室中
                     let messageUl = document.createElement('ul');
@@ -616,6 +617,13 @@
 
             document.getElementById('chatroom').addEventListener('scroll', function () {
                 if (this.scrollTop === 0) {
+                    var loadingElement = document.getElementById('loading');
+                    loadingElement.style.display = 'block'; 
+                    setTimeout(function () {
+                        var loadingElement = document.getElementById('loading');
+                        loadingElement.style.display = 'none';
+
+                    }, 400); 
                     getNextPage();
                 }
             });
