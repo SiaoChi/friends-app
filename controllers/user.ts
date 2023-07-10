@@ -55,6 +55,7 @@ export async function signIn(req: Request, res: Response) {
     try {
         const { email, password } = req.body;
         const user = await userModel.findUserByEmail(email);
+        console.log('user-->',user);
         if (typeof user === 'undefined') {
             throw new Error("user not exist");
         }

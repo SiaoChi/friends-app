@@ -10,7 +10,7 @@ function instanceOfSetHeader(object: any): object is ResultSetHeader {
 export async function checkUser(email:string) {
     console.log('check user');
 
-    const checkEmail = await pool.query(
+    const [checkEmail] = await pool.query(
         `
          SELECT id FROM users
          WHERE email = ?
