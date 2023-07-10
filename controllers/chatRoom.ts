@@ -61,8 +61,27 @@ export async function fetchMessages(req: Request, res: Response) {
         }
         res.status(500).json({ errors: "getMessages failed" })
     }
-
 }
+
+export async function fetchMessagesPagination(req:Request, res:Response){
+    try {
+        const { room } = req.params;
+        const currPage = Number(req.query.paging) || 0;
+        const senderMessages = await chatRoomModel.getMessageByRoomPagination(room,currPage);
+        if (senderMessages) {
+            res.status(400).json(senderMessages);
+            return;
+        }
+        throw new Error('the chatroom is empty.')
+    } catch (err) {
+        if (err instanceof Error) {
+            res.status(400).json({ errors: err.message });
+            return;
+        }
+        res.status(500).json({ errors: "getMessages failed" })
+    }
+}
+
 
 export async function fetchMessagesRead(req: Request, res: Response) {
     try {

@@ -132,16 +132,19 @@ const MessageSchema = z.object({
 
 
 
+
+
 export async function getMessagesByRoom(room: string) {
     const [rows] = await pool.query(
-        `
+    `
     SELECT sender_id , message , 
     CONCAT(IF(TIME_FORMAT(created_at, '%p') = 'AM', '上午', '下午'), TIME_FORMAT(created_at, '%h:%i'))  AS time 
     FROM messages
     WHERE room_name = ${room}
-    ORDER BY created_at
+    ORDER BY id
     `
     )
+
     const data = z.array(MessageSchema).parse(rows)
     return data
 }
@@ -156,22 +159,58 @@ const ChatListSchema = z.object({
 })
 
 
-export async function getChatListById(id: number) {
 
-    /*
-     [
-   {
-    senderId: 1,
-     room_name: '117',
-     last_message: '111',
-     updated_at: 2023-06-27T05:24:35.000Z,
-     attendants: '1,17',
-     sender_id: 0,
-     receiverId: 17,
-     receiverName: 'kelly12',
-     receiverPicture: '/img/users/5.png'
-   },
-     */
+export async function getMessageByRoomPagination(room:string,currPage:number){
+    const [data] = await pool.query(
+        `
+        SELECT sender_id , message , 
+        CONCAT(IF(TIME_FORMAT(created_at, '%p') = 'AM', '上午', '下午'), TIME_FORMAT(created_at, '%h:%i'))  AS time 
+        FROM messages
+        WHERE room_name = ?
+        ORDER BY id DESC
+        limit 15 
+        offset ? 
+        `,[room, currPage * 15]
+    )
+
+    const [next] = await pool.query(
+        `
+        SELECT sender_id 
+        FROM messages
+        WHERE room_name = ?
+        ORDER BY id DESC
+        limit 1 
+        offset ?
+        `,[room, ((currPage + 1) * 15)]
+    )
+
+    const receiverIds = (data as Array<any>).map(item => item.receiverId)
+
+    const receiverProfileData = await userModels.getUserProfileData(receiverIds);
+
+    const newData = (data as Array<any>).forEach(item => {
+        const receiverData = (receiverProfileData as Array<any>).filter(profileItem => profileItem.id === item.receiverId)
+        if (receiverData.length > 0) {
+            item['receiverName'] = receiverData[0].name;
+            item['receiverPicture'] = receiverData[0].picture;
+        }
+        return item
+    })
+    
+
+    if(Array.isArray(next) && next.length === 0){
+        const nextPaging = null;
+        console.log({ data , nextPaging });
+        return { data , nextPaging }
+    }else{
+        const nextPaging = currPage + 1;
+        console.log({ data , nextPaging });
+        return { data , nextPaging }
+    }
+
+}
+
+export async function getChatListById(id: number) {
 
     const [rows] = await pool.query(
         `

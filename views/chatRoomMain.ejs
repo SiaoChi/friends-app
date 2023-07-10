@@ -133,30 +133,30 @@
                                             <%= chatList[i].last_message %>
                                         </p>
                                     </div>
-                                            <% if (chatList[i].senderId> chatList[i].receiverId) { %>
+                                    <% if (chatList[i].senderId> chatList[i].receiverId) { %>
 
-                                                <% if(chatList[i].lg_id_unread !==0) {%>
-                                                    <div class="unread ">
-                                                        <%= chatList[i].lg_id_unread ? chatList[i].lg_id_unread : '' %>
-                                                    </div>
-                                                    <% } %>
+                                        <% if(chatList[i].lg_id_unread !==0) {%>
+                                            <div class="unread ">
+                                                <%= chatList[i].lg_id_unread ? chatList[i].lg_id_unread : '' %>
+                                            </div>
+                                            <% } %>
 
-                                                        <% } else { %>
-                                                            <% if(chatList[i].xs_id_unread !==0) {%>
-                                                                <div class="unread ">
-                                                                    <%= chatList[i].xs_id_unread ?
-                                                                        chatList[i].xs_id_unread : '' %>
+                                                <% } else { %>
+                                                    <% if(chatList[i].xs_id_unread !==0) {%>
+                                                        <div class="unread ">
+                                                            <%= chatList[i].xs_id_unread ? chatList[i].xs_id_unread : ''
+                                                                %>
+                                                        </div>
+                                                        <% } %>
+                                                            <% } %>
+
+                                                                <div
+                                                                    class="top-2 right-2 absolute flex justify-end items-end ml-auto w-[100px] h-[60px]  ">
+                                                                    <p class="text-[12px] text-gray-500">
+                                                                        <%=
+                                                                            chatList[i].updated_at.toISOString().split('T')[0]%>
+                                                                    </p>
                                                                 </div>
-                                                                <% } %>
-                                                                    <% } %>
-
-                                                                        <div
-                                                                            class="top-2 right-2 absolute flex justify-end items-end ml-auto w-[100px] h-[60px]  ">
-                                                                            <p class="text-[12px] text-gray-500">
-                                                                                <%=
-                                                                                    chatList[i].updated_at.toISOString().split('T')[0]%>
-                                                                            </p>
-                                                                        </div>
                                 </a>
                             </div>
                             <% } %>
@@ -206,7 +206,7 @@
             if (roomNameMatch) {
                 roomName = roomNameMatch[1];
                 console.log('roomName', roomName);
-            } 
+            }
             let urlParams = new URLSearchParams(window.location.search);
             let receiverId = urlParams.get('id');
 
@@ -323,7 +323,7 @@
                     // await setUnreadToZero(Number(senderId), Number(receiverId), roomName)
                     await setUnreadToZero(Number(receiverId), Number(senderId), roomName)
                 }
-            
+
                 // [chatList] 新訊息：(1) 已經存在的user更新文字與小綠點 (2)沒存在的user需要建立新的div
                 const existingChatPerson = document.querySelector(`[data-senderid="${senderId}"]`);
                 console.log('existingChatPerson', existingChatPerson);
@@ -415,8 +415,10 @@
             async function fetchRoomMessages(room) {
                 try {
                     const fetchData = await fetch(`/api/v1/chatroom/${room}`);
-                    const fetchRoomMessages = await fetchData.json();
-                    // console.log('歷史訊息', fetchRoomMessages);
+                    const fetchDataJson = await fetchData.json();
+                    const fetchRoomMessages = fetchDataJson.data;
+                    const nextPaging = fetchDataJson.nextPaging;
+                    console.log('歷史訊息', fetchRoomMessages, nextPaging);
                     let messageUl = document.createElement('ul');
 
                     fetchRoomMessages.forEach(item => {
@@ -454,10 +456,12 @@
                             userInput.appendChild(text);
                             userInput.appendChild(timeStamp);
                         }
-                        messageUl.appendChild(userInput);
+                        // messageUl.appendChild(userInput);
+                        messageUl.prepend(userInput);
                     });
-                    messages.innerHTML = ''; 
-                    messages.appendChild(messageUl); // 
+                    messages.innerHTML = '';
+                    // messages.appendChild(messageUl);
+                    messages.appendChild(messageUl);
 
                     const container = document.getElementById('chatroom');
                     container.scrollTop = container.scrollHeight - container.clientHeight;
@@ -465,6 +469,8 @@
                     console.error('Error occurred while fetching fetchRoomMessages:', err);
                 }
             }
+
+
             // 未讀通知的小綠點
             // [chatroom] 點擊後抓取 div data-room的資料，再把資訊刪除
             const chatListDiv = document.getElementById('chatlist');
@@ -538,6 +544,82 @@
                 await fetchRoomMessages(room);
             }
             fetchChatPersonData(receiverId, roomName)
+
+
+
+            let currPage = 0;
+            let nextPaging = currPage + 1
+
+            // 下一頁
+            async function getNextPage() {
+
+                const apiUrl = `/api/v1/chatroom/${roomName}?paging=${nextPaging}`;
+                try {
+                    const response = await fetch(apiUrl);
+                    const fetchDataJson = await response.json();
+                    const nextPageData = fetchDataJson.data
+                    const nextPageNumber = fetchDataJson.nextPaging
+                    console.log('all', fetchDataJson);
+                    console.log('nextPageData', nextPageData);
+                    console.log('nextPaging', nextPageNumber);
+
+                    if (nextPaging === null) return console.log('沒有更多資料');
+                    nextPaging = nextPageNumber
+                    // 将获取到的数据添加到聊天室中
+                    let messageUl = document.createElement('ul');
+
+                    nextPageData.forEach(item => {
+                        let userInput = document.createElement('li');
+
+                        if (item.sender_id === Number(senderId)) {
+                            userInput.classList.add('message-sent', 'flex', 'justify-end');
+                            let text = document.createElement('text');
+                            text.classList.add('talk', 'ml-1', 'bg-slate-200', 'rounded-lg', 'p-2');
+                            text.textContent = item.message;
+
+                            let timeStamp = document.createElement('text');
+                            timeStamp.classList.add('rounded-lg', 'text-[7px]', 'text-gray-400', 'mt-5', 'mr-2');
+                            timeStamp.textContent = item.time;
+
+                            userInput.appendChild(timeStamp);
+                            userInput.appendChild(text);
+
+                        } else {
+                            userInput.classList.add('message-received', 'flex');
+                            let img = document.createElement('img');
+                            img.classList.add('w-[30px]', 'h-[30px]', 'rounded-full');
+                            img.src = receiverPicture;
+                            img.alt = '';
+
+                            let text = document.createElement('text');
+                            text.classList.add('talk', 'ml-2', 'bg-slate-200', 'rounded-lg', 'p-2',);
+                            text.textContent = item.message;
+
+                            let timeStamp = document.createElement('text');
+                            timeStamp.classList.add('rounded-lg', 'text-[7px]', 'text-gray-400', 'mt-5', 'ml-2');
+                            timeStamp.textContent = item.time;
+
+                            userInput.appendChild(img);
+                            userInput.appendChild(text);
+                            userInput.appendChild(timeStamp);
+                        }
+                        // messageUl.appendChild(userInput);
+                        messageUl.prepend(userInput);
+                    });
+                    // messages.innerHTML = '';
+                    messages.prepend(messageUl);
+
+                } catch (error) {
+                    console.error('Error fetching next page:', error);
+                }
+            }
+
+            document.getElementById('chatroom').addEventListener('scroll', function () {
+                if (this.scrollTop === 0) {
+                    getNextPage();
+                }
+            });
+
 
         </script>
 </body>
