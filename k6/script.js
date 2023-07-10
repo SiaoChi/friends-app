@@ -30,8 +30,8 @@ export const options = {
 // export default function post ()  {
 //     const url = 'https://chichi-lab.com/user/signin';
 //     const body = JSON.stringify({
-//         email: 'test@gmail.com',
-//         password: '1111',
+//         email: ,
+//         password:,
 //       });
 //     const params = {
 //       headers: { 'Content-Type': 'application/json', },
