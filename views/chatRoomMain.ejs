@@ -111,7 +111,7 @@
         }
 
         #loading {
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
         }
@@ -618,7 +618,7 @@
             document.getElementById('chatroom').addEventListener('scroll', function () {
                 if (this.scrollTop === 0) {
                     var loadingElement = document.getElementById('loading');
-                    loadingElement.style.display = 'block'; 
+                    loadingElement.style.display = 'flex'; 
                     setTimeout(function () {
                         var loadingElement = document.getElementById('loading');
                         loadingElement.style.display = 'none';
