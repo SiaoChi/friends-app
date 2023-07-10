@@ -22,6 +22,8 @@ client.info()
 interface Document {
     title: string
     content: string
+    highlight:string[]
+    analyzer:string
 }
 
 const elasticSearchDataSchema = z.object({
@@ -31,6 +33,7 @@ const elasticSearchDataSchema = z.object({
           _source: z.object({
             id: z.string(),
             title: z.string(),
+            content: z.string(),
           }),
         })
       ),
@@ -38,82 +41,22 @@ const elasticSearchDataSchema = z.object({
   });
 
 export async function searchByElastic(keywords: string[]){
-    const matchData = keywords.map((ele) => ({match : { content: ele }}))
+    // const matchData = keywords.map((ele) => ({ match : { content: ele }}))
     const data = await client.search<Document>({
+        size: 20, // 因為default回傳是10筆，如果size要改，可以去hits.value拿這邊修改的size數量資料
         index: 'search-friends',
-        // index: process.env.ELASTIC_SEARCH_INDEX || 'search-chichi',
-        query: {
-            bool:{
-               must: matchData
-            },       
-        },
+        q: keywords.join(','), //分詞器會自動把詞句找出最適合的單詞，所以傳string
+        analyzer: "icu_analyzer"
     })
-
-    // console.log('1',data);
-    // console.log('2',data.hits.hits)
-
-    const checkData = elasticSearchDataSchema.parse(data)
+    console.log('keywords',keywords.join(','));
+    // console.log('符合關鍵字的document-->',data.hits.hits)
+    const checkData = elasticSearchDataSchema.parse(data);
+    // console.log('checkData->',checkData);
     const hitsArray = checkData.hits.hits;
+    // console.log('hitsArray->',hitsArray);
     const articleId = hitsArray.map(item => {
         return parseInt(item._source.id.split('articles_')[1])
     })
     console.log('articleId->',articleId );
     return articleId
 }
-
-//測試輸入資料
-// async function run() {
-//     // Let's start by indexing some data
-//     await client.index({
-//         index: 'search-chichi',
-//         document: {
-//             title: '想問問',
-//             content: '家人生病'
-//         }
-//     })
-//     // here we are forcing an index refresh, otherwise we will not
-//     // get any result in the consequent search
-//     await client.indices.refresh({ index: 'search-chichi' })
-
-// }
-
-// run().catch(console.log)
-
-
-// searchByElastic(['飲食','媽媽']).catch(console.log)
-
-// async function searchByElastic(keywords: string[]){
-//     const data = await client.search<Document>({
-//         index: 'search-chichi',
-//         query: {
-//             match:{
-//                 content: `${keywords}`,
-//             },       
-//         }
-//     })
-//     console.log('1',data);
-//     console.log('2',data.hits.hits)
-// }
-
-// async function read(){
-//     const result = await client.search<Document>({
-//         index: 'search-chichi',
-//         query: {
-//             match: { content: '生病' }
-//         }
-//     })
-//     console.log('1',result);
-//     console.log('2',result.hits.hits)
-// }
-
-// read().catch(console.log)
-
-// 刪除功能
-// async function deleteIndex() {
-//     const result = await client.indices.delete({ index: 'game-of-thrones' });
-//     console.log(result);
-//   }
-  
-//   deleteIndex().catch(console.log);
-  
-
