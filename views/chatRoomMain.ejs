@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>你的智友-聊天室</title>
     <link href="/dist/output.css" rel="stylesheet">
     <style>
@@ -190,6 +191,7 @@
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
         <script>
 
+            // swal('test')
             // timezone
             const options = {
                 timeZone: 'Asia/Taipei',
@@ -210,7 +212,7 @@
             // 如果網址有room,id的邏輯，會因應點擊右方list調整所以使用let
             let roomName = null;
             let roomNameMatch = window.location.href.match(/\/chatroom\/(\d+)/);
-
+            console.log('roomNameMatch->', roomNameMatch);
             if (roomNameMatch) {
                 roomName = roomNameMatch[1];
                 console.log('roomName', roomName);
@@ -234,6 +236,13 @@
 
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
+                if (roomNameMatch === null) {
+                    swal('你目前沒有聊天對象，請至推薦好友選擇聊天對象')
+                        .then((value) => {
+                            const url = '/friends/recommend';
+                            window.location.href = url;
+                        });
+                }
 
                 if (!roomName) {
                     if (senderId > receiverId) {
@@ -547,26 +556,30 @@
 
 
 
-            let currPage = 0;
-            let nextPaging = currPage + 1
+            let nextPaging = 1
 
             // 下一頁
             async function getNextPage() {
-
                 const apiUrl = `/api/v1/chatroom/${roomName}?paging=${nextPaging}`;
-                console.log(apiUrl);
+                console.log('apiUrl-->', apiUrl);
+
                 try {
+                    // 當沒有下一筆資料時，資料庫回傳 nextPaging is null  (待修改)
+                    if (nextPaging === null) return console.log('nextPaging is null');
+
                     const response = await fetch(apiUrl);
                     const fetchDataJson = await response.json();
-                    const nextPageData = fetchDataJson.data
-                    const nextPageNumber = fetchDataJson.nextPaging
+                    const nextPageData = fetchDataJson.data;
+                    const nextNextPage = fetchDataJson.nextPaging;
                     console.log('all', fetchDataJson);
                     console.log('nextPageData', nextPageData);
-                    console.log('nextPaging', nextPageNumber);
+                    console.log('nextPaging', nextNextPage);
 
-                    if (nextPageNumber === null) return console.log('沒有更多資料');  // 但還會有下一頁這邊已經return沒有
-                    nextPaging = nextPageNumber
-                    // 将获取到的数据添加到聊天室中
+
+                    if (nextPageData === null) return console.log('NextPageData is null');
+                    // 但還會有下一頁這邊已經return沒有
+                    nextPaging = nextNextPage
+                    // 歷史訊息加入html
                     let messageUl = document.createElement('ul');
 
                     nextPageData.forEach(item => {
@@ -609,7 +622,7 @@
                     });
                     // messages.innerHTML = '';
                     messages.prepend(messageUl);
-
+                    if (nextNextPage === null) return console.log('沒有更多資料');
                 } catch (error) {
                     console.error('Error fetching next page:', error);
                 }
@@ -618,12 +631,12 @@
             document.getElementById('chatroom').addEventListener('scroll', function () {
                 if (this.scrollTop === 0) {
                     var loadingElement = document.getElementById('loading');
-                    loadingElement.style.display = 'flex'; 
+                    loadingElement.style.display = 'flex';
                     setTimeout(function () {
                         var loadingElement = document.getElementById('loading');
                         loadingElement.style.display = 'none';
 
-                    }, 400); 
+                    }, 400);
                     getNextPage();
                 }
             });

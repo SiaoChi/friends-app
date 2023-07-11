@@ -92,11 +92,13 @@ export async function signIn(req: Request, res: Response) {
 }
 
 export async function createUserProfile(req: Request, res: Response) {
-    const { name, picture, birth, email, location, sickYear, carer, level, currentProblems, tags, } = req.body
+    try{
+        const { name, picture, birth, email, location, sickYear, carer, level, currentProblems, tags, } = req.body
     let userPhotoPath = picture;
-    // console.log('userPhotoPath-->',userPhotoPath);
+    console.log('tags->',tags)
+    console.log('userPhotoPath-->',userPhotoPath);
     const uploadImages = res.locals.imagePath;
-    // console.log('Profile->imagePath-->',uploadImages);
+    console.log('Profile->imagePath-->',uploadImages);
     const userId = res.locals.userId;
 
     if (uploadImages) {
@@ -119,8 +121,11 @@ export async function createUserProfile(req: Request, res: Response) {
     )
 
     const url = '/user/profile'
-
     res.redirect(url);
+
+    }catch(err){
+        res.status(500).json({ errors: "createUserProfileForm failed" })
+    }
 }
 
 
@@ -142,6 +147,8 @@ export async function fetchUserProfileById(req: Request, res: Response) {
 
 export async function renderUserProfileForm(req: Request, res: Response) {
     try {
+        const  url  = req.url;
+        console.log('url-->',url);
         const { userId } = res.locals;
         const tags = await userModel.getTags();
         const userData = await userModel.getUserProfileTagsData(userId)

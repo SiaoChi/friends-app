@@ -8,3 +8,4 @@ key.pem
 cert.pem
 
 /ssh/
+/k6/

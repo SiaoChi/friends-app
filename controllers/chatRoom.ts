@@ -14,6 +14,7 @@ export async function renderChatroomByRoomNameBata(req: Request, res: Response) 
         if (!room) {
             // 查詢是不是曾經有聊過天
             const userRoom = await chatRoomModel.getUserRoom(userId);
+            // 有跟人聊天過，回傳最新的聊天好友資訊
             if (Array.isArray(userRoom) && userRoom.length > 0) {
                 const chatList = await chatRoomModel.getChatListById(userId);
                 if (Array.isArray(chatList) && chatList.length > 0) {
@@ -22,7 +23,7 @@ export async function renderChatroomByRoomNameBata(req: Request, res: Response) 
                     return res.redirect(`/chatroom/${latestRoom}?id=${receiverId}`);
                 }
             }
-            // 沒有聊天室的人，回傳空白聊天室
+            // 如果使用者沒有跟任何人聊天過，沒有聊天室的人，回傳空白聊天室
             const chatList:any = [];
             // const chatList = await chatRoomModel.getChatListById(userId);
             return res.render('chatRoomMain',{ chatList })
@@ -66,10 +67,10 @@ export async function fetchMessages(req: Request, res: Response) {
 export async function fetchMessagesPagination(req:Request, res:Response){
     try {
         const { room } = req.params;
-        const currPage = Number(req.query.paging) || 0;
+        const currPage = Number(req.query.paging) 
         const senderMessages = await chatRoomModel.getMessageByRoomPagination(room,currPage);
         if (senderMessages) {
-            res.status(400).json(senderMessages);
+            res.status(200).json(senderMessages);
             return;
         }
         throw new Error('the chatroom is empty.')

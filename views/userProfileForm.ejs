@@ -16,58 +16,61 @@
     }
 
     body,
-html {
-    margin: 0;
-    padding: 0;
-}
+    html {
+      margin: 0;
+      padding: 0;
+    }
 
-ul.boxtags {
-    list-style: none;
-    padding: 20px;
-}
-ul.boxtags li{
-  display: inline;
-}
-ul.boxtags li label{
-    display: inline-block;
-    background-color: rgba(255, 255, 255, .9);
-    border: 2px solid rgba(139, 139, 139, .3);
-    color: #adadad;
-    border-radius: 25px;
-    white-space: nowrap;
-    margin: 3px 0px;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    transition: all .1s;
-}
+    ul.boxtags {
+      /* list-style: none; */
+      padding: 20px;
+    }
 
-ul.boxtags li label {
-    padding: 8px 12px;
-    cursor: pointer;
-}
+    ul.boxtags li {
+      display: inline;
+    }
 
-ul.boxtags li input[type="checkbox"]:checked + label {
-    border: 2px solid #1bdbf8;
-    background-color: #2198DD;
-    color: #fff;
-    transition: all .1s;
-}
+    ul.boxtags li label {
+      display: inline-block;
+      background-color: rgba(255, 255, 255, .9);
+      border: 2px solid rgba(139, 139, 139, .3);
+      color: #adadad;
+      border-radius: 25px;
+      white-space: nowrap;
+      margin: 3px 0px;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      /* transition: all .1s; */
+    }
 
-ul.boxtags li input[type="checkbox"] {
-  display: absolute;
-}
-ul.boxtags li input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-}
-ul.boxtags li input[type="checkbox"]:focus + label {
-  border: 2px solid #e9a1ff;
-}
+    ul.boxtags li label {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
 
+    ul.boxtags li input[type="checkbox"]:checked+label {
+      border: 2px solid #1bdbf8;
+      background-color: #2198DD;
+      color: #fff;
+      /* transition: all .1s; */
+    }
+
+    ul.boxtags li input[type="checkbox"] {
+      display: absolute;
+    }
+
+    ul.boxtags li input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+    }
+
+    ul.boxtags li input[type="checkbox"]:focus+label {
+      border: 2px solid #e9a1ff;
+    }
   </style>
 </head>
 
@@ -82,7 +85,8 @@ ul.boxtags li input[type="checkbox"]:focus + label {
 
             <div class="flex items-center justify-center mb-5">
               <button type="button" id="prevButton" class="mr-6">◀</button>
-              <img class="user-picture rounded-full" id="pictureImage" src=" <%= userData[0].picture ? userData[0].picture : '/img/users/1.png' %>" alt="大頭照">
+              <img class="user-picture rounded-full" id="pictureImage"
+                src=" <%= userData[0].picture ? userData[0].picture : '/img/users/1.png' %>" alt="大頭照">
               <button type="button" id="nextButton" class="ml-6">►</button>
             </div>
             <div>
@@ -92,7 +96,6 @@ ul.boxtags li input[type="checkbox"]:focus + label {
               <input type="radio" name="picture" value="/img/users/4.png" style="display: none;">
               <input type="radio" name="picture" value="upload" style="display: none;">
               <!-- <input type="hidden" id="uploadedPictureValue" name="uploadedPicture" value=""> -->
-
             </div>
 
             <div class="mb-4">
@@ -103,7 +106,7 @@ ul.boxtags li input[type="checkbox"]:focus + label {
                   class="inline-flex items-center px-6 py-2 mb-4 bg-white border border-gray-300 rounded-md font-semibold text-md text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-400 focus:shadow-outline-blue transition ease-in-out duration-150 mt-2 ml-3">
                   上傳大頭照圖片
                 </label>
-            
+
               </div>
               <input type="file" id="uploadedpicture" name="upload" style="display: none;">
             </div>
@@ -128,8 +131,8 @@ ul.boxtags li input[type="checkbox"]:focus + label {
 
             <div class="relative mb-2">
               <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 " fill="currentColor"
-                  viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 " fill="currentColor" viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg">
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
                 </svg>
@@ -183,21 +186,19 @@ ul.boxtags li input[type="checkbox"]:focus + label {
           <textarea class="border border-black w-[300px] h-[100px] mt-2" id="hospital" name="hospital"
             required><%= userData[0].hospital ? userData[0].hospital : '' %></textarea> -->
 
-            <label class="block mb-2 text-md font-medium text-gray-900 " for="level"
-              class="block mt-4">醫生診斷病程：</label>
+            <label class="block mb-2 text-md font-medium text-gray-900 " for="level" class="block mt-4">醫生診斷病程：</label>
             <select
               class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               id="level" name="level" required>
               <option value="<%= userData[0].level ? userData[0].level : '' %>">
                 <%= userData[0].level ? userData[0].level : '請選擇' %>
               </option>
-              <option value="早期">早期</option>
-              <option value="中期">中期</option>
-              <option value="晚期">晚期</option>
+              <option value="輕度">輕度</option>
+              <option value="中度">中度</option>
+              <option value="重度">重度</option>
             </select>
 
-            <label class="block mb-2 text-md font-medium text-gray-900 " for="carer"
-              class="block mt-4">主要照顧者：</label>
+            <label class="block mb-2 text-md font-medium text-gray-900 " for="carer" class="block mt-4">主要照顧者：</label>
             <select
               class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               id="carer" name="carer" required>
@@ -211,42 +212,35 @@ ul.boxtags li input[type="checkbox"]:focus + label {
             </select><br>
 
 
-            <label class="block mb-2 text-md font-medium text-gray-900 "
-              for="currentProblems">你目前遇到的問題：</label>
+            <label class="block mb-2 text-md font-medium text-gray-900 " for="currentProblems">你目前遇到的問題：<p
+                class="text-xs  text-red">*限20個字內</p></label>
             <textarea
               class="block w-full h-[100px] p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500"
-              id="currentProblems" name="currentProblems"
-              required><%= userData[0].current_problem%></textarea><br>
+              id="currentProblems" name="currentProblems" required><%= userData[0].current_problem%></textarea><br>
 
             <label class="block text-md font-medium text-gray-900 " for="conditions">家屬病況：</label>
             <p class="text-xs mb-4  text-red">*病況為重要智慧媒合資訊，請點選最符合的6個狀況</p>
 
-        <div class="flex items-center justify-center w-full ">
-            <% let count=0; %>
-            <ul class="boxtags">
-              <% for (let i=0; i < tags.length; i++) { %>
-                <!-- <div class="flex-inline items-center mr-4"> -->
-                  <li><input
-                    class=""
-                    type="checkbox" id="condition<%= tags[i].id %>" name="tags" value="<%= tags[i].id %>"
-                    onclick="limitCheckboxes(this)"
-                    <% if (userData && userData[0]?.tags?.includes(tags[i].name)) { %> checked <% } %>
-                    >
-                    <label for="condition<%= tags[i].id %>"
-                      class="ml-2 text-md font-medium text-gray-900  cursor-pointer">
-                      <%= tags[i].name %>
-                    </label></li>
-                <!-- </div> -->
-              
-              
-                <% } %><br>
-              </ul>
+            <div class="flex items-center justify-center w-full ">
+              <% let count=0; %>
+                <ul class="boxtags">
+                  <% for (let i=0; i < tags.length; i++) { %>
+                    <li><input class="" type="checkbox" id="condition<%= tags[i].id %>" name="tags"
+                        value="<%= tags[i].id %>" onclick="limitCheckboxes(this)" <% if (userData &&
+                        userData[0]?.tags?.includes(tags[i].name)) { %> checked <% } %>
+                        >
+                        <label for="condition<%= tags[i].id %>"
+                          class="ml-2 text-md font-medium text-gray-900  cursor-pointer">
+                          <%= tags[i].name %>
+                        </label></li>
+                    <% } %><br>
+                </ul>
             </div>
-                  <div class="flex justify-center">
-                    <button
-                      class=" mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
-                      type="submit">Submit</button>
-                  </div>
+            <div class="flex justify-center">
+              <button
+                class=" mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
+                type="submit">Submit</button>
+            </div>
           </form>
 
         </div>
@@ -254,31 +248,36 @@ ul.boxtags li input[type="checkbox"]:focus + label {
     </div>
     <script>
 
+      const boxtags = document.querySelector('.boxtags')
+      boxtags.addEventListener('click', (e) => {
+        console.log(e.target, e.target.checked);
+      })
+
+
       document.addEventListener('DOMContentLoaded', function () {
         const prevButton = document.getElementById('prevButton');
         const nextButton = document.getElementById('nextButton');
         const pictureImage = document.getElementById('pictureImage');
         const pictureRadios = document.getElementsByName('picture');
-        const uploadedpictureInput = document.getElementById('uploadedpicture');
+        const uploadPictureInput = document.getElementById('uploadedpicture');
 
 
-        let currentpictureIndex = 0;
+        let currentPictureIndex = 0;
 
         prevButton.addEventListener('click', function () {
-          currentpictureIndex = (currentpictureIndex - 1 + pictureRadios.length) % pictureRadios.length;
-          pictureRadios[currentpictureIndex].checked = true;
-
+          currentPictureIndex = (currentPictureIndex - 1 + pictureRadios.length) % pictureRadios.length;
+          pictureRadios[currentPictureIndex].checked = true;
           updatePreview();
         });
 
         nextButton.addEventListener('click', function () {
-          currentpictureIndex = (currentpictureIndex + 1) % pictureRadios.length;
-          pictureRadios[currentpictureIndex].checked = true;
+          currentPictureIndex = (currentPictureIndex + 1) % pictureRadios.length;
+          pictureRadios[currentPictureIndex].checked = true;
           updatePreview();
         });
 
-        uploadedpictureInput.addEventListener('change', function () {
-          if (uploadedpictureInput.files && uploadedpictureInput.files[0]) {
+        uploadPictureInput.addEventListener('change', function () {
+          if (uploadPictureInput.files && uploadPictureInput.files[0]) {
             const reader = new FileReader();
 
             pictureRadios.forEach(radio => {
@@ -293,13 +292,13 @@ ul.boxtags li input[type="checkbox"]:focus + label {
               pictureRadios[pictureRadios.length - 1].checked = true;
             };
 
-            reader.readAsDataURL(uploadedpictureInput.files[0]);
+            reader.readAsDataURL(uploadPictureInput.files[0]);
           }
         });
 
         pictureRadios.forEach(function (radio, index) {
           radio.addEventListener('change', function () {
-            currentpictureIndex = index;
+            currentPictureIndex = index;
             updatePreview();
 
             if (radio.value === 'upload') {
@@ -311,11 +310,11 @@ ul.boxtags li input[type="checkbox"]:focus + label {
         });
 
         function updatePreview() {
-          if (pictureRadios[currentpictureIndex].value === 'upload') {
+          if (pictureRadios[currentPictureIndex].value === 'upload') {
             pictureImage.src = '/img/users/5.png';
             pictureImage.alt = '大頭照';
           } else {
-            const pictureNumber = currentpictureIndex + 1;
+            const pictureNumber = currentPictureIndex + 1;
             pictureImage.src = `/img/users/${pictureNumber}.png`;
             pictureImage.alt = `大頭照 ${pictureNumber}`;
           }
@@ -336,6 +335,12 @@ ul.boxtags li input[type="checkbox"]:focus + label {
       }
 
       document.getElementById("form").addEventListener("submit", function (event) {
+        // event.preventDefault()
+        const data = new FormData(form);
+        for (const [name, value] of data) {
+          console.log(name, ":", value)
+        }
+
         let checkboxes = document.querySelectorAll('input[name="tags"]:checked');
         if (checkboxes.length < 1 || checkboxes.length > 6) {
           event.preventDefault();
@@ -344,7 +349,6 @@ ul.boxtags li input[type="checkbox"]:focus + label {
       });
 
 
-      
 
     </script>
 </body>

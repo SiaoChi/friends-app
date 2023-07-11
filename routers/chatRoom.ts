@@ -17,13 +17,12 @@ router // 要加一個middleware，防止其他人進入
 
 router // 要加一個middleware，防止其他人進入
     .route("/api/v1/chatroom/:room")
-    .get( authenticate, chatRoomFunctions.fetchMessagesPagination)
+    .get(authenticate, chatRoomFunctions.fetchMessagesPagination)
     .put(authenticate, chatRoomFunctions.fetchMessagesRead)
 
 router  // fetchChatList 是否sender有不是自己的，如果有header右上角會跳出綠點點
     .route("/api/v1/chatlist/:id")
     .get(authenticate, chatRoomFunctions.fetchChatList);  // 要加一個middleware，防止其他人進入
-
 
 
 export default router;

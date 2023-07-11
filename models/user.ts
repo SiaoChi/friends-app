@@ -174,9 +174,13 @@ export async function updateUserProfile(
         [name, picture, birth, email, carer,  level, location, sickYear, currentProblems]
     )
 
-
-    if (Array.isArray(tags) && tags.length > 0) {
-        await pool.query(`DELETE FROM users_tags WHERE user_id = ${userId}`)
+    console.log('model get tags -->',tags);
+    if (tags) {
+        const result = await pool.query(`DELETE FROM users_tags WHERE user_id = ?`, [userId])
+        console.log('delete tags result->',result);
+        console.log('1',typeof tags, tags);
+        if(!Array.isArray(tags)) { tags = [tags] }
+        console.log('2',typeof tags, tags);
         const arrangeData = tags.map(item => [userId, parseInt(item)]);
         await pool.query(
             `INSERT users_tags (user_id , tag_id)
