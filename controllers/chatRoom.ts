@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import * as chatRoomModel from "../models/chatRoom.js"
 import { RowDataPacket } from 'mysql2';
+import { error } from "console";
 
 
 export async function renderChatroomByRoomNameBata(req: Request, res: Response) {
@@ -67,7 +68,8 @@ export async function fetchMessages(req: Request, res: Response) {
 export async function fetchMessagesPagination(req:Request, res:Response){
     try {
         const { room } = req.params;
-        const currPage = Number(req.query.paging) 
+        // if(req.query.paging === null) throw new Error ('Paging number can not be null in fetchMessagesPagination function')
+        const currPage = Number(req.query.paging) || 0;
         const senderMessages = await chatRoomModel.getMessageByRoomPagination(room,currPage);
         if (senderMessages) {
             res.status(200).json(senderMessages);
