@@ -21,5 +21,10 @@ router
     .delete(authenticate, articlesFunction.deleteArticleById)
     .put(authenticate, articlesFunction.updateArticleById)
 
+router
+    .route("/api/v1/articles/emoji")
+    .get(authenticate,articlesFunction.getArticleEmoji)
+    .post(authenticate,articlesFunction.saveArticleEmoji)
+
 
 export default router;

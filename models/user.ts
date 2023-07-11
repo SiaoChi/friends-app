@@ -35,6 +35,7 @@ export async function createUser(
             `,
         [name, email]
     );
+    
     if (Array.isArray(results) && instanceOfSetHeader(results[0])) {
         return results[0].insertId;
     }

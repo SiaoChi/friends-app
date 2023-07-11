@@ -58,10 +58,3 @@ export async function searchByElastic(keywords: string[]){
     // console.log('articleId->',articleId );
     return articleId
 }
-
-
-    // console.log('符合關鍵字的data-->',data)
-    // console.log('符合關鍵字的document-->',data.hits.hits)
-    // data.hits.hits.forEach((hit) => {
-    //   console.log('與關鍵字相符的文字highlight-->', hit.highlight);
-    // });

@@ -31,7 +31,7 @@ export async function getArticleByKeyword(keyword: string, currPage: number) {
         `,[currPage * 20]
     )
 
-    console.log('data->',data);
+    // console.log('data->',data);
 
     const [next] = await pool.query(
         `

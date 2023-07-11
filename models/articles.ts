@@ -1,17 +1,22 @@
 import pool from "./databasePool.js";
+import { ResultSetHeader } from "mysql2";
 import { z } from "zod";
+
+
+function instanceOfSetHeader(object: any): object is ResultSetHeader {
+    return "insertId" in object;
+}
 
 export async function createUserArticle(title: string, content: string, date: string, userId: number) {
     // console.log(title, content, date, userId);
-    const [rows] = await pool.query(
+    const [results] = await pool.query(
         `
         INSERT INTO articles (title,content,created_at,user_id)
         VALUES (?,?,?,?)
         `, [title, content, date, userId])
 
-    // console.log(rows);
 
-    return rows
+    return results
 }
 
 export async function getUserArticlesData(id: number) {
@@ -46,25 +51,19 @@ export async function getArticleByID(id: number | number[]) {
       FROM articles
       INNER JOIN users ON users.id = articles.user_id
       WHERE articles.id `;
-    
+
     if (Array.isArray(id)) {
-      query += `IN (?)`;
+        query += `IN (?)`;
     } else {
-      query += `= ?`;
+        query += `= ?`;
     }
-  
+
     query += ` ORDER BY created_at DESC`;
-  
+
     const [results] = await pool.query(query, [id]);
     return results;
-  }
+}
 
-// async function printArticle(){
-//   console.log(await getArticleByID(56))
-//   console.log(await getArticleByID([56,67]))
-// }
-
-// printArticle()
 
 export async function updateArticleByID(id: number, title: string, content: string, date: string) {
     const result = await pool.query(
@@ -82,4 +81,37 @@ export async function updateArticleByID(id: number, title: string, content: stri
 export async function deleteArticleByID(id: number) {
     const result = await pool.query(`DELETE FROM articles WHERE id = ?`, [id])
     return result
+}
+
+
+export async function saveArticleEmoji(userId: number, articleId: number, emojiId: number) {
+    const results = await pool.query(
+        `
+        INSERT INTO user_article_emoji (user_id,article_id,emoji_id)
+        VALUES (?,?,?)
+        `, [userId, articleId, emojiId]
+    )
+
+    if (Array.isArray(results) && instanceOfSetHeader(results[0])) {
+        return results[0].affectedRows;
+    }
+}
+
+const EmojiIdSchema = z.object({
+    emoji_id : z.number()
+})
+
+export async function getArticleEmojiId(articleId: number, userId: number) {
+    const [results] = await pool.query(
+        `
+        SELECT emoji_id FROM user_article_emoji
+        WHERE  article_id = ? and user_id = ?
+        `, [articleId,userId]
+    )
+
+    const checkData = z.array(EmojiIdSchema).parse(results)
+
+    console.log('getArticleEmojiId', checkData);
+    console.log('getArticleEmojiId type', typeof checkData);
+    return checkData
 }
