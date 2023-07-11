@@ -42,8 +42,8 @@ export async function checkFileType(
   res: Response,
   next: NextFunction
 ) {
-  console.log('req.file-->',req.file);
-  console.log('req.files-->',req.files);
+  // console.log('req.file-->',req.file);
+  // console.log('req.files-->',req.files);
 
   if (isFilesObject(req.files)) {
     const images = await Promise.all(
@@ -58,7 +58,7 @@ export async function checkFileType(
       }
     });
     res.locals.images = images;
-    console.log('res.locals.images',res.locals.images);
+    // console.log('res.locals.images',res.locals.images);
   }
 
   if (isFileObject(req.file)) {
@@ -68,7 +68,7 @@ export async function checkFileType(
       throw new Error("fake type");
     }
     res.locals.image = image;    
-    console.log('res.locals.image',res.locals.image);
+    // console.log('res.locals.image',res.locals.image);
   }
   next();
 };
@@ -92,7 +92,6 @@ export async function saveUserPhotoToS3(req: Request, res: Response, next: NextF
     }
     next();
   } catch (err) {
-    console.error(err);
     if (err instanceof Error) {
       res.status(500).json({ errors: err.message });
       return;

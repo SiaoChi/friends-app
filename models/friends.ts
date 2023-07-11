@@ -18,7 +18,7 @@ export async function getFriendsId(userId: number) {
     const checkResult = z.array(FriendsIdSchema).parse(result)
     // checkResult =  [ { friend_id: 3 }, { friend_id: 5 }, { friend_id: 18 } ]
     const friendsId = checkResult.map(item => item.friend_id)
-    console.log('friendsId',friendsId);
+    // console.log('friendsId',friendsId);
     return friendsId
 }
 
@@ -30,7 +30,7 @@ export async function addFriend(userId: number, friendId: number) {
             VALUES (?,?)
             `, [userId, friendId]
         )
-        console.log(result);
+        // console.log(result);
         return result
     }catch(err){
         if(err instanceof Error){
@@ -76,7 +76,7 @@ export async function getRecommendFriendsById(userId: number) {
         return acc
     }, {})
 
-    console.log('mapFriends',mapFriends);
+    // console.log('mapFriends',mapFriends);
 
     // friends unfriends list Id, 排除有一樣Id的  mapFriends
     const [filterFriends] = await pool.query(
@@ -104,7 +104,7 @@ export async function getRecommendFriendsById(userId: number) {
         }
     });
 
-    console.log('相同tagsUser積分(id:相同分數)', mapFriends);
+    // console.log('相同tagsUser積分(id:相同分數)', mapFriends);
 
     // 找出hashmap top5 最大的user
     const sortedFriends = Object.entries(mapFriends)

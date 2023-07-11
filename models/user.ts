@@ -10,15 +10,15 @@ function instanceOfSetHeader(object: any): object is ResultSetHeader {
 export async function checkUser(email:string) {
     console.log('check user');
 
-    const [checkEmail] = await pool.query(
+    const checkEmail = await pool.query(
         `
          SELECT id FROM users
          WHERE email = ?
         `,
         [email]
     )
-    console.log(checkEmail);
-    console.log(typeof checkEmail);
+    // console.log(checkEmail);
+    // console.log(typeof checkEmail);
     if(Array.isArray(checkEmail) && checkEmail.length > 1){
         return true
     }
@@ -174,13 +174,9 @@ export async function updateUserProfile(
         [name, picture, birth, email, carer,  level, location, sickYear, currentProblems]
     )
 
-    console.log('model get tags -->',tags);
     if (tags) {
         const result = await pool.query(`DELETE FROM users_tags WHERE user_id = ?`, [userId])
-        console.log('delete tags result->',result);
-        console.log('1',typeof tags, tags);
         if(!Array.isArray(tags)) { tags = [tags] }
-        console.log('2',typeof tags, tags);
         const arrangeData = tags.map(item => [userId, parseInt(item)]);
         await pool.query(
             `INSERT users_tags (user_id , tag_id)

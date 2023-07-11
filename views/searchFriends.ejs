@@ -81,7 +81,6 @@
                     });
                     if (response.ok) {
                         const dataJson = await response.json();
-                        console.log(dataJson);
                         if(dataJson.message === 'success') {
                             swal('已追蹤智友')
                             .then(() => { window.location.reload();})

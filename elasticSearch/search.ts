@@ -42,12 +42,11 @@ const elasticSearchDataSchema = z.object({
 export async function searchByElastic(keywords: string[]){
     // const matchData = keywords.map((ele) => ({ match : { content: ele }}))
     const data = await client.search<Document>({
-        size: 20, // 因為default回傳是10筆，如果size要改，可以去hits.value拿這邊修改的size數量資料
+        size: 20, // 因為default回傳是10筆
         index: 'search-friends',
         q: keywords.join(','), //分詞器會自動把詞句找出最適合的單詞，所以傳string
         analyzer: "icu_analyzer"
     })
-    console.log('keywords',keywords.join(','));
     // console.log('符合關鍵字的document-->',data.hits.hits)
     const checkData = elasticSearchDataSchema.parse(data);
     // console.log('checkData->',checkData);
@@ -56,7 +55,7 @@ export async function searchByElastic(keywords: string[]){
     const articleId = hitsArray.map(item => {
         return parseInt(item._source.id.split('articles_')[1])
     })
-    console.log('articleId->',articleId );
+    // console.log('articleId->',articleId );
     return articleId
 }
 

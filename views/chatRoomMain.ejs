@@ -203,17 +203,17 @@
             const input = document.getElementById('input');
             const chatList = document.getElementById('chatlist')
             const name = localStorage.getItem('name');
-            console.log('username', name);
+            // console.log('username', name);
             const userPicture = localStorage.getItem('userPicture');
-            console.log('userPicture', userPicture);
+            // console.log('userPicture', userPicture);
 
             // 如果網址有room,id的邏輯，會因應點擊右方list調整所以使用let
             let roomName = null;
             let roomNameMatch = window.location.href.match(/\/chatroom\/(\d+)/);
-            console.log('roomNameMatch->', roomNameMatch);
+            // console.log('roomNameMatch->', roomNameMatch);
             if (roomNameMatch) {
                 roomName = roomNameMatch[1];
-                console.log('roomName', roomName);
+                // console.log('roomName', roomName);
             }
             let urlParams = new URLSearchParams(window.location.search);
             let receiverId = urlParams.get('id');
@@ -235,7 +235,7 @@
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 if (roomNameMatch === null) {
-                    swal('你目前沒有聊天對象，請至推薦好友選擇聊天對象')
+                    swal('你目前沒有聊天對象，頁面將轉至推薦好友選擇聊天對象')
                         .then((value) => {
                             const url = '/friends/recommend';
                             window.location.href = url;
@@ -303,7 +303,6 @@
             socket.on("message", async function (data) {
                 const { nickname, message, senderId, receiverId, room, time, senderPicture } = data;
                 if (Number(room) === Number(roomName)) {
-                    console.log('1');
                     let item = document.createElement('li');
                     item.classList.add('message-received', 'flex');
                     let img = document.createElement('img');
@@ -332,7 +331,6 @@
 
                 // [chatList] 新訊息：(1) 已經存在的user更新文字與小綠點 (2)沒存在的user需要建立新的div
                 const existingChatPerson = document.querySelector(`[data-senderid="${senderId}"]`);
-                console.log('existingChatPerson', existingChatPerson);
 
                 if (existingChatPerson) {
                     const aElement = existingChatPerson.querySelector('a');
@@ -346,15 +344,12 @@
 
                         // 情境1：傳送過來時，已經有未讀訊息的div class=unread，抓取unread的value +=1
                         if (unRead) {
-                            console.log('unread', unRead);
                             if (unRead.style.display === 'none') {
                                 unRead.textContent = 1;
                             } else {
                                 unRead.textContent = (Number(unRead.textContent) || 0) + 1;
                             }
-                            console.log('unread text', unRead.textContent);
                             unRead.style.display = 'flex';
-                            console.log('unRead after', unRead);
                         } else {
                             // 情境２：傳送過來時，沒有未讀訊息的class class=unread，解法：加入一個div呈現unread畫面 unread value = 1
                             let unRead = document.createElement('div');
@@ -483,7 +478,7 @@
             chatListDiv.addEventListener('click', async (event) => {
                 // event.preventDefault();
                 const target = event.target.closest('.chat-person');
-                console.log(target);
+                // console.log(target);
                 const roomName = target.getAttribute('data-room');
                 // const redDot = target.querySelector('a .red-dot');
                 const unRead = target.querySelector('a .unread');

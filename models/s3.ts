@@ -22,10 +22,10 @@ export const s3 = new S3Client({
 type image = Express.Multer.File & FileTypeResult;
 
 export async function uploadProductImageToS3(images: image[]) {
-  console.log('images-->', images);
+  // console.log('images-->', images);
   const date = new Date().toJSON();
   const filename = date.replace(/-|[A-Z]|\:|\./g, "");
-  console.log('filename-->', filename);
+  // console.log('filename-->', filename);
   const params = images.map((image, index) => ({
     Bucket: bucketName,
     Key: `userImage/${filename}`,

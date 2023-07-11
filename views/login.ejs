@@ -142,7 +142,7 @@
                         window.location.href = redirectUrl;
                     } else {
                         const data = await response.json();
-                        console.log('ok',data.message);
+                        // console.log('ok',data.message);
                         swal(data.message); //顯示登入失敗錯誤訊息
                     }
                 } catch (error) {
@@ -154,12 +154,11 @@
 
             // 送出登入sign in
             $('#signin-form').submit(async (event) => {
-                console.log('submit')
                 event.preventDefault();
                 const email = $('#signin-mail').val();
                 const password = $('#signin-password').val();
-                console.log(email, password)
-                console.log('--登入前端---')
+                // console.log(email, password)
+                // console.log('--登入前端---')
                 const data = {
                     email: email,
                     password: password
@@ -176,10 +175,8 @@
 
 
                     if (response.ok) {
-                        console.log('1');
                         const data = await response.json();
                         console.log('data',data);
-                        console.log('picture',data.data.user.picture);
 
                         localStorage.setItem('userId', data.data.user.id);
                         localStorage.setItem('name', data.data.user.name);
@@ -190,7 +187,6 @@
                        
                     } 
                     else {
-                        console.log('2');
                         const data = await response.json();
                         swal(data.errors); 
                     }
@@ -231,7 +227,6 @@
                         FB.api('/me', {
                             'fields': 'id,name,email,picture'
                         }, function (response) {
-                            console.log(response);
 
                             const fb_api_url = '/user/signin';
                             const config = {

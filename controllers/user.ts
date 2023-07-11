@@ -55,7 +55,7 @@ export async function signIn(req: Request, res: Response) {
     try {
         const { email, password } = req.body;
         const user = await userModel.findUserByEmail(email);
-        console.log('user-->',user);
+        // console.log('user-->',user);
         if (typeof user === 'undefined') {
             throw new Error("user not exist");
         }
@@ -95,14 +95,12 @@ export async function createUserProfile(req: Request, res: Response) {
     try{
         const { name, picture, birth, email, location, sickYear, carer, level, currentProblems, tags, } = req.body
     let userPhotoPath = picture;
-    console.log('tags->',tags)
-    console.log('userPhotoPath-->',userPhotoPath);
+    // console.log('tags->',tags)
+    // console.log('userPhotoPath-->',userPhotoPath);
     const uploadImages = res.locals.imagePath;
-    console.log('Profile->imagePath-->',uploadImages);
     const userId = res.locals.userId;
 
     if (uploadImages) {
-        console.log('uploads-->', uploadImages);
         userPhotoPath = uploadImages;
     }
 
@@ -147,12 +145,10 @@ export async function fetchUserProfileById(req: Request, res: Response) {
 
 export async function renderUserProfileForm(req: Request, res: Response) {
     try {
-        const  url  = req.url;
-        console.log('url-->',url);
         const { userId } = res.locals;
         const tags = await userModel.getTags();
         const userData = await userModel.getUserProfileTagsData(userId)
-        console.log('userDataAndTags->', userData);
+        // console.log('userDataAndTags->', userData);
         // 如果希望在edict時加入user已知資料
         res.render('userProfileForm', { tags, userData })
     } catch (err) {
