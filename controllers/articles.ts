@@ -38,12 +38,19 @@ export async function renderArticleByID(req: Request, res: Response) {
     try {
         const { id: articleId } = req.params;
         const { userId } = res.locals;
+        console.log('renderArticleByID---->',articleId,userId);
         const singleArticleData = await articleModels.getArticleByID(parseInt(articleId));
         const userArticleEmojiId = await articleModels.getArticleEmojiId(parseInt(articleId), userId);
-        if (Array.isArray(singleArticleData) && singleArticleData.length > 0) {
-            return res.status(200).render('singleArticle', { singleArticleData });
+
+        console.log('userArticleEmojiId-->',userArticleEmojiId);
+        if (Array.isArray(singleArticleData) && singleArticleData.length > 0 && userArticleEmojiId.length > 0 ) {
+            console.log('emojo有資料');
+            return res.status(200).render('singleArticle', { singleArticleData , userArticleEmojiId });
+        }else if (Array.isArray(singleArticleData) && singleArticleData.length > 0 && userArticleEmojiId.length === 0 ){
+            console.log('emojo沒有資料');
+            return res.status(200).render('singleArticle', { singleArticleData , userArticleEmojiId:null });
         }
-        throw new Error('article ID is not existed')
+        return res.status(404).render('404');
     } catch (err) {
         res.status(500).json({ errors: err })
     }
@@ -65,9 +72,7 @@ export async function renderUpdateArticleByID(req: Request, res: Response) {
 export async function deleteArticleById(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        // console.log('id', id);
         const result = await articleModels.deleteArticleByID(parseInt(id));
-        // console.log('result', result);
         if (Array.isArray(result) && result.length > 0) {
             return res.status(200).json({ message: `成功刪除文章:${id}` })
         }
@@ -99,7 +104,7 @@ export async function saveArticleEmoji(req: Request, res: Response) {
     try {
         const { userId } = res.locals;
         const { articleId, emojiId } = req.body;
-        const affectRows = await articleModels.saveArticleEmoji(userId, articleId, emojiId);
+        const affectRows = await articleModels.saveArticleEmoji(userId, parseInt(articleId), parseInt(emojiId));
         if (affectRows === 1) {
             return res.status(200).json({ message: 'success' })
         }
@@ -113,17 +118,17 @@ export async function saveArticleEmoji(req: Request, res: Response) {
     }
 }
 
-export async function getArticleEmoji(req: Request, res: Response) {
-    try {
-        const { articleId } = req.body;
-        const { userId } = res.locals;
-        const userArticleEmojiId = await articleModels.getArticleEmojiId(parseInt(articleId), userId);
-        if (userArticleEmojiId) {
-            return res.status(200).json({ userArticleEmojiId });
-        }
-        const isNull: any = [];
-        return res.status(200).json({ userArticleEmojiId: isNull });
-    } catch (err) {
-        res.status(500).json({ errors: err })
-    }
-}
+// export async function getArticleEmoji(req: Request, res: Response) {
+//     try {
+//         const { articleId } = req.body;
+//         const { userId } = res.locals;
+//         const userArticleEmojiId = await articleModels.getArticleEmojiId(parseInt(articleId), userId);
+//         if (userArticleEmojiId) {
+//             return res.status(200).json({ userArticleEmojiId });
+//         }
+//         const isNull: any = [];
+//         return res.status(200).json({ userArticleEmojiId: isNull });
+//     } catch (err) {
+//         res.status(500).json({ errors: err })
+//     }
+// }

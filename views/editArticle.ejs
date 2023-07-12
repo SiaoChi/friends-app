@@ -98,10 +98,15 @@
             swal("文章修改失敗！");
           })
           .catch(error => {
-            // 請求失敗後的處理
             console.error(error);
           });
       }
+
+      const dateInput = document.getElementById("date");
+      const today = new Date().toISOString().split("T")[0];
+      dateInput.setAttribute("max", today);
+      dateInput.setAttribute("value", today);
+
     </script>
 </body>
 

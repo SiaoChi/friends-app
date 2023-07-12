@@ -48,15 +48,39 @@
                         </button>
 
                     </div>
+                    <style>
+                        .em{
+                            height: 16px;
+                        }
+                    </style>
                     <div class="flex justify-end items-end mt-6 ">
-                        <div class="flex justify-center items-center bg-slate-100 rounded-full p-4 ">
-                            <i class="em em---1 mr-4 cursor-pointer w-[10px]" aria-role="presentation"
-                                aria-label="THUMBS UP SIGN" id="like"></i>
-                            <i class="em em-blue_heart mr-4 cursor-pointer w-[10px]" aria-role="presentation"
-                                aria-label="BLUE HEART" id="heart"></i>
-                            <i class="em em-broken_heart  cursor-pointer w-[10px]" aria-role="presentation"
-                                aria-label="BROKEN HEART" id="broken"></i>
-                        </div>
+                        
+                        <% if (userArticleEmojiId) { %>
+                            <div class="h-[20px] flex justify-center items-center bg-slate-100 rounded-full px-2 py-4">
+                                <% if (userArticleEmojiId[0].emoji_id === 1) { %>
+                                    <i class="em em---1 mr-2 cursor-pointer" aria-role="presentation"
+                                        aria-label="THUMBS UP SIGN" emoji-id="1"  id="like"></i>
+                                <% } else if (userArticleEmojiId[0].emoji_id === 2) { %>
+                                    <i class="em em-blue_heart mr-2 cursor-pointer" aria-role="presentation"
+                                        aria-label="BLUE HEART" emoji-id="2"  id="heart"></i>
+                                <% } else if (userArticleEmojiId[0].emoji_id === 3) { %>
+                                    <i class="em em-broken_heart cursor-pointer" aria-role="presentation"
+                                        aria-label="BROKEN HEART" emoji-id="3" " id="broken"></i>
+                                <% } %>
+                            </div>
+                        <% } else { %>
+                            <div class="h-[20px] flex justify-center items-center bg-slate-100 rounded-full px-2 py-4">
+                                <i class="em em---1 mr-2 cursor-pointer" aria-role="presentation"
+                                    aria-label="THUMBS UP SIGN" emoji-id="1" onclick="sendEmoji(1, <%= singleArticleData[0].id %>)" id="like"></i>
+                                <i class="em em-blue_heart mr-2 cursor-pointer" aria-role="presentation"
+                                    aria-label="BLUE HEART" emoji-id="2" onclick="sendEmoji(2, <%= singleArticleData[0].id %>)" id="heart"></i>
+                                <i class="em em-broken_heart cursor-pointer" aria-role="presentation"
+                                    aria-label="BROKEN HEART" emoji-id="3" onclick="sendEmoji(3, <%= singleArticleData[0].id %>)" id="broken"></i>
+                            </div>
+                        <% } %>
+                        
+
+                
                     </div>
                 </div>
 
@@ -64,8 +88,25 @@
                     <p>No article found.</p>
                     <% } %>
         </div>
+       
 
         <script>
+            const userId = localStorage.getItem('userId');
+            console.log('id',userId);
+            async function sendEmoji(emojiId,articleId){
+                if(userId === null) return window.location.href = '/user/signin';
+                console.log('send!');
+                console.log(emojiId,articleId);
+                const url = "/api/v1/articles/emoji";
+                const response = await fetch(url,{
+                    method:"POST",
+                    headers:{ "Content-Type":"application/json" },
+                    body:JSON.stringify({emojiId,articleId})
+                })
+                const resJson = await response.json()
+                console.log(resJson);
+            }
+
             function userProfile(id) {
                 const url = `/user/profile/${id}`;
                 window.location.href = url
@@ -83,30 +124,22 @@
             }
 
   
-            // 获取所有 emoji 元素
                 const emojis = document.querySelectorAll('.em');
-
-                // 点击事件处理函数
                 function handleClick(event) {
-                // 检查是否已经选中了某个 emoji
                 if (document.querySelector('.selected')) {
-                    return; // 如果已经选中了，不执行任何操作
+                    return;
                 }
 
-                // 遍历所有 emoji 元素
-                emojis.forEach(emoji => {
-                    // 检查当前点击的 emoji 是否与遍历的 emoji 元素相同
+                
+                emojis.forEach(emoji => {  
                     if (emoji === event.target) {
-                            // 添加选中样式
-                            emoji.classList.add('p-4');
-                            emoji.classList.remove('mr-4');
+                            emoji.classList.remove('mr-2');
                             emoji.classList.add('selected');
+                        
                     } else {
-                            // 移除选中样式，并禁用其他 emoji 的点击
-                            // emoji.classList.add('selected');
                             console.log(emoji);
                             emoji.style.display = 'none';
-                            
+                        
                     }
                 });
             }

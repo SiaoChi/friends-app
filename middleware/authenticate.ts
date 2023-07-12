@@ -9,13 +9,12 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
 
         if (!token) {
             return res.render('login')
-            // res.status(401).json({ errors: "invalid token" });
-            // return;
         }
         const decoded = await verifyJWT(req, res, token);
         res.locals.userId = decoded.userId;
+        console.log('authenticate',res.locals.userId );
         next();
-    } catch (err) {
+    } catch (err) { 
         if (err instanceof Error) {
             res.status(401).json({ errors: err.message });
             return;

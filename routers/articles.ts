@@ -14,7 +14,7 @@ router
 
 router
     .route("/articles/:id")
-    .get(articlesFunction.renderArticleByID)
+    .get(authenticate,articlesFunction.renderArticleByID)
 
 router
     .route("/api/v1/articles/:id")
@@ -23,7 +23,7 @@ router
 
 router
     .route("/api/v1/articles/emoji")
-    .get(authenticate,articlesFunction.getArticleEmoji)
+    // .get(authenticate,articlesFunction.getArticleEmoji)
     .post(authenticate,articlesFunction.saveArticleEmoji)
 
 

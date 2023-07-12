@@ -103,9 +103,8 @@
       const regex = /\/(\d+)$/;
       const match = currentURL.match(regex);
       const value = match ? match[1] : null;
-      console.log(value); // 輸出: 從URL中抓取的數字值
+      console.log(value); 
       const receiverId = value;
-      // const senderId = localStorage.getItem('userId');
 
       let room;
       if (Number(senderId) > Number(receiverId)) {
