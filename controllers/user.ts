@@ -92,6 +92,10 @@ export async function signIn(req: Request, res: Response) {
 }
 
 export async function createUserProfile(req: Request, res: Response) {
+    console.log('req url',req.url);
+    console.log('???',req.query);
+    const { edit } = req.query;
+    console.log('edit',edit);
     try{
         const { name, picture, birth, email, location, sickYear, carer, level, currentProblems, tags, } = req.body
     let userPhotoPath = picture;
@@ -117,9 +121,15 @@ export async function createUserProfile(req: Request, res: Response) {
         tags,
         userId
     )
-
-    const url = '/user/profile'
-    res.redirect(url);
+    let url
+    console.log('edit',edit);
+    if(edit === 'true') {
+        console.log('true!!');
+        url = '/user/profile'
+    }else{
+        url = '/friends/recommend'  
+    }
+    res.status(200).json({url})
 
     }catch(err){
         res.status(500).json({ errors: "createUserProfileForm failed" })
