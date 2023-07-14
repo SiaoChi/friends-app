@@ -17,11 +17,11 @@
 
 <body class="">
     <%- include('./partials/header') %>
-        <div class="flex items-start justify-start h-vh-90 ">
+        <div class="flex items-start justify-start screen-h fixed ">
             <%- include('./partials/sideBar') %>
                 <!-- 個人資料 -->
                 <div
-                    class="mt-6 space-y-4 font-medium  w-vw-30 h-vh-90 p-6 flex flex-col justify-start items-center  bg-white overflow-y-scroll">
+                    class="space-y-4 font-medium  w-vw-30 h-vh-90 p-6 flex flex-col justify-start items-center  bg-white overflow-y-scroll">
                     <img class="w-[200px] h-[200px] rounded-full mb-2" src="<%= userProfile[0].picture %>"
                         alt="Profile Picture">
                     <ul class="flex flex-col items-start w-[210px]">
@@ -71,7 +71,7 @@
                 <!-- 個人文章區塊 -->
                 <div class="h-vh-90 overflow-y-scroll">
                     <div
-                        class="flex justify-end cursor-pointer absolute top-32 right-10 transition-all delay-100 hover:scale-110">
+                        class="flex justify-end cursor-pointer absolute top-10 right-10 transition-all delay-100 hover:scale-110">
                         <a href="/user/create-article"><img src="/img/add.svg" class="w-[30px]"></a>
                         <!-- <a class="bg-black text-white w-[150px] mb-4"
                             href="/user/create-article">新增心情記事</a> -->

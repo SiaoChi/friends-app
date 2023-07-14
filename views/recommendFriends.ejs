@@ -13,13 +13,13 @@
 <body>
     <%- include('./partials/header') %>
 
-        <div class="flex items-start justify-center bg-slate-50">
+        <div class="flex items-start justify-center bg-slate-50 fixed w-full screen-h">
             <!-- 個人menu -->
             <%- include('./partials/sideBar') %>
                 <!-- 推薦好友畫面 -->
-                <div class="w-full flex justify-center items-start  h-screen py-5">
+                <div class="w-full flex justify-center items-start  pt-[25px] pb-5 h-full overflow-y-scroll">
 
-                    <div class="flex flex-wrap justify-start items-center w-[900px]">
+                    <div class="flex flex-wrap justify-center items-center w-[900px]">
 
                         <% if (friendsData && friendsData.length> 0) { %>
                             <% for (let i=0; i < friendsData.length; i++) { %>

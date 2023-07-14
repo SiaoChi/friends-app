@@ -12,10 +12,12 @@
 <body>
     <%- include('./partials/header') %>
 
-    <div class="flex items-start justify-center bg-slate-50">
-            <%- include('./partials/sideBar') %>
-                <!-- 好友畫面 -->
-                <div class="w-full flex justify-center items-start  h-screen py-5 overflow-y-scroll">
+    <div class="flex items-start justify-center bg-slate-50 fixed w-full screen-h">
+        <!-- 個人menu -->
+        <%- include('./partials/sideBar') %>
+            <!-- 推薦好友畫面 -->
+            <div class="w-full flex justify-center items-start pt-[25px] pb-5  h-full overflow-y-scroll">
+
 
                     <div class="flex flex-wrap justify-start items-center w-[900px]">
 
@@ -24,7 +26,7 @@
                                 <div class="flex-col bg-white w-[400px] h-[230px] m-5 p-5 shadow-md">                                    
                                     <div class="flex ">
                                         <a href="/user/profile/<%= friendsData[i].id %>"><img
-                                                class="w-[150px] h-[150px]  rounded-full"
+                                                class="w-[140px] h-[140px]  rounded-full"
                                                 src=" <%= friendsData[i].picture %>" alt="user-picture"></a>
                                         <div class="w-[210px] mt-3 ml-4">
                                             <div class="font-medium">

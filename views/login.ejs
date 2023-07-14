@@ -19,13 +19,13 @@
 
 <body>
     <%- include('./partials/header') %>
-        <div class="flex justify-center items-center h-vh-90" id="signupDiv"
-            style="background-image: url('/img/kv_bg.png'); background-size: cover; z-index:-1 ;display: none;">
-
-            <div id="login" class=" flex flex-wrap justify-center">
+        <div class=" flex justify-center w-full h-full fixed bg-kv-image" id="signupDiv"
+            style="  display: none;">
+            
+            <div id="login" class="flex flex-wrap items-center justify-center">
                 <div
                     class="flex-col items-center justify-center login-form p-10 w-[350px] h-[460px] border border-gray-200 shadow-md bg-white">
-                    <form method="POST" id="signup-form" >
+                    <form method="POST" id="signup-form" class="">
                         <div class="text-[26px] text-center mb-2">註冊</div>
                         <div class="text-[14px] text-center">請填寫以下基本資料</div>
                         <div class="message  text-center text-blue-500 p-2"></div>
@@ -56,13 +56,13 @@
         </div>
 
 
-        <div class="flex justify-center h-screen" id="signinDiv"
-            style="background-image: url('/img/kv_bg.png'); background-size: cover">
+        <div class=" flex justify-center w-full h-full fixed bg-kv-image" id="signinDiv"
+            style="">
 
-            <div id="login" class=" flex flex-wrap justify-center mt-20">
-                <div class="flex justify-center items-start  mx-6 my-4">
+            <div id="login" class=" flex flex-wrap justify-center items-center h-full w-full">
+                <div class="">
                     <form id="signin-form"
-                        class="flex-col items-center justify-center login-form p-10 w-[350px] h-[430px] border border-gray-200  shadow-md"
+                        class="flex-col bg-white items-center justify-start login-form p-10 w-[350px] h-[430px] border border-gray-200  shadow-md"
                         method="POST">
                         <div class="text-[26px] text-center mb-2">登入</div>
                         <div class="text-[14px] text-center">請填寫以下資料登入</div>
