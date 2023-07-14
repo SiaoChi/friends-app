@@ -1,30 +1,30 @@
-# name: Deploy to EC2 on merge
-# 'on':
-#   push:
-#     branches:
-#       - yml
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-#       - name: deploy to ec2
-#         uses: appleboy/ssh-action@master
-#         with:
-#           host: '${{ secrets.HOST_DNS }}'
-#           username: '${{ secrets.EC2_USERNAME }}'
-#           key: '${{ secrets.EC2_SSH_KEY }}'
-#           script: |
-#             echo "Hello from github action, start deploy main to ec2"
-#             cd /home/ubuntu/friends-app
-#             docker system prune -a -f
-#             docker volume prune -f
-#             docker kill friends
-#             docker rm friends
-#             docker rmi friends
-#             git switch yml
-#             git pull origin yml
-#             docker build --no-cache -t friends . 
-#             docker run -d -p 443:3000 --name friends friends 
+name: Deploy to EC2 on merge
+'on':
+  push:
+    branches:
+      - yml
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: deploy to ec2
+        uses: appleboy/ssh-action@master
+        with:
+          host: '${{ secrets.HOST_DNS }}'
+          username: '${{ secrets.EC2_USERNAME }}'
+          key: '${{ secrets.EC2_SSH_KEY }}'
+          script: |
+            echo "Hello from github action, start deploy main to ec2"
+            cd /home/ubuntu/friends-app
+            docker system prune -a -f
+            docker volume prune -f
+            docker kill friends
+            docker rm friends
+            docker rmi friends
+            git switch yml
+            git pull origin yml
+            docker build --no-cache -t friends . 
+            docker run -d -p 443:3000 --name friends friends 
             
