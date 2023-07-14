@@ -86,14 +86,23 @@
             <div class="flex items-center justify-center mb-5">
               <button type="button" id="prevButton" class="mr-6">◀</button>
               <img class="user-picture rounded-full" id="pictureImage"
-                src=" <%= userData[0].picture ? userData[0].picture : '/img/users/1.png' %>" alt="大頭照">
+                src=" <%= userData[0].picture ? userData[0].picture : 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085750491' %>"
+                alt="大頭照">
               <button type="button" id="nextButton" class="ml-6">►</button>
             </div>
+
             <div>
-              <input type="radio" name="picture" value="/img/users/1.png" checked style="display: none;">
-              <input type="radio" name="picture" value="/img/users/2.png" style="display: none;">
-              <input type="radio" name="picture" value="/img/users/3.png" style="display: none;">
-              <input type="radio" name="picture" value="/img/users/4.png" style="display: none;">
+              <input type="radio" name="picture"
+                value="<%= userData[0].picture ? userData[0].picture : 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085750491' %>"
+                checked style="display: none;">
+              <input type="radio" name="picture"
+                value="https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085849482" style="display: none;">
+              <input type="radio" name="picture"
+                value="https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085922330" style="display: none;">
+              <input type="radio" name="picture"
+                value="https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085942030" style="display: none;">
+              <input type="radio" name="picture"
+                value="https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713090008735" style="display: none;">
               <input type="radio" name="picture" value="upload" style="display: none;">
               <!-- <input type="hidden" id="uploadedPictureValue" name="uploadedPicture" value=""> -->
             </div>
@@ -168,11 +177,11 @@
               <option value="嘉義市">嘉義市</option>
               <option value="嘉義縣">嘉義縣</option>
               <option value="屏東縣">屏東縣</option>
-              <option value="花蓮縣">澎湖縣</option>
-              <option value="台東縣">澎湖縣</option>
-              <option value="金門縣">連江縣</option>
+              <option value="花蓮縣">花蓮縣</option>
+              <option value="台東縣">台東縣</option>
+              <option value="金門縣">金門縣</option>
               <option value="澎湖縣">澎湖縣</option>
-              <option value="澎湖縣">連江縣</option>
+              <option value="連江縣">連江縣</option>
             </select>
 
 
@@ -309,13 +318,23 @@
           });
         });
 
+        const picture1 = 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085750491'
+        const picture2 = 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085849482'
+        const picture3 = 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085942030'
+        const picture4 = 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713090008735'
+        const picture5 = 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713091131086'
+
         function updatePreview() {
           if (pictureRadios[currentPictureIndex].value === 'upload') {
-            pictureImage.src = '/img/users/5.png';
-            pictureImage.alt = '大頭照';
+            pictureImage.src = picture5
+            pictureImage.alt = '自行上傳圖';
           } else {
             const pictureNumber = currentPictureIndex + 1;
-            pictureImage.src = `/img/users/${pictureNumber}.png`;
+            console.log(pictureNumber);
+            if (pictureNumber === 1) { pictureImage.src = picture1 };
+            if (pictureNumber === 2) { pictureImage.src = picture2 }
+            if (pictureNumber === 3) { pictureImage.src = picture3 }
+            if (pictureNumber === 4) { pictureImage.src = picture4 }
             pictureImage.alt = `大頭照 ${pictureNumber}`;
           }
         }
@@ -326,6 +345,7 @@
         previewImage(selectElement);
       };
 
+      // tags數量限制
       function limitCheckboxes(checkbox) {
         let checkboxes = document.querySelectorAll('input[name="tags"]:checked');
         if (checkboxes.length > 6) {
@@ -348,6 +368,35 @@
         }
       });
 
+      // 限制家屬確診年份，1911-currYear
+      const currentYear = new Date().getFullYear(); // 取得當前年份
+      const sickYearInput = document.getElementById('sickYear'); // 取得輸入欄位元素
+
+      sickYearInput.addEventListener('input', function () {
+        const enteredYear = parseInt(sickYearInput.value);
+
+        if (enteredYear < 1911 || enteredYear > currentYear) {
+          sickYearInput.setCustomValidity('請輸入有效年份 (1911-' + currentYear + ')');
+        } else {
+          sickYearInput.setCustomValidity('');
+        }
+      });
+
+      // 生日的日期限制不能是未來
+      const dateInput = document.getElementById("birth");
+      const today = new Date().toISOString().split("T")[0];
+      dateInput.setAttribute("max", today);
+      dateInput.setAttribute("value", today);
+
+      // currProblem限制為前20個字
+      const currentProblemsTextarea = document.getElementById('currentProblems'); 
+      currentProblemsTextarea.addEventListener('input', function () {
+        const enteredText = currentProblemsTextarea.value;
+
+        if (enteredText.length > 25) {
+          currentProblemsTextarea.value = enteredText.slice(0, 20); 
+        }
+      });
 
 
     </script>
