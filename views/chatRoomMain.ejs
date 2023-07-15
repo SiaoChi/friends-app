@@ -205,6 +205,7 @@
             const name = localStorage.getItem('name');
             // console.log('username', name);
             const userPicture = localStorage.getItem('userPicture');
+            let nextPaging = 1
             // console.log('userPicture', userPicture);
 
             // 如果網址有room,id的邏輯，會因應點擊右方list調整所以使用let
@@ -250,7 +251,7 @@
                     }
                 }
                 if (input.value) {
-                    socket.emit("send", { name, message: input.value, senderId, receiverId, room: roomName, senderPicture: userPicture });
+                    socket.emit("send", { name, message: input.value, senderId, receiverId, room: roomName, senderPicture: userPicture , token });
                     const time = new Date().toLocaleString('zh-TW', options);
                     let userInput = document.createElement('li');
                     // 主聊天室畫面更新 
@@ -492,6 +493,8 @@
                     await setUnreadToZero(Number(senderId), Number(receiverId), roomName)
                     unRead.style.display = 'none';
                 }
+                nextPaging = 1; 
+                console.log('nextPaging reset to 1');
             })
 
             // [header] 點擊後，畫面小綠點消失
@@ -548,7 +551,6 @@
 
 
 
-            let nextPaging = 1
 
             // 下一頁
             async function getNextPage() {
@@ -556,7 +558,7 @@
                 console.log('apiUrl-->', apiUrl);
 
                 try {
-                    // 當沒有下一筆資料時，資料庫回傳 nextPaging is null  (待修改)
+                    // 當沒有下一筆資料時，資料庫回傳 nextPaging is null  
                     if (nextPaging === null) return console.log('nextPaging is null');
 
                     const response = await fetch(apiUrl);

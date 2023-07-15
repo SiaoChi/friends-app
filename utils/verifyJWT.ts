@@ -1,23 +1,30 @@
-import { Request, Response } from "express"
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import { z } from "zod";
-import dotenv from "dotenv"
-
+import * as dotenv from "dotenv"
 dotenv.config()
 
-const JWT_SECRET = process.env.JWT_SECRET || "";
+const JWT_KEY = process.env.JWT_KEY || "";
+console.log('解開JWT_KEY步驟',JWT_KEY);
 
-const DecodeSchema = z.object({
+const DecodedSchema = z.object({
     userId: z.number(),
-})
+});
 
-export default function verifyJWT(req: Request, res: Response, token: string) {
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        const checkDecoded = DecodeSchema.parse(decoded);
-        return checkDecoded
-    } catch (err) {
-        throw new Error("invalid decode value"); 
-    }
+type Decoded = z.infer<typeof DecodedSchema>;
+
+export default function verifyJWT(token: string): Promise<Decoded> {
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, JWT_KEY, (err, decoded) => {
+            try {
+                console.log('jwt generate...');
+                if (err) reject(err);
+                const result = DecodedSchema.parse(decoded);
+                console.log('JWT', result);
+                resolve(result);
+            } catch (err) {
+                console.log(err);
+                reject(new Error("invalid decoded value"));
+            }
+        });
+    });
 }
-
