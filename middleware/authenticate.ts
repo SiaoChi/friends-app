@@ -10,7 +10,7 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
         if (!token) {
             return res.render('login')
         }
-        const decoded = await verifyJWT(req, res, token);
+        const decoded = await verifyJWT(token);
         res.locals.userId = decoded.userId;
         console.log('authenticate',res.locals.userId );
         next();

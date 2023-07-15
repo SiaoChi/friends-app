@@ -14,6 +14,7 @@ import cors from "cors";
 import * as dotenv from "dotenv"
 
 
+
 dotenv.config();
 
 const app = express();
@@ -41,7 +42,6 @@ const httpsServer = createServer({
 
 const io = new Server(httpsServer);
 
-
 socketHandler(io);
 
 app.set('view engine', 'ejs');
@@ -53,8 +53,6 @@ app.enable("trust proxy");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/',express.static('./public'));
 app.use("/uploads",express.static("./public/uploads"))
-
-
 
 app.use("/", [
   index,

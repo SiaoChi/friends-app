@@ -59,14 +59,15 @@ export async function signIn(req: Request, res: Response) {
         if (typeof user === 'undefined') {
             throw new Error("user not exist");
         }
+        console.log('1');
         const isValidPassword = await userLoginModel.checkNativeProviderToken(user.id, password);
         if (!isValidPassword) {
             throw new Error("invalid password");
         }
+        console.log('2');
         const token = generateToken(user.id);
+        console.log('3');
         const url = "/user/profile";
-        // 登录成功后将会话数据存储在会话中
-
 
         res
             .cookie("jwtToken", token)
