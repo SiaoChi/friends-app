@@ -22,6 +22,8 @@ const app = express();
 import { createServer } from 'https';
 import { Server } from 'socket.io';
 import { readFileSync } from "fs";
+import { redisClient } from "./models/redisClient.js";
+import { redisRequestLimitCheck } from "./middleware/ratelimiter.js";
 
 const SSH_KEY = process.env.SSH_KEY;
 const SSH_CERT = process.env.SSH_CERT;
@@ -32,7 +34,6 @@ if (!SSH_KEY || !SSH_CERT) {
   console.error('SSH_KEY or SSH_CERT environment variables are not set.');
   process.exit(1);
 }
-
 
 const httpsServer = createServer({
   key: readFileSync(SSH_KEY,'utf-8'),
@@ -53,7 +54,7 @@ app.enable("trust proxy");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/',express.static('./public'));
 app.use("/uploads",express.static("./public/uploads"))
-
+app.use(redisRequestLimitCheck)
 app.use("/", [
   index,
   chatRoomRouter,
@@ -70,6 +71,9 @@ app.all('*', (req, res) => {
 
 app.use(errorHandler);
 
+redisClient.connect();
+
 httpsServer.listen(3000, () => {
   console.log('Server listening on *:3000');
 });
+
