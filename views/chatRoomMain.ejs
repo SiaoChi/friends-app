@@ -472,6 +472,10 @@
                 }
             }
 
+            socket.on("error", async function (data) {
+                const { message } = data
+                alert(message)
+            })
 
             // 未讀通知的小綠點
             // [chatroom] 點擊後抓取 div data-room的資料，再把資訊刪除

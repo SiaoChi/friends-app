@@ -1,6 +1,7 @@
 import pool from "./databasePool.js";
 import { ResultSetHeader } from "mysql2";
 import { z } from "zod";
+import { redisClient } from "./redisClient.js";
 
 
 function instanceOfSetHeader(object: any): object is ResultSetHeader {
@@ -44,6 +45,19 @@ export async function getAllUserArticlesData() {
     // console.log('all articles', results);
     return results
 }
+
+export async function getArticlesAndSaveToCatch() {
+    const [results] = await pool.query(
+        `SELECT articles.* ,users.picture , users.name FROM articles
+         INNER JOIN users ON users.id = articles.user_id
+         ORDER BY created_at DESC
+        `
+    )
+    console.log('-- getArticlesAndSaveToCatch --')
+    await redisClient.set('articles', JSON.stringify(results));
+    return results
+}
+
 
 export async function getArticleByID(id: number | number[]) {
     let query = `
@@ -98,7 +112,7 @@ export async function saveArticleEmoji(userId: number, articleId: number, emojiI
 }
 
 const EmojiIdSchema = z.object({
-    emoji_id : z.number()
+    emoji_id: z.number()
 })
 
 export async function getArticleEmojiId(articleId: number, userId: number) {
@@ -106,7 +120,7 @@ export async function getArticleEmojiId(articleId: number, userId: number) {
         `
         SELECT emoji_id FROM user_article_emoji
         WHERE  article_id = ? and user_id = ?
-        `, [articleId,userId]
+        `, [articleId, userId]
     )
 
     const checkData = z.array(EmojiIdSchema).parse(results)
