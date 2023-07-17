@@ -1,5 +1,5 @@
 
-import { ResultSetHeader } from "mysql2";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
 import pool from "./databasePool.js";
 import { z } from "zod";
 
@@ -7,19 +7,24 @@ function instanceOfSetHeader(object: any): object is ResultSetHeader {
     return "insertId" in object;
 }
 
+const CheckEmailSchema = z.object({
+    id: z.number().nullable()
+})
+
 export async function checkUser(email:string) {
     console.log('check user');
 
-    const [checkEmail] = await pool.query(
+    const findEmail = await pool.query<RowDataPacket[]>(
         `
          SELECT id FROM users
          WHERE email = ?
         `,
         [email]
     )
-    // console.log(checkEmail);
-    // console.log(typeof checkEmail);
-    if(Array.isArray(checkEmail) && checkEmail.length > 1){
+    console.log(findEmail);
+    console.log(typeof findEmail);
+
+    if(Array.isArray(findEmail) && findEmail[0].length > 0 ){
         return true
     }
     return false

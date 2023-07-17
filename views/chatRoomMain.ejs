@@ -174,9 +174,9 @@
                 <div id="loading">
                     <p class="mt-6 font-medium text-lg text-center">loading...</p>
                 </div>
-                <!-- <div class="w-2/4   shadow-md p-2 fixed z-30">聊天室</div> -->
                 <div class="" style="padding-top: 20px;">
-                    <div id="messages" style="padding-bottom: 5px;"></div>
+                    <div id="messages" style="padding-bottom: 5px;">
+                    </div>
                     <form class="" id="form" action="">
                         <input id="input" autocomplete="off" /><button>Send</button>
                     </form>
@@ -205,19 +205,22 @@
             const name = localStorage.getItem('name');
             // console.log('username', name);
             const userPicture = localStorage.getItem('userPicture');
+            const localStorageRoom = localStorage.getItem('room');
+            const localStorageReceiverId = localStorage.getItem('receiverId');
+
+            console.log('test', localStorageRoom, localStorageReceiverId);
+            
+
             let nextPaging = 1
             // console.log('userPicture', userPicture);
 
             // 如果網址有room,id的邏輯，會因應點擊右方list調整所以使用let
             let roomName = null;
-            let roomNameMatch = window.location.href.match(/\/chatroom\/(\d+)/);
-            // console.log('roomNameMatch->', roomNameMatch);
-            if (roomNameMatch) {
-                roomName = roomNameMatch[1];
-                // console.log('roomName', roomName);
-            }
-            let urlParams = new URLSearchParams(window.location.search);
-            let receiverId = urlParams.get('id');
+            if (<%= latestRoom %>) roomName = <%= latestRoom %> ;
+
+            let receiverId = null;
+            if (<%= receiverId %>) receiverId = <%= receiverId %> ;
+
 
             // 點擊ChatList後需要被fetchInfo更新的資訊
             const info = document.getElementById('info');
@@ -232,16 +235,21 @@
                 await fetchRoomMessages(room, receiverId);
             }
 
+            if (localStorageReceiverId, localStorageRoom) {
+                    fetchMessages(localStorageRoom, localStorageReceiverId)
+                    localStorage.removeItem('room');
+                    localStorage.removeItem('receiverId');
+                }
+
 
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
-                if (roomNameMatch === null) {
-                    swal('你目前沒有聊天對象，頁面將轉至推薦好友選擇聊天對象')
-                        .then((value) => {
-                            const url = '/friends/recommend';
-                            window.location.href = url;
-                        });
+                console.log('submit');
+                console.log('roomName', roomName);
+                if (roomName === null) {
+                    return swal('請至推薦好友選擇一人聊天')
                 }
+
                 if (!roomName) {
                     if (senderId > receiverId) {
                         roomName = `${receiverId}${senderId}`;
@@ -251,7 +259,7 @@
                     }
                 }
                 if (input.value) {
-                    socket.emit("send", { name, message: input.value, senderId, receiverId, room: roomName, senderPicture: userPicture , token });
+                    socket.emit("send", { name, message: input.value, senderId, receiverId, room: roomName, senderPicture: userPicture, token });
                     const time = new Date().toLocaleString('zh-TW', options);
                     let userInput = document.createElement('li');
                     // 主聊天室畫面更新 
@@ -282,14 +290,15 @@
                         chatList.prepend(existingChatPerson);
                     } else {
                         const chatPerson = `
-                                            <div class="chat-person mb-2 p-2" data-senderid= "${receiverId}" >
+                                            <div class="cursor-pointer chat-person bg-gray-100 mb-2 p-2" data-senderid= "${receiverId}" >
                                                 <a href="/chatroom/${roomName}?id=${receiverId}" class="flex items-center relative" data-room="${roomName}" >
                                                     <img class="w-10 h-10" src="${receiverPicture}" alt="">
                                                     <div class="ml-4">
-                                                    <h5 class="text-lg">${receiverName}</h5>
-                                                    <p class="mt-1">${input.value}</p>
+                                                        <h5 class="text-lg">${senderId}</h5>
+                                                        <p class="mt-1">${message}</p>
                                                     </div>
-                                                           
+
+                                                    <div class="unread"></div>    
                                                 </a>
                                             </div>
                                        `;
@@ -497,7 +506,7 @@
                     await setUnreadToZero(Number(senderId), Number(receiverId), roomName)
                     unRead.style.display = 'none';
                 }
-                nextPaging = 1; 
+                nextPaging = 1;
                 console.log('nextPaging reset to 1');
             })
 
@@ -552,9 +561,6 @@
                 await fetchRoomMessages(room);
             }
             fetchChatPersonData(receiverId, roomName)
-
-
-
 
             // 下一頁
             async function getNextPage() {

@@ -15,6 +15,7 @@ router // 要加一個middleware，防止其他人進入
     .route("/api/v1/chatroom/read")
     .put(authenticate, chatRoomFunctions.setUnreadToZero)
 
+
 router // 要加一個middleware，防止其他人進入
     .route("/api/v1/chatroom/:room")
     .get(authenticate, chatRoomFunctions.fetchMessagesPagination)

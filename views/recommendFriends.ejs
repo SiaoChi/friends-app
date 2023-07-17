@@ -128,7 +128,10 @@
                     room = `${senderId}${receiverId}`;
                 }
 
-                const url = `/chatroom/${room}?id=${receiverId}`
+                localStorage.setItem('receiverId', receiverId)
+                localStorage.setItem('room', room)
+
+                const url = `/chatroom`
                 window.location.href = url;
             }
 
