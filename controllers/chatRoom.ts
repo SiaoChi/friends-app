@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import * as chatRoomModel from "../models/chatRoom.js"
+import * as userModel from "../models/user.js"
 import { RowDataPacket } from 'mysql2';
 import { error } from "console";
 
@@ -21,21 +22,17 @@ export async function renderChatroomByRoomNameBata(req: Request, res: Response) 
                 if (Array.isArray(chatList) && chatList.length > 0) {
                     const latestRoom = (chatList[0] as RowDataPacket).room_name;
                     const receiverId = (chatList[0] as RowDataPacket).receiverId;
-                    return res.redirect(`/chatroom/${latestRoom}?id=${receiverId}`);
+                    return res.render('chatRoomMain', { chatList, latestRoom, receiverId })
                 }
             }
             // 如果使用者沒有跟任何人聊天過，沒有聊天室的人，回傳空白聊天室
-            const chatList:any = [];
-            // const chatList = await chatRoomModel.getChatListById(userId);
-            return res.render('chatRoomMain',{ chatList })
+            return res.render('chatRoomMain', { chatList:[], latestRoom :[], receiverId:[] })
         }
         await chatRoomModel.checkRoom(userId, Number(id), room)
-        // 有房間號碼，針對id=?傳送訊息
-        // const messages = await chatRoomModel.getMessagesByRoom(room);
         const chatList = await chatRoomModel.getChatListById(userId);
-        // console.log('messages---->',messages);
-        // console.log('chatList---->', chatList);
-        res.status(200).render('chatRoomMain', { chatList })
+
+
+        res.status(200).render('chatRoomMain', { chatList, latestRoom: room , receiverId: id})
 
     } catch (err) {
         if (err instanceof Error) {
@@ -124,42 +121,42 @@ export async function fetchChatList(req: Request, res: Response) {
 }
 
 // 等待刪除
-export async function renderChatroomByRoomName(req: Request, res: Response) {
-    const { room } = req.params;
-    try {
-        // 網址沒有房間號碼
-        if (!room) {
-            // 查詢是不是曾經有聊過天
-            const { userId } = res.locals;
-            const userRoom = await chatRoomModel.getUserRoom(userId);
+// export async function renderChatroomByRoomName(req: Request, res: Response) {
+//     const { room } = req.params;
+//     try {
+//         // 網址沒有房間號碼
+//         if (!room) {
+//             // 查詢是不是曾經有聊過天
+//             const { userId } = res.locals;
+//             const userRoom = await chatRoomModel.getUserRoom(userId);
 
-            if (Array.isArray(userRoom) && userRoom.length > 0) {
-                const chatList = await chatRoomModel.getChatListById(userId);
-                if (Array.isArray(chatList) && chatList.length > 0) {
-                    const latestRoom = (chatList[0] as RowDataPacket).room_name;
-                    const receiverId = (chatList[0] as RowDataPacket).receiverId;
-                    // const latestRoom = (chatList[chatList.length - 1] as RowDataPacket).room_name;
-                    // const receiverId = (chatList[chatList.length - 1] as RowDataPacket).receiverId;
-                    return res.redirect(`/chatroom/${latestRoom}?id=${receiverId}`);
-                }
-            }
-            // 沒有聊天室的人，回傳空白聊天室
-            return res.render('chatRoomMain')
-        }
+//             if (Array.isArray(userRoom) && userRoom.length > 0) {
+//                 const chatList = await chatRoomModel.getChatListById(userId);
+//                 if (Array.isArray(chatList) && chatList.length > 0) {
+//                     const latestRoom = (chatList[0] as RowDataPacket).room_name;
+//                     const receiverId = (chatList[0] as RowDataPacket).receiverId;
+//                     // const latestRoom = (chatList[chatList.length - 1] as RowDataPacket).room_name;
+//                     // const receiverId = (chatList[chatList.length - 1] as RowDataPacket).receiverId;
+//                     return res.redirect(`/chatroom/${latestRoom}?id=${receiverId}`);
+//                 }
+//             }
+//             // 沒有聊天室的人，回傳空白聊天室
+//             return res.render('chatRoomMain')
+//         }
 
-        // 有房間號碼，針對id=?傳送訊息
-        const messages = await chatRoomModel.getMessagesByRoom(room)
-        // console.log(messages);
-        res.status(200).render('chatRoomMain', { messages })
+//         // 有房間號碼，針對id=?傳送訊息
+//         const messages = await chatRoomModel.getMessagesByRoom(room)
+//         // console.log(messages);
+//         res.status(200).render('chatRoomMain', { messages })
 
-    } catch (err) {
-        if (err instanceof Error) {
-            res.status(400).json({ errors: err.message });
-            return;
-        }
-        res.status(500).json({ errors: "renderChatroomByRoomName failed" })
-    }
-}
+//     } catch (err) {
+//         if (err instanceof Error) {
+//             res.status(400).json({ errors: err.message });
+//             return;
+//         }
+//         res.status(500).json({ errors: "renderChatroomByRoomName failed" })
+//     }
+// }
 
 
 export async function setUnreadToZero(req: Request, res: Response) {
