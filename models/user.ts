@@ -1,5 +1,5 @@
 
-import { ResultSetHeader } from "mysql2";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
 import pool from "./databasePool.js";
 import { z } from "zod";
 
@@ -7,19 +7,24 @@ function instanceOfSetHeader(object: any): object is ResultSetHeader {
     return "insertId" in object;
 }
 
-export async function checkUser(email:string) {
+const CheckEmailSchema = z.object({
+    id: z.number().nullable()
+})
+
+export async function checkUser(email: string) {
     console.log('check user');
 
-    const [checkEmail] = await pool.query(
+    const findEmail = await pool.query<RowDataPacket[]>(
         `
          SELECT id FROM users
          WHERE email = ?
         `,
         [email]
     )
-    // console.log(checkEmail);
-    // console.log(typeof checkEmail);
-    if(Array.isArray(checkEmail) && checkEmail.length > 1){
+    // console.log(findEmail);
+    // console.log(typeof findEmail);
+
+    if (Array.isArray(findEmail) && findEmail[0].length > 0) {
         return true
     }
     return false
@@ -35,7 +40,7 @@ export async function createUser(
             `,
         [name, email]
     );
-    
+
     if (Array.isArray(results) && instanceOfSetHeader(results[0])) {
         return results[0].insertId;
     }
@@ -58,7 +63,7 @@ export async function findUserByEmail(email: string) {
         [email]
     );
     const user = z.array(UserSchema).parse(results[0]);
-    console.log('user',user);
+    console.log('user', user);
     return user[0];
 }
 
@@ -89,7 +94,7 @@ export async function getUserProfileData(id: number | number[]) {
     }
 
     const [rows] = await pool.query(query, values);
-    if(rows === null) return [];
+    if (rows === null) return [];
     return rows;
 }
 
@@ -172,12 +177,12 @@ export async function updateUserProfile(
         SET name=?, picture=?, birth=?, email=?, carer=? ,level=?, location=?, sick_year=?, current_problem=?
         WHERE id=${userId}
         `,
-        [name, picture, birth, email, carer,  level, location, sickYear, currentProblems]
+        [name, picture, birth, email, carer, level, location, sickYear, currentProblems]
     )
 
     if (tags) {
         const result = await pool.query(`DELETE FROM users_tags WHERE user_id = ?`, [userId])
-        if(!Array.isArray(tags)) { tags = [tags] }
+        if (!Array.isArray(tags)) { tags = [tags] }
         const arrangeData = tags.map(item => [userId, parseInt(item)]);
         await pool.query(
             `INSERT users_tags (user_id , tag_id)
