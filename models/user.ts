@@ -11,12 +11,7 @@ const CheckEmailSchema = z.object({
     id: z.number().nullable()
 })
 
-<<<<<<< HEAD
-export async function checkUser(email: string) {
-=======
 export async function checkUser(email:string) {
->>>>>>> chatroomURL
-    console.log('check user');
 
     const findEmail = await pool.query<RowDataPacket[]>(
         `
