@@ -29,7 +29,7 @@ export async function getArticlesDataFromRedis() {
 
     let articles
     if (!redisClient.isReady) {
-        articles = articleModels.getArticlesAndSaveToCatch();
+        articles = articleModels.getArticlesAndSaveToCache();
         return articles
     }
 
@@ -41,7 +41,7 @@ export async function getArticlesDataFromRedis() {
 
     try{
         console.log(' - miss redis articles cache -');
-        articles = articleModels.getArticlesAndSaveToCatch();
+        articles = articleModels.getArticlesAndSaveToCache();
         return articles
     }catch(err){
         console.log(err);
@@ -98,6 +98,7 @@ export async function deleteArticleById(req: Request, res: Response) {
     try {
         const { id } = req.params;
         const result = await articleModels.deleteArticleByID(parseInt(id));
+        await articleModels.deleteArticlesFromCache();
         if (Array.isArray(result) && result.length > 0) {
             return res.status(200).json({ message: `成功刪除文章:${id}` })
         }
@@ -142,3 +143,4 @@ export async function saveArticleEmoji(req: Request, res: Response) {
         res.status(500).json({ errors: err })
     }
 }
+

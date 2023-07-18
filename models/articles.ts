@@ -46,7 +46,7 @@ export async function getAllUserArticlesData() {
     return results
 }
 
-export async function getArticlesAndSaveToCatch() {
+export async function getArticlesAndSaveToCache() {
     const [results] = await pool.query(
         `SELECT articles.* ,users.picture , users.name FROM articles
          INNER JOIN users ON users.id = articles.user_id
@@ -58,6 +58,10 @@ export async function getArticlesAndSaveToCatch() {
     return results
 }
 
+export async function deleteArticlesFromCache(){
+    const results =  await redisClient.del('articles');
+    console.log(results);
+}
 
 export async function getArticleByID(id: number | number[]) {
     let query = `
