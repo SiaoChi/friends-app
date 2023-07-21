@@ -16,10 +16,8 @@ export default function verifyJWT(token: string): Promise<Decoded> {
     return new Promise((resolve, reject) => {
         jwt.verify(token, JWT_KEY, (err, decoded) => {
             try {
-                console.log('jwt generate...');
                 if (err) reject(err);
                 const result = DecodedSchema.parse(decoded);
-                console.log('JWT', result);
                 resolve(result);
             } catch (err) {
                 console.log(err);

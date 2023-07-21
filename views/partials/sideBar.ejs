@@ -50,9 +50,7 @@
 
   function profile() {
     const userId = localStorage.getItem('userId');
-    console.log(userId);
     const url = `/user/profile/${userId}`
-    console.log(url);
     window.location.href = url;
   }
 

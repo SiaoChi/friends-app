@@ -86,15 +86,12 @@
           .then(response => response.json())
           .then(data => {
             if (data.message === 'success') {
-              console.log(data);
-              console.log(data.message);
               document.getElementById("title").value = "";
               document.getElementById("content").value = "";
               document.getElementById("date").value = "";
               alert("文章修改完成！");
               return window.location.href = "/user/profile"
             }
-            console.log(data);
             swal("文章修改失敗！");
           })
           .catch(error => {

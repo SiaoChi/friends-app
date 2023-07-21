@@ -42,8 +42,6 @@ export async function checkFileType(
   res: Response,
   next: NextFunction
 ) {
-  // console.log('req.file-->',req.file);
-  // console.log('req.files-->',req.files);
 
   if (isFilesObject(req.files)) {
     const images = await Promise.all(
@@ -58,7 +56,6 @@ export async function checkFileType(
       }
     });
     res.locals.images = images;
-    // console.log('res.locals.images',res.locals.images);
   }
 
   if (isFileObject(req.file)) {
@@ -68,20 +65,12 @@ export async function checkFileType(
       throw new Error("fake type");
     }
     res.locals.image = image;    
-    // console.log('res.locals.image',res.locals.image);
   }
   next();
 };
 
 // 使用multer處理圖片上傳，包含：儲存位置、改副檔名、限制圖片大小
 export const uploadToBuffer = multer({ storage: multer.memoryStorage(),limits: { fileSize: 5 * 1024 * 1024 } });
-
-// export const upload = multer({
-//   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
-//   // storage: memoryStorage
-// });
-
-// export const multerUpload = upload.fields([{ name: 'main-photo', maxCount: 1 }, { name: 'extra-photo', maxCount: 8 }]);
 
 export async function saveUserPhotoToS3(req: Request, res: Response, next: NextFunction) {
   try {

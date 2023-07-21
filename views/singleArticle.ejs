@@ -93,11 +93,8 @@
 
         <script>
             const userId = localStorage.getItem('userId');
-            console.log('id',userId);
             async function sendEmoji(emojiId,articleId){
                 if(userId === null) return window.location.href = '/user/signin';
-                console.log('send!');
-                console.log(emojiId,articleId);
                 const url = "/api/v1/articles/emoji";
                 const response = await fetch(url,{
                     method:"POST",

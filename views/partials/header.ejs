@@ -186,7 +186,6 @@
           .then(data => {
             if (data) {
               const pictureUrl = data[0].picture;
-              console.log(pictureUrl);
               if(pictureUrl) {
                 document.getElementById("sign-in-picture").querySelector('img').src = pictureUrl;
                 document.getElementById("sign-in-picture").style.display = "block";

@@ -64,7 +64,6 @@
         const content = tinymce.activeEditor.getContent();
         // const content = document.getElementById("content").value;
         const date = document.getElementById("date").value;
-        console.log('content', content);
         createArticle(title, content, date);
       });
 
@@ -80,8 +79,6 @@
           .then(data => {
             // 請求成功後的處理
             if (data.message === 'success') {
-              console.log(data);
-              console.log(data.message);
               // 清空輸入欄位
               document.getElementById("title").value = "";
               document.getElementById("content").value = "";
@@ -89,7 +86,6 @@
               swal("文章已成功新增！");
               return window.location.href = "/user/profile"
             }
-            console.log(data);
             swal("文章新增失敗！");
           })
           .catch(error => {

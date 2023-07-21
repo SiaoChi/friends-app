@@ -258,12 +258,6 @@
     </div>
     <script>
 
-      const boxtags = document.querySelector('.boxtags')
-      boxtags.addEventListener('click', (e) => {
-        console.log(e.target, e.target.checked);
-      })
-
-
       document.addEventListener('DOMContentLoaded', function () {
         const prevButton = document.getElementById('prevButton');
         const nextButton = document.getElementById('nextButton');
@@ -331,7 +325,6 @@
             pictureImage.alt = '自行上傳圖';
           } else {
             const pictureNumber = currentPictureIndex + 1;
-            console.log(pictureNumber);
             if (pictureNumber === 1) { pictureImage.src = picture1 };
             if (pictureNumber === 2) { pictureImage.src = picture2 }
             if (pictureNumber === 3) { pictureImage.src = picture3 }
@@ -411,7 +404,6 @@
         })
           .then(response => {
             if(response.ok) {
-              console.log('提交成功！');
               return response.json()
             }
           })

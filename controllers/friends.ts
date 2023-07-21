@@ -15,13 +15,11 @@ export async function fetchRecommendFriends(req: Request, res: Response) {
     }
 }
 
-
 export async function renderRecommendFriends(req: Request, res: Response) {
     try {
         const { userId } = res.locals;
         const friendsId = await friendsModels.getRecommendFriendsById(userId);
         const friendsData = await userModels.getUserProfileData(friendsId);
-        // const friendsData:any = [];
         res.render('recommendFriends', { friendsData })
     } catch (err) {
         res.status(500).json({ errors: err })
@@ -31,9 +29,7 @@ export async function renderRecommendFriends(req: Request, res: Response) {
 export async function addFriend(req: Request, res: Response) {
     try {
         const { userId, friendId } = req.body;
-        // console.log('test',userId,friendId);
         const result = await friendsModels.addFriend(userId, friendId);
-        // console.log('test2',result)
         if (result) { return res.status(200).json({ message: "success" }) };
         throw new Error('add friend failed')
     } catch (err) {
@@ -71,7 +67,6 @@ export async function fetchFriends(req: Request, res: Response) {
         }
 
         const friendsData = await userModels.getUserProfileData(friendsId);
-        console.log('friendsData',friendsData);
         if (friendsId && friendsData) { return res.render('friends',{ friendsData }) };
         throw new Error('no friends, please add friend')
     } catch (err) {

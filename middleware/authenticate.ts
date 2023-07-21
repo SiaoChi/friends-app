@@ -12,7 +12,6 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
         }
         const decoded = await verifyJWT(token);
         res.locals.userId = decoded.userId;
-        console.log('authenticate',res.locals.userId );
         next();
     } catch (err) { 
         if (err instanceof Error) {

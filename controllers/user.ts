@@ -17,14 +17,13 @@ export async function signUp(req: Request, res: Response) {
     try {
         const { name, email, password } = req.body;
         const isUser = await userModel.checkUser(email);
-        console.log('isUser', isUser);
         if (isUser) {
             return res.status(400).json({ message: "This email already exists." })
         }
         const userId = await userModel.createUser(name, email);
         await userLoginModel.createNativeProvider(userId, password);
         const token = generateToken(userId);
-        const url = "/user/profile/form"; //填寫表單頁面
+        const url = "/user/profile/form"; 
         res
             .cookie("jwtToken", token)
             .status(200)
@@ -55,18 +54,14 @@ export async function signIn(req: Request, res: Response) {
     try {
         const { email, password } = req.body;
         const user = await userModel.findUserByEmail(email);
-        // console.log('user-->',user);
         if (typeof user === 'undefined') {
             throw new Error("user not exist");
         }
-        console.log('1');
         const isValidPassword = await userLoginModel.checkNativeProviderToken(user.id, password);
         if (!isValidPassword) {
             throw new Error("invalid password");
         }
-        console.log('2');
         const token = generateToken(user.id);
-        console.log('3');
         const url = "/user/profile";
 
         res
@@ -93,15 +88,12 @@ export async function signIn(req: Request, res: Response) {
 }
 
 export async function createUserProfile(req: Request, res: Response) {
-    console.log('req url',req.url);
-    console.log('???',req.query);
+
     const { edit } = req.query;
-    console.log('edit',edit);
     try{
         const { name, picture, birth, email, location, sickYear, carer, level, currentProblems, tags, } = req.body
     let userPhotoPath = picture;
-    // console.log('tags->',tags)
-    // console.log('userPhotoPath-->',userPhotoPath);
+
     const uploadImages = res.locals.imagePath;
     const userId = res.locals.userId;
 
@@ -123,9 +115,7 @@ export async function createUserProfile(req: Request, res: Response) {
         userId
     )
     let url
-    console.log('edit',edit);
     if(edit === 'true') {
-        console.log('true!!');
         url = '/user/profile'
     }else{
         url = '/friends/recommend'  
@@ -159,8 +149,6 @@ export async function renderUserProfileForm(req: Request, res: Response) {
         const { userId } = res.locals;
         const tags = await userModel.getTags();
         const userData = await userModel.getUserProfileTagsData(userId)
-        // console.log('userDataAndTags->', userData);
-        // 如果希望在edict時加入user已知資料
         res.render('userProfileForm', { tags, userData })
     } catch (err) {
         res.status(500).json({ errors: "renderUserProfileForm failed" })

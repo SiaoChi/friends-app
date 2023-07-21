@@ -9,7 +9,6 @@ function instanceOfSetHeader(object: any): object is ResultSetHeader {
 }
 
 export async function createUserArticle(title: string, content: string, date: string, userId: number) {
-    // console.log(title, content, date, userId);
     const [results] = await pool.query(
         `
         INSERT INTO articles (title,content,created_at,user_id)
@@ -29,8 +28,6 @@ export async function getUserArticlesData(id: number) {
         `, [id]
     )
 
-    // console.log('articles', results);
-
     return results
 }
 
@@ -42,7 +39,6 @@ export async function getAllUserArticlesData() {
          ORDER BY created_at DESC
         `
     )
-    // console.log('all articles', results);
     return results
 }
 
@@ -55,12 +51,12 @@ export async function getArticlesAndSaveToCache() {
     )
     console.log('-- getArticlesAndSaveToCatch --')
     await redisClient.set('articles', JSON.stringify(results));
+    redisClient.expire('articles', 36000)  // expired time setting
     return results
 }
 
 export async function deleteArticlesFromCache(){
     const results =  await redisClient.del('articles');
-    console.log(results);
 }
 
 export async function getArticleByID(id: number | number[]) {
@@ -128,8 +124,5 @@ export async function getArticleEmojiId(articleId: number, userId: number) {
     )
 
     const checkData = z.array(EmojiIdSchema).parse(results)
-
-    console.log('getArticleEmojiId', checkData);
-    console.log('getArticleEmojiId type', typeof checkData);
     return checkData
 }

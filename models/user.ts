@@ -11,7 +11,7 @@ const CheckEmailSchema = z.object({
     id: z.number().nullable()
 })
 
-export async function checkUser(email:string) {
+export async function checkUser(email: string) {
 
     const findEmail = await pool.query<RowDataPacket[]>(
         `
@@ -20,10 +20,8 @@ export async function checkUser(email:string) {
         `,
         [email]
     )
-    // console.log(findEmail);
-    // console.log(typeof findEmail);
 
-    if(Array.isArray(findEmail) && findEmail[0].length > 0 ){
+    if (Array.isArray(findEmail) && findEmail[0].length > 0) {
         return true
     }
     return false
@@ -62,11 +60,8 @@ export async function findUserByEmail(email: string) {
         [email]
     );
     const user = z.array(UserSchema).parse(results[0]);
-    console.log('user', user);
     return user[0];
 }
-
-// GROUP_CONCAT函數用於將at.content值連接成單個字符串
 
 export async function getUserProfileData(id: number | number[]) {
     let query;
@@ -97,37 +92,37 @@ export async function getUserProfileData(id: number | number[]) {
     return rows;
 }
 
+const userProfileSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    email: z.string(),
+    picture: z.string(),
+    birth: z.string(),
+    location: z.string(),
+    sick_year: z.number(),
+    level: z.string(),
+    carer: z.string(),
+    current_problem: z.string(),
+    created_at: z.date(),
+    tags: z.array(
+        z.string()
+    ).optional()
+})
 
+const UserTagsSchema = z.object({
+    user_id: z.number(),
+    tags: z.string()
+})
 
-export async function getUserProfileTagsData(id: number) {
-    let query;
-    let values;
+export async function getUserProfileTagsData(id: number | number[]) {
+    const [userRows] = await pool.query(
+        `SELECT * FROM users WHERE id IN (?)`
+        , [Array.isArray(id) ? id : [id]]
+    );
+    const userData = z.array(userProfileSchema).parse(userRows)
+    const userId = userData.map(item => item.id);
 
-    if (Array.isArray(id)) {
-        query = `
-            SELECT us.*, GROUP_CONCAT(at.content) AS articles
-            FROM users us
-            LEFT JOIN articles at ON us.id = at.user_id
-            WHERE us.id IN (?)
-            GROUP BY us.id
-        `;
-        values = [id];
-    } else {
-        query = `
-            SELECT us.*, GROUP_CONCAT(at.content) AS articles
-            FROM users us
-            LEFT JOIN articles at ON us.id = at.user_id
-            WHERE us.id = ?
-            GROUP BY us.id
-        `;
-        values = id;
-    }
-
-    const [rows] = await pool.query(query, values);
-
-    const userId = (rows as Array<any>).map(item => item.id);
-
-    const [userTags] = await pool.query(
+    const [tagRows] = await pool.query(
         `
         SELECT user_id , GROUP_CONCAT(tags.name) AS tags
         FROM users_tags 
@@ -137,29 +132,23 @@ export async function getUserProfileTagsData(id: number) {
         `, [userId]
     )
 
-    console.log(userTags);  // [ { user_id: 1, tags: '生活起居可自理,容易迷路,產生幻想,生活需要他人協助' } ]
+    const userTagsData = z.array(UserTagsSchema).parse(tagRows)
 
-    (rows as Array<any>).forEach(userData => {
-        const userTag = (userTags as Array<any>).filter(userTag => userTag.user_id === userData.id);
-        let userTagArray;
-        // console.log('userTag', userTag);
-        if (Array.isArray(userTag) && userTag.length > 0) {
-            userTagArray = userTag[0].tags.split(',');
-            userData['tags'] = userTagArray;
-        }
-        if (userData.articles) userData.articles = userData.articles.split(',');
-
-    })
-
-    // console.log(rows);
-
-    return rows;
+    // 把user_id當key, tag_name當value的數據整理
+    const userTags = userTagsData.reduce((obj: { [userId: number]: string[] }, ele) => {
+        if (!obj[ele.user_id]) obj[ele.user_id] = [];
+        obj[ele.user_id].push(ele.tags);
+        return obj;
+    }, {})
+    // 把userData加入有相同user_id的tag
+    const userResData = userData.map((user) => ({ ...user, tags: userTags[user.id] }))
+    return userResData
 }
 
 
 export async function updateUserProfile(
     name: string,
-    picture: string, // 之後要改成上傳檔案(?)
+    picture: string,
     birth: string,
     email: string,
     location: string,

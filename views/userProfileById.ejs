@@ -100,7 +100,6 @@
       const regex = /\/(\d+)$/;
       const match = currentURL.match(regex);
       const value = match ? match[1] : null;
-      console.log(value); 
       const receiverId = value;
 
       let room;
@@ -113,7 +112,6 @@
       const url = `/chatroom/${room}?id=${receiverId}`
       const sendMsg = document.getElementById('send-msg')
       sendMsg.href = url;
-      console.log('url->', url);
 
       function readArticle(id) {
         const url = `/articles/${id}`;
@@ -132,7 +130,6 @@
             });
 
             const sendBtn =  document.getElementById('send-msg');
-            console.log(receiverId , senderId , sendBtn);
             if (Number(receiverId) === Number(senderId)){
                 sendBtn.style.display = 'none'}
 

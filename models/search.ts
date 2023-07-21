@@ -31,7 +31,6 @@ export async function getArticleByKeyword(keyword: string, currPage: number) {
         `,[currPage * 20]
     )
 
-    // console.log('data->',data);
 
     const [next] = await pool.query(
         `
@@ -47,7 +46,6 @@ export async function getArticleByKeyword(keyword: string, currPage: number) {
         const userArticles = z.array(SearchArticleSchema).parse(data);
         return { userArticles , nextPaging }
     } else {
-        console.log('沒有這個關鍵字');
         const nextPaging = null;
         const userArticles = null;
         return { userArticles , nextPaging }

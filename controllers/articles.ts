@@ -10,7 +10,6 @@ export async function fetchUserCreateArticle(req: Request, res: Response) {
     try {
         const { title, content, date } = req.body;
         const { userId } = res.locals;
-        // console.log(title, content, date, userId);
         const result = await articleModels.createUserArticle(title, content, date, userId);
         if (result) {
             return res.status(200).json({ message: 'success' })
@@ -117,7 +116,6 @@ export async function updateArticleById(req: Request, res: Response) {
     try {
         const { id, title, content, date } = req.body
         const singleArticleData = await articleModels.updateArticleByID(id, title, content, date);
-        // console.log(singleArticleData);
         if (Array.isArray(singleArticleData) && singleArticleData.length > 0) {
             return res.status(200).json({ message: 'success' })
         }

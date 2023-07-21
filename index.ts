@@ -28,7 +28,6 @@ import { redisRequestLimitCheck } from "./middleware/ratelimiter.js";
 const SSH_KEY = process.env.SSH_KEY;
 const SSH_CERT = process.env.SSH_CERT;
 
-console.log(SSH_KEY, SSH_CERT);
 
 if (!SSH_KEY || !SSH_CERT) {
   console.error('SSH_KEY or SSH_CERT environment variables are not set.');

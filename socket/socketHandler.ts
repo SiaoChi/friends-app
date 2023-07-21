@@ -48,9 +48,9 @@ export function socketHandler(io: Server) {
       console.log('收到訊息-->', name, '發出訊息：', message, '傳送人ID:', senderId, '收訊人ID:', receiverId, "聊天房間", room, time);
 
       try {
-        await chatRoomModel.checkRoom(senderId, receiverId, room);
+        await chatRoomModel.checkRoom(Number(senderId), Number(receiverId), room);
         socket.to(receiverId.toString()).emit("message", { name, message, senderId, receiverId, room, time, senderPicture });
-        await chatRoomModel.saveMessage(message, senderId, receiverId, room);
+        await chatRoomModel.saveMessage(message, Number(senderId), Number(receiverId), room);
       } catch (err) {
         console.error('Error processing message:', err);
         socket.emit('error', err);
