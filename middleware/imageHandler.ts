@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { fileTypeFromBuffer } from "file-type";
 import * as s3Model from "../models/s3.js";
 import multer from "multer";
-import path from "path";
 
 function generateImages(files: {
   [fieldname: string]: Express.Multer.File[];
@@ -64,13 +63,13 @@ export async function checkFileType(
     if (image.mime !== image.mimetype) {
       throw new Error("fake type");
     }
-    res.locals.image = image;    
+    res.locals.image = image;
   }
   next();
 };
 
 // 使用multer處理圖片上傳，包含：儲存位置、改副檔名、限制圖片大小
-export const uploadToBuffer = multer({ storage: multer.memoryStorage(),limits: { fileSize: 5 * 1024 * 1024 } });
+export const uploadToBuffer = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
 export async function saveUserPhotoToS3(req: Request, res: Response, next: NextFunction) {
   try {

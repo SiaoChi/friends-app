@@ -35,8 +35,8 @@ if (!SSH_KEY || !SSH_CERT) {
 }
 
 const httpsServer = createServer({
-  key: readFileSync(SSH_KEY,'utf-8'),
-  cert: readFileSync(SSH_CERT,'utf-8'),
+  key: readFileSync(SSH_KEY, 'utf-8'),
+  cert: readFileSync(SSH_CERT, 'utf-8'),
 }, app);
 
 
@@ -51,8 +51,8 @@ app.use(express.json());
 app.use(cors());
 app.enable("trust proxy");
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/',express.static('./public'));
-app.use("/uploads",express.static("./public/uploads"))
+app.use('/', express.static('./public'));
+app.use("/uploads", express.static("./public/uploads"))
 app.use(redisRequestLimitCheck)
 app.use("/", [
   index,
@@ -72,7 +72,8 @@ app.use(errorHandler);
 
 redisClient.connect();
 
-httpsServer.listen(3000, () => {
+export const server = httpsServer.listen(3000, () => {
   console.log('Server listening on *:3000');
 });
 
+export default app

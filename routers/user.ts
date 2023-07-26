@@ -16,7 +16,6 @@ import {
 } from "../controllers/articles.js"
 import authenticate from "../middleware/authenticate.js";
 import * as imageHandler from "../middleware/imageHandler.js"
-import * as s3handler from "../models/s3.js"
 
 // import multer from "multer";
 
@@ -39,9 +38,9 @@ router
 router
     .route("/user/profile/form")
     .get(authenticate, renderUserProfileForm)
-    .post(authenticate, 
+    .post(authenticate,
         imageHandler.uploadToBuffer.single('upload'),  //req.file 是 `upload` 文件
-        imageHandler.checkFileType , // 檢查檔案是否符合規格
+        imageHandler.checkFileType, // 檢查檔案是否符合規格
         imageHandler.saveUserPhotoToS3, // 如果檔案存在，檔案會被存在S3
         createUserProfile)
 

@@ -21,13 +21,13 @@ export async function getFriendsId(userId: number) {
 }
 
 export async function addFriend(userId: number, friendId: number) {
-        const [result] = await pool.query(
-            `
+    const [result] = await pool.query(
+        `
             INSERT INTO user_friends (user_id , friend_id)
             VALUES (?,?)
             `, [userId, friendId]
-        )
-        return result
+    )
+    return result
 }
 
 export async function unFriend(userId: number, friendId: number) {
@@ -45,7 +45,6 @@ export async function getUserTagsIdByUserId(userId: number) {
     const [results] = await pool.query(` SELECT tag_id FROM users_tags WHERE user_id = (?)`, [userId])
     if (!Array.isArray(results) || results.length === 0) { throw new Error('user has no tags') }
     const userTags = z.array(UsersTagsSchema).parse(results);
-
     const userTagsId = userTags.map(item => item.tag_id);
     return userTagsId
 }
@@ -111,7 +110,7 @@ export function sortedTopRecommendFriends(mapFriends: object) {
 
     let topUsers;
     if (sortedFriends.length === 0) {
-        topUsers = null; 
+        topUsers = null;
     } else {
         topUsers = sortedFriends.map(([key]) => key);
     }
@@ -130,3 +129,4 @@ export async function getRecommendFriendsById(userId: number) {
 
 }
 
+export default getRecommendFriendsById

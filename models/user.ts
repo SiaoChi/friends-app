@@ -7,8 +7,22 @@ function instanceOfSetHeader(object: any): object is ResultSetHeader {
     return "insertId" in object;
 }
 
-const CheckEmailSchema = z.object({
-    id: z.number().nullable()
+
+const userProfileSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    email: z.string(),
+    picture: z.string().nullable(),
+    birth: z.string().nullable(),
+    location: z.string().nullable(),
+    sick_year: z.number().nullable(),
+    level: z.string().nullable(),
+    carer: z.string().nullable(),
+    current_problem: z.string().nullable(),
+    created_at: z.date().nullable(),
+    tags: z.array(
+        z.string()
+    ).optional()
 })
 
 export async function checkUser(email: string) {
@@ -44,12 +58,7 @@ export async function createUser(
     throw new Error("create user failed")
 }
 
-const UserSchema = z.object({
-    id: z.number(),
-    name: z.string(),
-    email: z.string(),
-    picture: z.string()
-})
+
 
 export async function findUserByEmail(email: string) {
     const results = await pool.query(
@@ -59,55 +68,21 @@ export async function findUserByEmail(email: string) {
         `,
         [email]
     );
-    const user = z.array(UserSchema).parse(results[0]);
+    const user = z.array(userProfileSchema).parse(results[0]);
     return user[0];
 }
 
 export async function getUserProfileData(id: number | number[]) {
-    let query;
-    let values;
 
-    if (Array.isArray(id)) {
-        query = `
-            SELECT us.*, GROUP_CONCAT(at.content) AS articles
-            FROM users us
-            LEFT JOIN articles at ON us.id = at.user_id
-            WHERE us.id IN (?)
-            GROUP BY us.id
-        `;
-        values = [id];
-    } else {
-        query = `
-            SELECT us.*,  AS articles
-            FROM users us
-            LEFT JOIN articles at ON us.id = at.user_id
-            WHERE us.id = ?
-            GROUP BY us.id
-        `;
-        values = id;
-    }
+    const [rows] = await pool.query(`
+        SELECT * FROM users WHERE id IN (?)
+    `, [Array.isArray(id) ? id : [id]]
+    )
 
-    const [rows] = await pool.query(query, values);
-    if (rows === null) return [];
-    return rows;
+    const userData = z.array(userProfileSchema).parse(rows)
+    if (!userData) return [];
+    return userData;
 }
-
-const userProfileSchema = z.object({
-    id: z.number(),
-    name: z.string(),
-    email: z.string(),
-    picture: z.string(),
-    birth: z.string(),
-    location: z.string(),
-    sick_year: z.number(),
-    level: z.string(),
-    carer: z.string(),
-    current_problem: z.string(),
-    created_at: z.date(),
-    tags: z.array(
-        z.string()
-    ).optional()
-})
 
 const UserTagsSchema = z.object({
     user_id: z.number(),
@@ -141,7 +116,7 @@ export async function getUserProfileTagsData(id: number | number[]) {
         return obj;
     }, {})
     // 把userData加入有相同user_id的tag
-    const userResData = userData.map((user) => ({ ...user, tags: userTags[user.id] }))
+    const userResData = userData.map((user) => ({ ...user, tags: userTags[user.id][0].split(',') }))
     return userResData
 }
 

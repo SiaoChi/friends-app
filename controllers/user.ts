@@ -23,7 +23,7 @@ export async function signUp(req: Request, res: Response) {
         const userId = await userModel.createUser(name, email);
         await userLoginModel.createNativeProvider(userId, password);
         const token = generateToken(userId);
-        const url = "/user/profile/form"; 
+        const url = "/user/profile/form";
         res
             .cookie("jwtToken", token)
             .status(200)
@@ -53,7 +53,8 @@ export async function signUp(req: Request, res: Response) {
 export async function signIn(req: Request, res: Response) {
     try {
         const { email, password } = req.body;
-        const user = await userModel.findUserByEmail(email);
+        const user = await userModel.findUserByEmail(email); // null or test@gmail.com
+        if (!email || !password) throw new Error("lack of required information")
         if (typeof user === 'undefined') {
             throw new Error("user not exist");
         }
@@ -90,39 +91,39 @@ export async function signIn(req: Request, res: Response) {
 export async function createUserProfile(req: Request, res: Response) {
 
     const { edit } = req.query;
-    try{
+    try {
         const { name, picture, birth, email, location, sickYear, carer, level, currentProblems, tags, } = req.body
-    let userPhotoPath = picture;
+        let userPhotoPath = picture;
 
-    const uploadImages = res.locals.imagePath;
-    const userId = res.locals.userId;
+        const uploadImages = res.locals.imagePath;
+        const userId = res.locals.userId;
 
-    if (uploadImages) {
-        userPhotoPath = uploadImages;
-    }
+        if (uploadImages) {
+            userPhotoPath = uploadImages;
+        }
 
-    await userModel.updateUserProfile(
-        name,
-        userPhotoPath,
-        birth,
-        email,
-        location,
-        sickYear,
-        carer,
-        level,
-        currentProblems,
-        tags,
-        userId
-    )
-    let url
-    if(edit === 'true') {
-        url = '/user/profile'
-    }else{
-        url = '/friends/recommend'  
-    }
-    res.status(200).json({url})
+        await userModel.updateUserProfile(
+            name,
+            userPhotoPath,
+            birth,
+            email,
+            location,
+            sickYear,
+            carer,
+            level,
+            currentProblems,
+            tags,
+            userId
+        )
+        let url
+        if (edit === 'true') {
+            url = '/user/profile'
+        } else {
+            url = '/friends/recommend'
+        }
+        res.status(200).json({ url })
 
-    }catch(err){
+    } catch (err) {
         res.status(500).json({ errors: "createUserProfileForm failed" })
     }
 }

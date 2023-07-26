@@ -1,10 +1,10 @@
-import redis from "redis"
+import * as redis from 'redis';
 import dotenv from "dotenv"
 
 dotenv.config()
 
-const REDIS_PORT : number = parseInt(process.env.REDIS_PORT || '0')
-const REDIS_HOST  = process.env.REDIS_HOST || ''
+const REDIS_PORT: number = parseInt(process.env.REDIS_PORT || '0')
+const REDIS_HOST = process.env.REDIS_HOST || ''
 
 export const redisClient = redis.createClient({
     socket: {

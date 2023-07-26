@@ -6,7 +6,7 @@ import * as userModels from "../models/user.js"
 export async function fetchRecommendFriends(req: Request, res: Response) {
     try {
         // const { userId } = res.locals;
-        const userId =1 ;
+        const userId = 1;
         const friendsId = await friendsModels.getRecommendFriendsById(userId);
         const friendsData = await userModels.getUserProfileData(friendsId);
         res.status(200).json({ friendsData })
@@ -60,14 +60,14 @@ export async function fetchFriends(req: Request, res: Response) {
     try {
         const { userId } = res.locals;
         const friendsId = await friendsModels.getFriendsId(userId);
-        
-        if(Array.isArray(friendsId) && friendsId.length === 0){
+
+        if (Array.isArray(friendsId) && friendsId.length === 0) {
             const friendsData = null;
-            return res.render('friends',{ friendsData })
+            return res.render('friends', { friendsData })
         }
 
         const friendsData = await userModels.getUserProfileData(friendsId);
-        if (friendsId && friendsData) { return res.render('friends',{ friendsData }) };
+        if (friendsId && friendsData) { return res.render('friends', { friendsData }) };
         throw new Error('no friends, please add friend')
     } catch (err) {
         if (err instanceof Error) {
