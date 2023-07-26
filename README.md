@@ -1,12 +1,22 @@
 ## YOUR FRIENDS APP
 "Your Friends" app is a social networking app, dedicated to assisting individuals with family members suffering from dementia to make friends. It matches users based on their family members' conditions as tags and provides services for posting and chatting in chat rooms.
 
-## Relevant skills
-Node.js |  Express  |  Socket.IO  |  Elasticsearch  |  MySQL  |  Redis  |  Docker |  AWS 
+You may visit this website directly. ☞☞ [你的智友網站](https://chichi-lab.com/).
+
+## APP Relevant Skills
+Node.js |  Express  |  Socket.IO  |  Elasticsearch  |  MySQL  
+Redis |  S3  | RDS  |  CICD  |  Docker
 
 
-## Functions and skills description
-1. Build a web project that included backend database design, RESTful API developments, and frontend development and project planning
+## About the main feature description
+Hi 🙋‍♀️ , I developed this project which included backend database design, RESTful API developments , chatroom , recommended system, and frontend development. 
+
+❶ When you visit the homepage, you can see the search bar feature, which search bar connected to Elasticsearch. If you try to search consecutive words, Elasticsearch can extract the meaningful words to recommended you the best recommended articles. ex."媽媽找看護", you will be recommended the relevant articles as "媽媽" , "看護" , "媽媽找看護".
+
+![home picture](https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230726063843947)
+![artiecles](https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230726063843947)
+
+
 
 2. Utilized Socket.io to create a real-time chat room integrated with a MySQL database, featuring an unread message functions
 
@@ -18,102 +28,10 @@ Node.js |  Express  |  Socket.IO  |  Elasticsearch  |  MySQL  |  Redis  |  Docke
 
 6. Developed article functions using CRUD (Create, Read, Update, Delete) operations, integrating React with MySQL
 
-## Run app in localhost
+## 
 
-```
-git clone {url}
-npm install
-npm run build
-```
+## APP UI Display
 
-## APP structure
-
-```
-├── Dockerfile
-├── README.md
-├── backup.sql
-├── controllers
-│   ├── admin.ts
-│   ├── articles.ts
-│   ├── chatRoom.ts
-│   ├── friends.ts
-│   ├── search.ts
-│   └── user.ts
-├── docker-compose.yml
-├── elasticSearch
-│   └── search.ts
-├── index.ts
-├── jest.config.ts
-├── k6
-│   ├── jerry.yml
-│   └── script.js
-├── middleware
-│   ├── authenticate.ts
-│   ├── imageHandler.ts
-│   └── ratelimiter.ts
-├── models
-│   ├── admin.ts
-│   ├── articles.ts
-│   ├── chatRoom.ts
-│   ├── databasePool.ts
-│   ├── friends.ts
-│   ├── redisClient.ts
-│   ├── s3.ts
-│   ├── search.ts
-│   ├── user.ts
-│   └── userLogin.ts
-├── package-lock.json
-├── package.json
-├── routers
-│   ├── admin.ts
-│   ├── articles.ts
-│   ├── chatRoom.ts
-│   ├── friends.ts
-│   ├── index.ts
-│   ├── search.ts
-│   └── user.ts
-├── socket
-│   └── socketHandler.ts
-├── tailwind.config.js
-├── tests
-│   ├── project.test.ts
-│   └── sum.ts
-├── tsconfig.json
-├── utils
-│   ├── errorHandler.ts
-│   ├── generateToken.ts
-│   └── verifyJWT.ts
-└── views
-    ├── 404.ejs
-    ├── about.ejs
-    ├── admin.ejs
-    ├── articles.ejs
-    ├── chatRoomMain.ejs
-    ├── createArticle.ejs
-    ├── createTags.ejs
-    ├── editArticle.ejs
-    ├── friends.ejs
-    ├── index.ejs
-    ├── login.ejs
-    ├── partials
-    │   ├── header.ejs
-    │   └── sideBar.ejs
-    ├── recommendFriends.ejs
-    ├── searchFriends.ejs
-    ├── singleArticle.ejs
-    ├── userProfile.ejs
-    ├── userProfileById.ejs
-    └── userProfileForm.ejs
-
-```
-
-
-## Images
-
-![home picture](https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230726063843947)
 ![chatroom picture](https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230726063914327)
 
 
-## Official website
-
-You may check website [你的智友網站](https://chichi-lab.com/).
