@@ -110,8 +110,8 @@ npm run build
 
 ## Images
 
-![This is an alt text.](/dist/img/demo1.png "home picture")
-![This is an alt text.](/dist/img/demo2.png "chatroom picture")
+![home picture](https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230726063843947)
+![chatroom picture](https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230726063914327)
 
 
 ## Official website
