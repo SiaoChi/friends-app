@@ -14,6 +14,9 @@
 You may visit this website directly. ☞☞ [你的智友網站](https://chichi-lab.com/).
 ![home picture](https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230726063843947)
 
+## Server Structure
+![server](https://github.com/SiaoChi/friends-app/assets/98171354/a722bc2d-19b4-4cc3-8e85-2f1ed3ed978a)
+
 ## About the main feature description
 Hi 🙋‍♀️ , I developed this project which included backend database design, RESTful API developments , chatroom , recommended system, and frontend development. 
 
@@ -22,19 +25,21 @@ Hi 🙋‍♀️ , I developed this project which included backend database desi
 https://github.com/SiaoChi/friends-app/assets/98171354/76dd1fde-3b6c-4f43-be3a-6af10107c459
 
 
-❷ Utilized Socket.io to create a real-time chat room integrated with a MySQL database, featuring an unread message functions.
+❷-1 Utilized Socket.IO to create a real-time chat room integrated with a MySQL database, featuring an unread message functions.
 
 https://github.com/SiaoChi/friends-app/assets/98171354/88f773e0-5ecf-48b9-a5e5-f9b5949cbe1c
+
+❷-2 You can check history messages by click chat list, when you scroll up to top, you will call pagination API to update the history messages.
+
+https://github.com/SiaoChi/friends-app/assets/98171354/e551ed3f-c0fd-43a4-9e15-f6ff60b50846
 
 
 ❸ Designed and implemented a recommended friends system using user information as tags, using inverted index to optimize the speed of calculating
 
-
 https://github.com/SiaoChi/friends-app/assets/98171354/bc59fc1e-b82d-4313-800a-5c9752845ab8
 
 
-❹ Developed article functions using CRUD (Create, Read, Update, Delete) operations, integrating React with MySQL
-
+❹ Developed article functions using CRUD (Create, Read, Update, Delete) operations, integrating React with MySQL.
 
 https://github.com/SiaoChi/friends-app/assets/98171354/44f6c07e-1638-428c-99e6-db8a1e70b7a4
 
@@ -57,3 +62,10 @@ https://github.com/SiaoChi/friends-app/assets/98171354/44f6c07e-1638-428c-99e6-d
 - Docker
 - CICD
 - RESTful API
+
+### Test account
+
+- email : test4@gmail.com
+- password : 1111
+
+
