@@ -76,6 +76,7 @@ https://github.com/SiaoChi/friends-app/assets/98171354/44f6c07e-1638-428c-99e6-d
 - EC2
 
 #### Others:
+- Tailwind CSS
 - Socket.IO
 - Docker
 - CICD Gitflow
