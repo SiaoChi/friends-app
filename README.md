@@ -15,7 +15,8 @@ You may visit this website directly. ☞☞ [你的智友網站](https://chichi-
 ![home picture](https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230726063843947)
 
 ## Server Structure
-![server](https://github.com/SiaoChi/friends-app/assets/98171354/a722bc2d-19b4-4cc3-8e85-2f1ed3ed978a)
+![server](https://github.com/SiaoChi/friends-app/assets/98171354/dd855488-edaf-430e-830e-c9ab10e38636)
+
 
 ## About the main feature description
 Hi 🙋‍♀️ , I developed this project which included backend database design, RESTful API developments , chatroom , recommended system, and frontend development. 
@@ -51,24 +52,35 @@ https://github.com/SiaoChi/friends-app/assets/98171354/44f6c07e-1638-428c-99e6-d
 
 ❺ Using a Dockerfile to deploy my project to EC2, improving deployment efficiency
 
-## SQL Database Design
+## SQL Database Schema
 ![db](https://github.com/SiaoChi/friends-app/assets/98171354/f701b9b5-dbe9-479e-9c63-fe183c2e2a21)
 
 ## APP Relevant Skills
+
+#### Programming Lanuage:
+- JavaScript / TypeSript
+
+#### Framework:
 - Node.js
 - Express
-- Socket.IO
+
+#### Database:
 - Elasticsearch
 - MySQL
-- RDS
 - Redis
+
+#### AWS Service:
 - S3
 - CloudFront
-- Docker
-- CICD
-- RESTful API
+- RDS
+- EC2
 
-### Test account
+#### Others:
+- Socket.IO
+- Docker
+- CICD Gitflow
+
+## Test account
 
 - email : test4@gmail.com
 - password : 1111
