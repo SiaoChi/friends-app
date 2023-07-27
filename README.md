@@ -41,6 +41,8 @@ https://github.com/SiaoChi/friends-app/assets/98171354/44f6c07e-1638-428c-99e6-d
 
 ❺ Using a Dockerfile to deploy my project to EC2, improving deployment efficiency
 
+## SQL Database Design
+![db](https://github.com/SiaoChi/friends-app/assets/98171354/f701b9b5-dbe9-479e-9c63-fe183c2e2a21)
 
 ## APP Relevant Skills
 - Node.js
