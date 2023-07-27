@@ -20,10 +20,12 @@ You may visit this website directly. ☞☞ [你的智友網站](https://chichi-
 ## About the main feature description
 Hi 🙋‍♀️ , I developed this project which included backend database design, RESTful API developments , chatroom , recommended system, and frontend development. 
 
+### Search feature
 ❶ Visit to the homepage, you can see the search bar feature, which search bar connected to Elasticsearch. If you try to search consecutive words, Elasticsearch can extract the meaningful words to recommended you the best recommended articles.
 
 https://github.com/SiaoChi/friends-app/assets/98171354/76dd1fde-3b6c-4f43-be3a-6af10107c459
 
+### Chatroom feature
 
 ❷-1 Utilized Socket.IO to create a real-time chat room integrated with a MySQL database, featuring an unread message functions.
 
@@ -33,11 +35,14 @@ https://github.com/SiaoChi/friends-app/assets/98171354/88f773e0-5ecf-48b9-a5e5-f
 
 https://github.com/SiaoChi/friends-app/assets/98171354/e551ed3f-c0fd-43a4-9e15-f6ff60b50846
 
+### Recommend friends feature
+
 
 ❸ Designed and implemented a recommended friends system using user information as tags, using inverted index to optimize the speed of calculating
 
 https://github.com/SiaoChi/friends-app/assets/98171354/bc59fc1e-b82d-4313-800a-5c9752845ab8
 
+### Content-created feature
 
 ❹ Developed article functions using CRUD (Create, Read, Update, Delete) operations, integrating React with MySQL.
 
