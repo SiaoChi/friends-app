@@ -158,32 +158,32 @@
                                             <%= chatList[i].last_message %>
                                         </p>
                                     </div>
-                                  
 
-                                            <% if (chatList[i].senderId> chatList[i].receiverId) { %>
 
-                                                <% if(chatList[i].lg_id_unread !==0) {%>
-                                                    <div class="unread ">
-                                                        <%= chatList[i].lg_id_unread ? chatList[i].lg_id_unread : '' %>
-                                                    </div>
-                                                    <% } %>
+                                    <% if (chatList[i].senderId> chatList[i].receiverId) { %>
 
-                                                        <% } else { %>
-                                                            <% if(chatList[i].xs_id_unread !==0) {%>
-                                                                <div class="unread ">
-                                                                    <%= chatList[i].xs_id_unread ?
-                                                                        chatList[i].xs_id_unread : '' %>
+                                        <% if(chatList[i].lg_id_unread !==0) {%>
+                                            <div class="unread ">
+                                                <%= chatList[i].lg_id_unread ? chatList[i].lg_id_unread : '' %>
+                                            </div>
+                                            <% } %>
+
+                                                <% } else { %>
+                                                    <% if(chatList[i].xs_id_unread !==0) {%>
+                                                        <div class="unread ">
+                                                            <%= chatList[i].xs_id_unread ? chatList[i].xs_id_unread : ''
+                                                                %>
+                                                        </div>
+                                                        <% } %>
+                                                            <% } %>
+
+                                                                <div
+                                                                    class="top-2 right-2 absolute flex justify-end items-end ml-auto w-[100px] h-[60px]  ">
+                                                                    <p class="text-[12px] text-gray-500">
+                                                                        <%=
+                                                                            chatList[i].updated_at.toISOString().split('T')[0]%>
+                                                                    </p>
                                                                 </div>
-                                                                <% } %>
-                                                                    <% } %>
-
-                                                                        <div
-                                                                            class="top-2 right-2 absolute flex justify-end items-end ml-auto w-[100px] h-[60px]  ">
-                                                                            <p class="text-[12px] text-gray-500">
-                                                                                <%=
-                                                                                    chatList[i].updated_at.toISOString().split('T')[0]%>
-                                                                            </p>
-                                                                        </div>
                                 </a>
                             </div>
                             <% } %>
@@ -223,9 +223,9 @@
             const input = document.getElementById('input');
             const chatList = document.getElementById('chatlist')
             const name = localStorage.getItem('name');
-            console.log('username', name);
+            // console.log('username', name);
             const userPicture = localStorage.getItem('userPicture');
-            console.log('userPicture', userPicture);
+            // console.log('userPicture', userPicture);
 
 
 
@@ -235,7 +235,7 @@
 
             if (roomNameMatch) {
                 roomName = roomNameMatch[1];
-                console.log('roomName', roomName);
+                // console.log('roomName', roomName);
             } else {
                 // 处理没有"chatroom"的情况
                 // 可以在这里给出一个默认的roomName值或者执行其他逻辑
@@ -250,7 +250,7 @@
             let receiverName
 
             async function fetchMessages(room, newReceiverId) {
-                console.log('room:', room, '收訊人ID', newReceiverId);
+                // console.log('room:', room, '收訊人ID', newReceiverId);
                 receiverId = newReceiverId;
                 roomName = room;
                 await fetchReceiverInfo(receiverId);
@@ -322,7 +322,7 @@
             // [socket.io]聽自己id的socket範圍，如果有訊息就拉出來
             socket.on("message", function (data) {
                 const { nickname, message, senderId, receiverId, room, time, senderPicture } = data;
-                console.log('新訊息', time);
+                // console.log('新訊息', time);
                 // [header] 新訊息：chat-icon加入紅點
                 const messageIcon = document.getElementById('messageIcon');
                 const redDot = document.createElement('span');
@@ -357,11 +357,11 @@
 
                 // [chatList] 新訊息：(1) 已經存在的user更新文字與小綠點 (2)沒存在的user需要建立新的div
                 const existingChatPerson = document.querySelector(`[data-senderid="${senderId}"]`);
-                console.log('existingChatPerson', existingChatPerson);
+                // console.log('existingChatPerson', existingChatPerson);
 
                 if (existingChatPerson) {
                     const aElement = existingChatPerson.querySelector('a');
-                    console.log('aElement', aElement);
+                    // console.log('aElement', aElement);
                     const messageElement = existingChatPerson.querySelector('.mt-1');
                     messageElement.textContent = message;
                     // let span = document.createElement('span');
@@ -376,15 +376,15 @@
                         // 情境1：傳送過來時，已經有未讀訊息的div class=unread，抓取unread的value +=1
                         if (unRead) {
 
-                            console.log('unread', unRead);
+                            // console.log('unread', unRead);
                             if (unRead.style.display === 'none') {
                                 unRead.textContent = 1;
                             } else {
                                 unRead.textContent = (Number(unRead.textContent) || 0) + 1;
                             }
-                            console.log('unread text', unRead.textContent);
+                            // console.log('unread text', unRead.textContent);
                             unRead.style.display = 'flex';
-                            console.log('unRead after', unRead);
+                            // console.log('unRead after', unRead);
                         } else {
                             // 情境２：傳送過來時，沒有未讀訊息的class class=unread，解法：加入一個div呈現unread畫面 unread value = 1
                             let unRead = document.createElement('div');
@@ -392,12 +392,12 @@
                             aElement.appendChild(unRead);
                             unRead.textContent = 1;
                             unRead.style.display = 'flex';
-                            console.log('創造新unread', unRead);
+                            // console.log('創造新unread', unRead);
                         }
                     }
 
                 } else {
-                    console.log('新聊天者');
+                    // console.log('新聊天者');
                     const chatPerson = ` <div class="cursor-pointer items-center mb-2 bg-gray-100 chat-person relative h-[72px]" data-senderid="${senderId}" >
                                            <a onclick="fetchMessages(${room},${senderId})"
                                                 class="p-2 w-full flex items-center relative">
@@ -510,7 +510,7 @@
                 // event.preventDefault();
 
                 const target = event.target.closest('.chat-person');
-                console.log(target);
+                // console.log(target);
                 const roomName = target.getAttribute('data-room');
                 // const redDot = target.querySelector('a .red-dot');
                 const unRead = target.querySelector('a .unread');
@@ -550,7 +550,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.message === 'success') {
-                            console.log('reset success');
+                            // console.log('reset success');
                             return
                         }
                         throw new Error('reset message status failed')
@@ -560,7 +560,7 @@
 
             // [chatList] 點擊chatList其中一個user會觸發的
             function fetchReadMessage(room) {
-                console.log('fetchReadMessage');
+                // console.log('fetchReadMessage');
                 fetch(`/api/v1/chatroom/${room}`, {
                     method: "PUT",
                     headers: {
@@ -570,10 +570,10 @@
                 }).then(response => response.json())
                     .then(data => {
                         if (data.message === 'success') {
-                            console.log('dataMsgRead', data.message);
+                            // console.log('dataMsgRead', data.message);
                             return
                         }
-                        console.log('error', data);
+                        // console.log('error', data);
                         throw new Error('reset message status failed')
                     })
                     .catch(error => { console.error(error); });

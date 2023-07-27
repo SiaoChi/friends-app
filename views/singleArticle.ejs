@@ -49,39 +49,43 @@
 
                     </div>
                     <style>
-                        .em{
+                        .em {
                             height: 16px;
                         }
                     </style>
                     <div class="flex justify-end items-end mt-6 ">
-                        
+
                         <% if (userArticleEmojiId) { %>
                             <div class="h-[20px] flex justify-center items-center bg-slate-100 rounded-full px-2 py-4">
-                                <% if (userArticleEmojiId[0].emoji_id === 1) { %>
+                                <% if (userArticleEmojiId[0].emoji_id===1) { %>
                                     <i class="em em---1 cursor-pointer" aria-role="presentation"
-                                        aria-label="THUMBS UP SIGN" emoji-id="1"  id="like"></i>
-                                <% } else if (userArticleEmojiId[0].emoji_id === 2) { %>
-                                    <i class="em em-blue_heart  cursor-pointer" aria-role="presentation"
-                                        aria-label="BLUE HEART" emoji-id="2"  id="heart"></i>
-                                <% } else if (userArticleEmojiId[0].emoji_id === 3) { %>
+                                        aria-label="THUMBS UP SIGN" emoji-id="1" id="like"></i>
+                                    <% } else if (userArticleEmojiId[0].emoji_id===2) { %>
+                                        <i class="em em-blue_heart  cursor-pointer" aria-role="presentation"
+                                            aria-label="BLUE HEART" emoji-id="2" id="heart"></i>
+                                        <% } else if (userArticleEmojiId[0].emoji_id===3) { %>
+                                            <i class="em em-broken_heart cursor-pointer" aria-role="presentation"
+                                                aria-label="BROKEN HEART" emoji-id="3" " id=" broken"></i>
+                                            <% } %>
+                            </div>
+                            <% } else { %>
+                                <div
+                                    class="h-[20px] flex justify-center items-center bg-slate-100 rounded-full px-2 py-4">
+                                    <i class="em em---1 mr-2 cursor-pointer" aria-role="presentation"
+                                        aria-label="THUMBS UP SIGN" emoji-id="1"
+                                        onclick="sendEmoji(1, <%= singleArticleData[0].id %>)" id="like"></i>
+                                    <i class="em em-blue_heart mr-2 cursor-pointer" aria-role="presentation"
+                                        aria-label="BLUE HEART" emoji-id="2"
+                                        onclick="sendEmoji(2, <%= singleArticleData[0].id %>)" id="heart"></i>
                                     <i class="em em-broken_heart cursor-pointer" aria-role="presentation"
-                                        aria-label="BROKEN HEART" emoji-id="3" " id="broken"></i>
-                                <% } %>
-                            </div>
-                        <% } else { %>
-                            <div class="h-[20px] flex justify-center items-center bg-slate-100 rounded-full px-2 py-4">
-                                <i class="em em---1 mr-2 cursor-pointer" aria-role="presentation"
-                                    aria-label="THUMBS UP SIGN" emoji-id="1" onclick="sendEmoji(1, <%= singleArticleData[0].id %>)" id="like"></i>
-                                <i class="em em-blue_heart mr-2 cursor-pointer" aria-role="presentation"
-                                    aria-label="BLUE HEART" emoji-id="2" onclick="sendEmoji(2, <%= singleArticleData[0].id %>)" id="heart"></i>
-                                <i class="em em-broken_heart cursor-pointer" aria-role="presentation"
-                                    aria-label="BROKEN HEART" emoji-id="3" onclick="sendEmoji(3, <%= singleArticleData[0].id %>)" id="broken"></i>
-                            </div>
-                  
-                        <% } %>
-                        
+                                        aria-label="BROKEN HEART" emoji-id="3"
+                                        onclick="sendEmoji(3, <%= singleArticleData[0].id %>)" id="broken"></i>
+                                </div>
 
-                
+                                <% } %>
+
+
+
                     </div>
                 </div>
 
@@ -89,23 +93,23 @@
                     <p>No article found.</p>
                     <% } %>
         </div>
-       
+
 
         <script>
             const userId = localStorage.getItem('userId');
-            console.log('id',userId);
-            async function sendEmoji(emojiId,articleId){
-                if(userId === null) return window.location.href = '/user/signin';
-                console.log('send!');
-                console.log(emojiId,articleId);
+            // ('id',userId);
+            async function sendEmoji(emojiId, articleId) {
+                if (userId === null) return window.location.href = '/user/signin';
+                // ('send!');
+                // (emojiId,articleId);
                 const url = "/api/v1/articles/emoji";
-                const response = await fetch(url,{
-                    method:"POST",
-                    headers:{ "Content-Type":"application/json" },
-                    body:JSON.stringify({emojiId,articleId})
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ emojiId, articleId })
                 })
                 const resJson = await response.json()
-                console.log(resJson);
+                // (resJson);
             }
 
             function userProfile(id) {
@@ -119,33 +123,33 @@
 
             const receiverId = <%= singleArticleData[0].user_id %>;
             const sendBtn = document.getElementById('send-msg');
-            console.log(receiverId, senderId, sendBtn);
+            // (receiverId, senderId, sendBtn);
             if (Number(receiverId) === Number(senderId)) {
                 sendBtn.style.display = 'none'
             }
 
-  
-                const emojis = document.querySelectorAll('.em');
-                function handleClick(event) {
+
+            const emojis = document.querySelectorAll('.em');
+            function handleClick(event) {
                 if (document.querySelector('.selected')) {
                     return;
                 }
 
-                
-                emojis.forEach(emoji => {  
+
+                emojis.forEach(emoji => {
                     if (emoji === event.target) {
-                            emoji.classList.remove('mr-2');
-                            emoji.classList.add('selected');
-                        
+                        emoji.classList.remove('mr-2');
+                        emoji.classList.add('selected');
+
                     } else {
-                            console.log(emoji);
-                            emoji.style.display = 'none';
+                        // (emoji);
+                        emoji.style.display = 'none';
                     }
                 });
             }
 
             emojis.forEach(emoji => {
-                            emoji.addEventListener('click', handleClick);
+                emoji.addEventListener('click', handleClick);
             });
         </script>
 

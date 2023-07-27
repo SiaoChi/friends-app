@@ -1,7 +1,8 @@
 <head>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&family=Noto+Sans+TC&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&family=Noto+Sans+TC&display=swap"
+    rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
   <style>
@@ -27,7 +28,7 @@
     }
 
     p {
-      color:rgb(19, 19, 19);
+      color: rgb(19, 19, 19);
       font-weight: 300;
     }
 
@@ -99,7 +100,8 @@
     <div class="w-1/6 flex items-center justify-center md:justify-end">
       <a href="/" class="flex">
 
-        <img src="/img/logo1.svg" alt="你的智友" class="hidden md:block md:w-[60px] md:h-auto mx-auto mt-5 md:mt-0 md:ml-6 md:p-2 ">
+        <img src="/img/logo1.svg" alt="你的智友"
+          class="hidden md:block md:w-[60px] md:h-auto mx-auto mt-5 md:mt-0 md:ml-6 md:p-2 ">
 
         <img src="/img/logo3.svg" alt="你的智友" class="h-[40px] md:w-[120px] md:h-auto mt-5 md:mt-0  md:p-2 mr-4"></a>
       <!-- <a href="/"
@@ -166,8 +168,7 @@
       </div>
 
       <div id="sign-in-picture" style="display: none;" class="w-[40px] m-2 md:mr-0  md:block">
-        <a href="/user/profile"><img src="" class="w-[40px] h-[40px] rounded-full"
-            alt="signin-photo"></a>
+        <a href="/user/profile"><img src="" class="w-[40px] h-[40px] rounded-full" alt="signin-photo"></a>
       </div>
 
     </div>
@@ -186,12 +187,12 @@
           .then(data => {
             if (data) {
               const pictureUrl = data[0].picture;
-              console.log(pictureUrl);
-              if(pictureUrl) {
+              // console.log(pictureUrl);
+              if (pictureUrl) {
                 document.getElementById("sign-in-picture").querySelector('img').src = pictureUrl;
                 document.getElementById("sign-in-picture").style.display = "block";
                 localStorage.setItem('userPicture', pictureUrl);
-              } 
+              }
             }
           })
           .catch(error => { console.log(error); });
@@ -224,11 +225,11 @@
       function handleVisibilityChange() {
         if (document.visibilityState === 'visible') {
           socket = io({
-          auth: (cb) => {
-            cb({ userId: senderId })
-          }
-        })
-        socket.emit('joinMyRoom', String(senderId));
+            auth: (cb) => {
+              cb({ userId: senderId })
+            }
+          })
+          socket.emit('joinMyRoom', String(senderId));
           // location.reload();
         }
       }

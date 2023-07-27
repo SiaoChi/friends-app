@@ -9,7 +9,7 @@
     <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
     <link href="/dist/output.css" rel="stylesheet" />
     <title>login</title>
-    
+
     <style>
         * {
             box-sizing: border-box;
@@ -19,9 +19,8 @@
 
 <body>
     <%- include('./partials/header') %>
-        <div class=" flex justify-center w-full h-full fixed bg-kv-image" id="signupDiv"
-            style="  display: none;">
-            
+        <div class=" flex justify-center w-full h-full fixed bg-kv-image" id="signupDiv" style="  display: none;">
+
             <div id="login" class="flex flex-wrap items-center justify-center">
                 <div
                     class="flex-col items-center justify-center login-form p-10 w-[350px] h-[460px] border border-gray-200 shadow-md bg-white">
@@ -56,8 +55,7 @@
         </div>
 
 
-        <div class=" flex justify-center w-full h-full fixed bg-kv-image" id="signinDiv"
-            style="">
+        <div class=" flex justify-center w-full h-full fixed bg-kv-image" id="signinDiv" style="">
 
             <div id="login" class=" flex flex-wrap justify-center items-center h-full w-full">
                 <div class="">
@@ -70,17 +68,17 @@
 
                         <input id="signin-mail"
                             class="input-field border border-gray-300 w-[268px] mt-4 h-[38px] rounded-sm px-2 text-sm "
-                            type="email " placeholder="Email" name="email" required>
+                            type="email " placeholder="Email" name="email" value="test4@gmail.com" required>
                         <input id="signin-password"
                             class="input-field border border-gray-300  mt-4 h-[38px] w-[268px] rounded-sm px-2 text-sm"
-                            type="password" placeholder="Password" name="password" required>
+                            type="password" placeholder="Password" name="password" value="1111" required>
 
                         <button
                             class="bg-red hover:bg-white hover:border hover:border-red hover:text-red w-[268px] h-[38px] text-white mt-6 rounded-3xl text-[14px]"
                             type="submit" class="button">立即登入</button>
                         <button id="to-signup-btn"
-                            class="bg-blue hover:bg-white hover:border hover:border-blue hover:text-blue text-white w-[268px] h-[38px]  mt-4 rounded-3xl text-[14px] fb-login"
-                            > 還沒有帳號？立即註冊</button>
+                            class="bg-blue hover:bg-white hover:border hover:border-blue hover:text-blue text-white w-[268px] h-[38px]  mt-4 rounded-3xl text-[14px] fb-login">
+                            還沒有帳號？立即註冊</button>
                     </form>
                 </div>
 
@@ -89,7 +87,7 @@
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script>
-            
+
             const toSignIn = document.getElementById("to-signin-btn")
             const toSignUp = document.getElementById("to-signup-btn")
             const signinDiv = document.getElementById("signinDiv")
@@ -133,7 +131,7 @@
 
                     if (response.ok) {
                         const data = await response.json();
-                        console.log(data);
+                        // console.log(data);
                         localStorage.setItem('userId', data.data.user.id);
                         localStorage.setItem('name', data.data.user.name);
                         localStorage.setItem('userPicture', data.data.user.picture);
@@ -176,7 +174,7 @@
 
                     if (response.ok) {
                         const data = await response.json();
-                        console.log('data',data);
+                        // console.log('data', data);
 
                         localStorage.setItem('userId', data.data.user.id);
                         localStorage.setItem('name', data.data.user.name);
@@ -184,11 +182,11 @@
 
                         const redirectUrl = data.redirectUrl;
                         window.location.href = redirectUrl;
-                       
-                    } 
+
+                    }
                     else {
                         const data = await response.json();
-                        swal(data.errors); 
+                        swal(data.errors);
                     }
 
                 } catch (error) {
@@ -220,9 +218,9 @@
 
             function login() {
                 FB.login(function (response) {
-                    console.log(response);
+                    // console.log(response);
                     const accessToken = response.authResponse.accessToken;
-                    console.log(accessToken)
+                    // console.log(accessToken)
                     if (response.status === "connected") {
                         FB.api('/me', {
                             'fields': 'id,name,email,picture'
@@ -251,7 +249,7 @@
                                 }
                                 )
                                 .then(res => {
-                                    console.log('登入成功')
+                                    // console.log('登入成功')
                                     msgDiv.innerText = "恭喜你登入成功!";
                                 })
                                 .catch(err => console.log(err))

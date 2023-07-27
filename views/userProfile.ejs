@@ -12,8 +12,8 @@
         .screen-h {
             height: calc(100% - 98px);
         }
-        </style>
-    </head>
+    </style>
+</head>
 
 <body class="">
     <%- include('./partials/header') %>
@@ -87,7 +87,7 @@
                                             <%= userArticles[i].created_at %>
                                         </p>
                                     </div>
-                                    <div class="bg-gray-100 w-[450px] p-5" >
+                                    <div class="bg-gray-100 w-[450px] p-5">
 
                                         <p class="text-2xl font-bold">
                                             <%= userArticles[i].title %>
@@ -133,7 +133,7 @@
             }
 
             function showUpdatePopup(articleId) {
-                    window.location.href = `/articles/edit/${articleId}`
+                window.location.href = `/articles/edit/${articleId}`
             }
 
 
@@ -142,7 +142,7 @@
                     buttons: ['取消', true],
                 })
                     .then(value => {
-                        console.log('value', value);
+                        // console.log('value', value);
                         if (value === true) {
                             deleteArticle(articleId)
                         }

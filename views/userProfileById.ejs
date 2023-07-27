@@ -17,7 +17,8 @@
 
     <div class="flex items-start justify-start bg-slate-100 screen-h fixed">
       <!-- 個人menu -->
-      <div class="py-8  font-medium w-vw-40 flex flex-col justify-start items-center bg-white h-full overflow-y-scroll ">
+      <div
+        class="py-8  font-medium w-vw-40 flex flex-col justify-start items-center bg-white h-full overflow-y-scroll ">
         <a id="send-msg"
           class="cursor-pointer py-2 w-[160px] bg-red rounded-full text-white transition-all delay-100 hover:scale-105">
           <div class="flex justify-center items-center">
@@ -49,7 +50,8 @@
                rounded-md font-semibold text-xs text-gray-700 hover:scale-95 ">
                   <img class="w-[16px]" src="/img/tag.svg" alt="icon">
                   <span class="pl-1">
-                    <%= userProfile[0].tags[i] %></span>
+                    <%= userProfile[0].tags[i] %>
+                  </span>
                 </li>
                 <% } %>
                   <% } else { %>
@@ -73,7 +75,9 @@
               <div class=" bg-white w-[550px]  p-5 rounded-b-lg  shadow-sm">
                 <div class="flex items-center">
                   <img src="<%= userArticles[i].picture %>" alt="picture" class="w-[50px]">
-                  <p class="ml-2 text-[18px] font-medium"><%= userArticles[i].name %></p>
+                  <p class="ml-2 text-[18px] font-medium">
+                    <%= userArticles[i].name %>
+                  </p>
                 </div>
                 <p class="text-[24px] mt-2 font-medium">
                   <%= userArticles[i].title %>
@@ -100,7 +104,7 @@
       const regex = /\/(\d+)$/;
       const match = currentURL.match(regex);
       const value = match ? match[1] : null;
-      console.log(value); 
+      // console.log(value); 
       const receiverId = value;
 
       let room;
@@ -113,28 +117,29 @@
       const url = `/chatroom/${room}?id=${receiverId}`
       const sendMsg = document.getElementById('send-msg')
       sendMsg.href = url;
-      console.log('url->', url);
+      // console.log('url->', url);
 
       function readArticle(id) {
         const url = `/articles/${id}`;
         window.location.href = url
       }
- 
+
       const paragraphs = document.querySelectorAll('.content');
 
-            paragraphs.forEach((paragraph) => {
-                const maxLength = parseInt(paragraph.getAttribute('data-max-length'), 10);
+      paragraphs.forEach((paragraph) => {
+        const maxLength = parseInt(paragraph.getAttribute('data-max-length'), 10);
 
-                if (paragraph.textContent.length > maxLength) {
-                    const truncatedContent = paragraph.textContent.substr(0, maxLength) + '...';
-                    paragraph.textContent = truncatedContent;
-                }
-            });
+        if (paragraph.textContent.length > maxLength) {
+          const truncatedContent = paragraph.textContent.substr(0, maxLength) + '...';
+          paragraph.textContent = truncatedContent;
+        }
+      });
 
-            const sendBtn =  document.getElementById('send-msg');
-            console.log(receiverId , senderId , sendBtn);
-            if (Number(receiverId) === Number(senderId)){
-                sendBtn.style.display = 'none'}
+      const sendBtn = document.getElementById('send-msg');
+      // console.log(receiverId , senderId , sendBtn);
+      if (Number(receiverId) === Number(senderId)) {
+        sendBtn.style.display = 'none'
+      }
 
 
     </script>

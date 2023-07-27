@@ -23,7 +23,7 @@
 <body class="bg-gray-100">
   <%- include('./partials/header') %>
 
-  <div class="flex flex-col items-center p-7">
+    <div class="flex flex-col items-center p-7">
       <h1 class="text-3xl font-bold mb-4">編輯心情記事</h1>
       <form id="createArticleForm" class="max-w-xl mt-5">
         <div class="mb-4">
@@ -63,7 +63,7 @@
     <script>
 
       document.getElementById("createArticleForm").addEventListener("submit", function (event) {
-        event.preventDefault(); 
+        event.preventDefault();
 
         const id = <%= singleArticleData[0].id %>;
         const title = document.getElementById("title").value;
@@ -71,7 +71,7 @@
         // const content = document.getElementById("content").value;
         const date = document.getElementById("date").value;
 
-       
+
         updateArticle(id, title, content, date);
       });
 
@@ -86,15 +86,15 @@
           .then(response => response.json())
           .then(data => {
             if (data.message === 'success') {
-              console.log(data);
-              console.log(data.message);
+              // console.log(data);
+              // console.log(data.message);
               document.getElementById("title").value = "";
               document.getElementById("content").value = "";
               document.getElementById("date").value = "";
               alert("文章修改完成！");
               return window.location.href = "/user/profile"
             }
-            console.log(data);
+            // console.log(data);
             swal("文章修改失敗！");
           })
           .catch(error => {

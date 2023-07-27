@@ -81,9 +81,9 @@
         <h1 class="py-6 text-center font-medium text-[28px] tracking-wide">填寫個人資料</h1>
         <div class="flex justify-center items-center p-5 ">
           <!-- <form action="/user/profile/form" method="POST" class="flex-col w-vw-30" id="form" -->
-            <!-- enctype="multipart/form-data"> -->
+          <!-- enctype="multipart/form-data"> -->
 
-            <form  class="flex-col w-vw-30" id="form" enctype="multipart/form-data">
+          <form class="flex-col w-vw-30" id="form" enctype="multipart/form-data">
 
             <div class="flex items-center justify-center mb-5">
               <button type="button" id="prevButton" class="mr-6">◀</button>
@@ -332,7 +332,7 @@
             pictureImage.alt = '自行上傳圖';
           } else {
             const pictureNumber = currentPictureIndex + 1;
-            console.log(pictureNumber);
+            // console.log(pictureNumber);
             if (pictureNumber === 1) { pictureImage.src = picture1 };
             if (pictureNumber === 2) { pictureImage.src = picture2 }
             if (pictureNumber === 3) { pictureImage.src = picture3 }
@@ -403,21 +403,21 @@
 
 
       document.getElementById('form').addEventListener('submit', function (event) {
-        event.preventDefault(); 
+        event.preventDefault();
 
-        const formData = new FormData(this); 
+        const formData = new FormData(this);
         fetch(window.location.href, {
           method: 'POST',
           body: formData
         })
           .then(response => {
-            if(response.ok) {
-              console.log('提交成功！');
+            if (response.ok) {
+              // console.log('提交成功！');
               return response.json()
             }
           })
-          .then(response =>{
-            console.log('response',response);
+          .then(response => {
+            // console.log('response',response);
             window.location.href = response.url
           })
           .catch(error => {

@@ -225,7 +225,7 @@
             let receiverName
 
             async function fetchMessages(room, newReceiverId) {
-                console.log('room:', room, '收訊人ID', newReceiverId);
+                // console.log('room:', room, '收訊人ID', newReceiverId);
                 receiverId = newReceiverId;
                 roomName = room;
                 await fetchReceiverInfo(receiverId);
@@ -251,7 +251,7 @@
                     }
                 }
                 if (input.value) {
-                    socket.emit("send", { name, message: input.value, senderId, receiverId, room: roomName, senderPicture: userPicture , token });
+                    socket.emit("send", { name, message: input.value, senderId, receiverId, room: roomName, senderPicture: userPicture, token });
                     const time = new Date().toLocaleString('zh-TW', options);
                     let userInput = document.createElement('li');
                     // 主聊天室畫面更新 
@@ -362,7 +362,7 @@
                     }
 
                 } else {
-                    console.log('新聊天者');
+                    // console.log('新聊天者');
                     const chatPerson = ` <div class="cursor-pointer items-center mb-2 bg-gray-100 chat-person relative h-[72px]" data-senderid="${senderId}" >
                                            <a onclick="fetchMessages(${room},${senderId})"
                                                 class="p-2 w-full flex items-center relative">
@@ -420,7 +420,7 @@
                     const fetchDataJson = await fetchData.json();
                     const fetchRoomMessages = fetchDataJson.data;
                     const nextPaging = fetchDataJson.nextPaging;
-                    console.log('歷史訊息', fetchRoomMessages, nextPaging);
+                    // console.log('歷史訊息', fetchRoomMessages, nextPaging);
                     let messageUl = document.createElement('ul');
 
                     fetchRoomMessages.forEach(item => {
@@ -493,8 +493,8 @@
                     await setUnreadToZero(Number(senderId), Number(receiverId), roomName)
                     unRead.style.display = 'none';
                 }
-                nextPaging = 1; 
-                console.log('nextPaging reset to 1');
+                nextPaging = 1;
+                // console.log('nextPaging reset to 1');
             })
 
             // [header] 點擊後，畫面小綠點消失
@@ -524,7 +524,7 @@
 
             // [chatList] 點擊chatList其中一個user會觸發的
             function fetchReadMessage(room) {
-                console.log('fetchReadMessage');
+                // console.log('fetchReadMessage');
                 fetch(`/api/v1/chatroom/${room}`, {
                     method: "PUT",
                     headers: {
@@ -534,7 +534,7 @@
                 }).then(response => response.json())
                     .then(data => {
                         if (data.message === 'success') {
-                            console.log('dataMsgRead', data.message);
+                            // console.log('dataMsgRead', data.message);
                             return
                         }
                         console.log('error', data);
@@ -555,7 +555,7 @@
             // 下一頁
             async function getNextPage() {
                 const apiUrl = `/api/v1/chatroom/${roomName}?paging=${nextPaging}`;
-                console.log('apiUrl-->', apiUrl);
+                // console.log('apiUrl-->', apiUrl);
 
                 try {
                     // 當沒有下一筆資料時，資料庫回傳 nextPaging is null  
@@ -565,9 +565,9 @@
                     const fetchDataJson = await response.json();
                     const nextPageData = fetchDataJson.data;
                     const nextNextPage = fetchDataJson.nextPaging;
-                    console.log('all', fetchDataJson);
-                    console.log('nextPageData', nextPageData);
-                    console.log('nextPaging', nextNextPage);
+                    // console.log('all', fetchDataJson);
+                    // console.log('nextPageData', nextPageData);
+                    // console.log('nextPaging', nextNextPage);
 
 
                     if (nextPageData === null) return console.log('NextPageData is null');

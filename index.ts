@@ -26,7 +26,7 @@ import { readFileSync } from "fs";
 const SSH_KEY = process.env.SSH_KEY;
 const SSH_CERT = process.env.SSH_CERT;
 
-console.log(SSH_KEY, SSH_CERT);
+// console.log(SSH_KEY, SSH_CERT);
 
 if (!SSH_KEY || !SSH_CERT) {
   console.error('SSH_KEY or SSH_CERT environment variables are not set.');
@@ -35,8 +35,8 @@ if (!SSH_KEY || !SSH_CERT) {
 
 
 const httpsServer = createServer({
-  key: readFileSync(SSH_KEY,'utf-8'),
-  cert: readFileSync(SSH_CERT,'utf-8'),
+  key: readFileSync(SSH_KEY, 'utf-8'),
+  cert: readFileSync(SSH_CERT, 'utf-8'),
 }, app);
 
 
@@ -51,8 +51,8 @@ app.use(express.json());
 app.use(cors());
 app.enable("trust proxy");
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/',express.static('./public'));
-app.use("/uploads",express.static("./public/uploads"))
+app.use('/', express.static('./public'));
+app.use("/uploads", express.static("./public/uploads"))
 
 app.use("/", [
   index,
