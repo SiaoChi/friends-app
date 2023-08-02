@@ -12,44 +12,36 @@
 <body class="bg-slate-100">
     <%- include('./partials/header') %>
 
-        <div
-            class="flex flex-col items-center justify-start py-4 bg-slate-100 overflow-y-auto w-full screen-h  fixed">
+        <div class="flex flex-col items-center justify-start py-4 bg-slate-100 overflow-y-auto w-full screen-h  fixed">
             <% if (userArticles && userArticles.length> 0) { %>
-                <% if (searchResult){%>
-                    <div class="my-4 py-2 px-4 rounded-full bg-pink-300 text-white tracking-wider">共有 <span
-                            class="font-semibold">
-                            <%= searchResult %>
-                        </span> 筆資料符合您的搜尋內容</div>
-                    <% } %>
-                        <% for (let i=0; i < userArticles.length; i++) { %>
-                            <div class="my-3">
-                                <div
-                                    class="p-4 pb-1 flex items-center justify-start w-[550px] h-[40px] rounded-t-lg border-b border-gray-200 shadow-sm bg-white">
-                                    <p class="text-[14px] mb-3">
-                                        <%= userArticles[i].created_at %>
-                                    </p>
-                                    <img src="/img/delete.svg" class="w-[20px] ml-auto pb-3">
-                                </div>
-                                <div class=" bg-white w-[550px]  p-5 rounded-b-lg  shadow-sm">
-                                    <div class="flex items-center">
-                                        <img src=" <%= userArticles[i].picture %>" alt="picture"
-                                            class="w-[50px] rounded-full">
-                                        <p class="ml-2 text-[18px] font-medium">
-                                            <%= userArticles[i].name %>
-                                        </p>
-                                    </div>
-                                    <p class="text-[24px] mt-2 font-medium"">
+                <% for (let i=0; i < userArticles.length; i++) { %>
+                    <div class="my-3">
+                        <div
+                            class="p-4 pb-1 flex items-center justify-start w-[550px] h-[40px] rounded-t-lg border-b border-gray-200 shadow-sm bg-white">
+                            <p class="text-[14px] mb-3">
+                                <%= userArticles[i].created_at %>
+                            </p>
+                            <img src="/img/delete.svg" class="w-[20px] ml-auto pb-3">
+                        </div>
+                        <div class=" bg-white w-[550px]  p-5 rounded-b-lg  shadow-sm">
+                            <div class="flex items-center">
+                                <img src=" <%= userArticles[i].picture %>" alt="picture" class="w-[50px] rounded-full">
+                                <p class="ml-2 text-[18px] font-medium">
+                                    <%= userArticles[i].name %>
+                                </p>
+                            </div>
+                            <p class="text-[24px] mt-2 font-medium"">
                             <%= userArticles[i].title %>
                         </p>
                         <div class=" content mt-1 h-auto text-[16px] font-light truncate" data-max-length="100">
-                                        <%- userArticles[i].content %>
-                                </div>
-                                <div class="flex justify-end items-end mt-4">
+                                <%- userArticles[i].content %>
+                        </div>
+                        <div class="flex justify-end items-end mt-4">
 
-                                    <button onclick="readArticle(<%= userArticles[i].id %>)"
-                                        class="mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95">看更多...</button>
-                                </div>
-                            </div>
+                            <button onclick="readArticle(<%= userArticles[i].id %>)"
+                                class="mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95">看更多...</button>
+                        </div>
+                    </div>
         </div>
         <% } %>
             <% } else { %>
