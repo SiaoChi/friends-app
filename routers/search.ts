@@ -5,7 +5,8 @@ const router = Router();
 
 router
     .route("/api/v1/search/articles")
-    .get(searchFunction.getArticleByElasticSearch)
+    // .get(searchFunction.getArticleByElasticSearch) 
+    .get(searchFunction.getArticleByKeyword)
 
 router
     .route("/api/v1/search/friends")
