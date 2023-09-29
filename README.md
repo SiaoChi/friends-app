@@ -55,11 +55,11 @@ https://github.com/SiaoChi/friends-app/assets/98171354/44f6c07e-1638-428c-99e6-d
 ## SQL Database Schema
 ![db](https://github.com/SiaoChi/friends-app/assets/98171354/f701b9b5-dbe9-479e-9c63-fe183c2e2a21)
 
-## K6 concurrency test
-❶ Get user chatroom history messages data -> CUP 18-20% usage, and status 200 100%
+## K6 concurrency test (server EC2 T2-micro)
+❶ Get user chatroom history messages data -> CUP 18-20% usage, and status 200 100% 
 ![你的智友專案測試 003](https://github.com/SiaoChi/friends-app/assets/98171354/386b1b18-2101-4263-9967-012bf07afd87)
 
-❷ Get user recommend's friends data -> CUP 18-20% usage, and status 200 100%
+❷ Get user recommend's friends data -> CUP 18-20% usage, and status 200 100% 
 ![你的智友專案測試 007](https://github.com/SiaoChi/friends-app/assets/98171354/260563cc-2224-443d-908c-47c8bda7e9b0)
 
 #### test video
