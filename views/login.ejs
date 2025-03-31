@@ -26,8 +26,8 @@
                 <div
                     class="flex-col items-center justify-center login-form p-10 w-[350px] h-[460px] border border-gray-200 shadow-md bg-white">
                     <form method="POST" id="signup-form" class="">
-                        <div class="text-[26px] text-center mb-2">註冊</div>
-                        <div class="text-[14px] text-center">請填寫以下基本資料</div>
+                        <div class="text-[26px] text-center mb-2">Sign Up</div>
+                        <div class="text-[14px] text-center">Please fill out the form</div>
                         <div class="message  text-center text-blue-500 p-2"></div>
                         <input id="signup-name"
                             class="input-field border border-gray-300  mt-4 w-[268px] h-[38px] rounded-sm px-2 text-sm"
@@ -41,7 +41,7 @@
 
                         <button
                             class="bg-red hover:bg-white hover:border hover:border-red hover:text-red w-[268px] h-[38px] text-white mt-6 rounded-3xl text-[14px]"
-                            type="submit" class="button">註冊成為智友</button>
+                            type="submit" class="button">Sign Up</button>
 
                         <!-- <button
                             class="border border-blue-500 w-[268px] h-[38px] text-blue-500 mt-4 rounded-3xl text-[12px] fb-login"
@@ -64,8 +64,8 @@
                     <form id="signin-form"
                         class="flex-col bg-white items-center justify-start login-form p-10 w-[350px] h-[430px] border border-gray-200  shadow-md"
                         method="POST">
-                        <div class="text-[26px] text-center mb-2">登入</div>
-                        <div class="text-[14px] text-center">請填寫以下資料登入</div>
+                        <div class="text-[26px] text-center mb-2">Log In</div>
+                        <div class="text-[14px] text-center">Fill out and log In</div>
                         <div class="signin-message text-center text-blue-500 p-2"></div>
 
                         <input id="signin-mail"
@@ -77,10 +77,10 @@
 
                         <button
                             class="bg-red hover:bg-white hover:border hover:border-red hover:text-red w-[268px] h-[38px] text-white mt-6 rounded-3xl text-[14px]"
-                            type="submit" class="button">立即登入</button>
+                            type="submit" class="button">Log In</button>
                         <button id="to-signup-btn"
                             class="bg-blue hover:bg-white hover:border hover:border-blue hover:text-blue text-white w-[268px] h-[38px]  mt-4 rounded-3xl text-[14px] fb-login"
-                            > 還沒有帳號？立即註冊</button>
+                            > No Account? Sign Up Now</button>
                     </form>
                 </div>
 
@@ -110,13 +110,15 @@
             // 送出註冊signUp
             $('#signup-form').submit(async (event) => {
                 event.preventDefault();
+                console.log('11111111111');
                 const name = $('#signup-name').val();
                 const email = $('#signup-mail').val();
                 const password = $('#signup-password').val();
+                console.log(name, email, password);
                 const data = {
                     name: name,
                     email: email,
-                    password
+                    password: password
                 }
 
                 try {
@@ -138,6 +140,7 @@
                         window.location.href = redirectUrl;
                     } else {
                         const data = await response.json();
+                        console.log(data.message);
                         swal(data.message); //顯示登入失敗錯誤訊息
                     }
                 } catch (error) {
@@ -240,7 +243,7 @@
                                 }
                                 )
                                 .then(res => {
-                                    msgDiv.innerText = "恭喜你登入成功!";
+                                    msgDiv.innerText = "Login Successfully!";
                                 })
                                 .catch(err => console.log(err))
                         });

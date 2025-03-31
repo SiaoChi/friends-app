@@ -32,7 +32,7 @@
                                             <div class="font-medium">
                                                 <%= friendsData[i].name %>
                                             </div>
-                                            <div class="">現有煩惱：<%= friendsData[i].current_problem %>
+                                            <div class="">Current Problem：<%= friendsData[i].current_problem %>
                                             </div>
 
                                         </div>
@@ -40,10 +40,10 @@
                                     <div class="flex justify-end  mt-3"">
                                         <button id=" send-msg"
                                         class="text-sm ml-4 w-[80px] h-[30px] bg-blue rounded-full text-white transition-all delay-100 hover:scale-95">
-                                        <a href="/user/profile/<%= friendsData[i].id %>">查看近況</a></button>
+                                        <a href="/user/profile/<%= friendsData[i].id %>">Profile</a></button>
                                         <button id="send-msg"
                                             class="text-sm ml-4 w-[80px] h-[30px] bg-red rounded-full text-white transition-all delay-100 hover:scale-95"
-                                            onclick="sendMsg(<%= friendsData[i].id %>)">傳送訊息</button>
+                                            onclick="sendMsg(<%= friendsData[i].id %>)">Chat</button>
                                     </div>
                                 </div>
                                 <% } %>

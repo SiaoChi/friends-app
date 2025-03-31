@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/img/logo1.svg">
     <link href="/dist/output.css" rel="stylesheet" />
-    <title>你的智友-心情分享</title>
+    <title>Sharing Board</title>
 </head>
 
 <body class="bg-slate-100">
@@ -15,12 +15,12 @@
         <div
             class="flex flex-col items-center justify-start py-4 bg-slate-100 overflow-y-auto w-full screen-h  fixed">
             <% if (userArticles && userArticles.length> 0) { %>
-                <% if (searchResult){%>
+                <!-- <% if (userArticles){%>
                     <div class="my-4 py-2 px-4 rounded-full bg-pink-300 text-white tracking-wider">共有 <span
                             class="font-semibold">
-                            <%= searchResult %>
+                            <%= userArticles.length %>
                         </span> 筆資料符合您的搜尋內容</div>
-                    <% } %>
+                    <% } %> -->
                         <% for (let i=0; i < userArticles.length; i++) { %>
                             <div class="my-3">
                                 <div
@@ -47,7 +47,7 @@
                                 <div class="flex justify-end items-end mt-4">
 
                                     <button onclick="readArticle(<%= userArticles[i].id %>)"
-                                        class="mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95">看更多...</button>
+                                        class="mt-2 w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95">More...</button>
                                 </div>
                             </div>
         </div>

@@ -161,8 +161,11 @@
                                                                 <div
                                                                     class="top-2 right-2 absolute flex justify-end items-end ml-auto w-[100px] h-[60px]  ">
                                                                     <p class="text-[12px] text-gray-500">
-                                                                        <%=
-                                                                            chatList[i].updated_at.toISOString().split('T')[0]%>
+                                                                    <% if (chatList[i].updated_at) { %>
+                                                                        <%= chatList[i].updated_at.toISOString().split('T')[0] %>
+                                                                            <% } else { %>
+                                                                                N/A
+                                                                                <% } %>
                                                                     </p>
                                                                 </div>
                                 </a>

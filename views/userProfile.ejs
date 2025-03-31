@@ -25,23 +25,23 @@
                     <img class="w-[200px] h-[200px] rounded-full mb-2" src="<%= userProfile[0].picture %>"
                         alt="Profile Picture">
                     <ul class="flex flex-col items-start w-[210px]">
-                        <li class="mt-2"><strong>稱呼：</strong>
+                        <li class="mt-2"><strong>Nickname: </strong>
                             <%= userProfile[0].name %>
                         </li>
-                        <li class="mt-2"><strong>地區：</strong>
+                        <li class="mt-2"><strong>Country: </strong>
                             <%= userProfile[0].location %>
                         </li>
-                        <li class="mt-2"><strong>家屬確診年：</strong>
+                        <li class="mt-2"><strong>Year of Diagnosis: </strong>
                             <%= userProfile[0].sick_year %>
                         </li>
-                        <li class="mt-2"><strong>家屬診斷病程：</strong>
+                        <li class="mt-2"><strong>Patient Status: </strong>
                             <%= userProfile[0].level %>
                         </li>
-                        <li class="mt-2"><strong>現有煩惱：</strong>
+                        <li class="mt-2"><strong>Problem：</strong>
                             <%= userProfile[0].current_problem %>
                         </li>
 
-                        <p class="mt-2"><strong>家屬病況：</strong></p>
+                        <p class="mt-2"><strong>Patient Status：</strong></p>
                         <% if (userProfile[0].tags && userProfile[0].tags.length> 0) { %>
                             <% userProfile[0].tags.forEach(function(tag) { %>
                                 <li
@@ -62,7 +62,7 @@
                     <div class="flex items-end justify-center w-full h-full">
                         <button class="px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold 
                         text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 ">
-                            <a href="/user/profile/form?edit=true">編輯個人資料</a>
+                            <a href="/user/profile/form?edit=true">Edit My Profile</a>
                         </button>
                     </div>
                 </div>
@@ -98,15 +98,15 @@
                                         <div class="flex justify-end mt-6">
                                             <button
                                                 class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 mt-2 ml-3"
-                                                onclick="showConfirmationPopup(<%= userArticles[i].id %>)">刪除</button>
+                                                onclick="showConfirmationPopup(<%= userArticles[i].id %>)">Delete</button>
 
                                             <button
                                                 class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 mt-2 ml-3"
-                                                onclick="showUpdatePopup(<%= userArticles[i].id %>)">編輯</button>
+                                                onclick="showUpdatePopup(<%= userArticles[i].id %>)">Edit</button>
 
                                             <button
                                                 class="inline-flex items-center px-6 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-400 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 mt-2 ml-3"
-                                                onclick="readArticle(<%= userArticles[i].id %>)">看更多</button>
+                                                onclick="readArticle(<%= userArticles[i].id %>)">More</button>
                                         </div>
                                         <!-- <div class="flex justify-end items-end">
                                         <button onclick="readArticle(<%= userArticles[i].id %>)"
