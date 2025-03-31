@@ -28,19 +28,19 @@
 
         <img src="<%= userProfile[0].picture %>" alt="user-picture" class="w-[200px] h-[200px] rounded-full mb-2">
         <ul class="w-[240px] p-4">
-          <li>稱呼: <%= userProfile[0].name %>
+          <li>Nickname: <%= userProfile[0].name %>
           </li>
-          <li>地區: <%= userProfile[0].location %>
+          <li>Country: <%= userProfile[0].location %>
           </li>
-          <li>家人確診年: <%= userProfile[0].sick_year %>
+          <li>Year of Diagnosis: <%= userProfile[0].sick_year %>
           </li>
-          <li>主要照顧者: <%= userProfile[0].carer %>
+          <li>Caregiver: <%= userProfile[0].carer %>
           </li>
-          <li>最近的煩惱: <%= userProfile[0].current_problem %>
+          <li>Problems: <%= userProfile[0].current_problem %>
           </li>
         </ul>
         <div class="flex flex-col items-center mt-3  p-2 w-[240px] ">
-          <p class="my-3"><strong>家屬病況：</strong></p>
+          <p class="my-3"><strong>Patient Status：</strong></p>
           <div class="">
             <% if (userProfile[0].tags && userProfile[0].tags.length> 0) { %>
               <% for (let i=0; i < userProfile[0].tags.length; i++) { %>

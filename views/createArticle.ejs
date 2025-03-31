@@ -26,20 +26,20 @@
   <%- include('./partials/header') %>
 
     <div class="flex flex-col items-center p-7">
-      <h1 class="text-3xl font-bold mb-4">新增心情記事</h1>
+      <h1 class="text-3xl font-bold mb-4">Sharing Your Mood</h1>
       <form id="createArticleForm" class="max-w-xl mt-5">
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="title">標題：</label>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Title：</label>
           <input
             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="title" type="text" placeholder="請輸入標題" required>
         </div>
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="content">內容：</label>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="content">Text：</label>
           <textarea id="content"></textarea>
         </div>
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="date">日期：</label>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="date">Date：</label>
           <input
             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="date" type="date" required>
@@ -47,10 +47,10 @@
         <div class="flex justify-end">
           <button
             class="w-[90px] h-[35px] bg-blue rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
-            type="button"><a href="/user/profile">回上一頁</a></button>
+            type="button"><a href="/user/profile">Prev</a></button>
           <button id="submitButton"
             class="ml-4 w-[90px] h-[35px] bg-red rounded-full text-white text-blue-500 transition-all delay-100 hover:scale-95"
-            type="submit">送出</button>
+            type="submit">Submit</button>
         </div>
       </form>
     </div>

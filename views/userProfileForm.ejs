@@ -88,52 +88,52 @@
             <div class="flex items-center justify-center mb-5">
               <button type="button" id="prevButton" class="mr-6">◀</button>
               <img class="user-picture rounded-full" id="pictureImage"
-                src=" <%= userData[0].picture ? userData[0].picture : 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085750491' %>"
+                src=" <%= userData[0].picture ? userData[0].picture : 'https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/5.png' %>"
                 alt="大頭照">
               <button type="button" id="nextButton" class="ml-6">►</button>
             </div>
 
             <div>
               <input type="radio" name="picture"
-                value="<%= userData[0].picture ? userData[0].picture : 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085750491' %>"
+                value="<%= userData[0].picture ? userData[0].picture : 'https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/1.png' %>"
                 checked style="display: none;">
               <input type="radio" name="picture"
-                value="https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085922330" style="display: none;">
+                value="https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/2.png" style="display: none;">
               <input type="radio" name="picture"
-                value="https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085942030" style="display: none;">
+                value="https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/3.png" style="display: none;">
               <input type="radio" name="picture"
-                value="https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713090008735" style="display: none;">
-              <input type="radio" name="picture"
-                value="https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713091131086" style="display: none;">
+                value="https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/4.png" style="display: none;">
+              <!-- <input type="radio" name="picture"
+                value="https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/5.png" style="display: none;"> -->
               <input type="radio" name="picture" value="upload" style="display: none;">
               <!-- <input type="hidden" id="uploadedPictureValue" name="uploadedPicture" value=""> -->
             </div>
 
             <div class="mb-4">
               <div class="flex flex-col items-center justify-center">
-                <p class="block text-sm font-medium text-gray-900 ">請選擇一張大頭貼或上傳圖片</p>
-                <p class="block mb-2 text-xs font-medium text-red ">上傳圖片檔案上限為5mb</p>
+                <p class="block text-sm font-medium text-gray-900 ">Select Your photo</p>
+                <!-- <p class="block mb-2 text-xs font-medium text-red ">上傳圖片檔案上限為5mb</p>
                 <label for="uploadedpicture" type="button"
                   class="inline-flex items-center px-6 py-2 mb-4 bg-white border border-gray-300 rounded-md font-semibold text-md text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-400 focus:shadow-outline-blue transition ease-in-out duration-150 mt-2 ml-3">
                   上傳大頭照圖片
-                </label>
+                </label> -->
               </div>
               <input type="file" id="uploadedpicture" name="upload" style="display: none;" accept=".jpg, .jpeg, .png">
             </div>
 
-            <label for="name" class="block mb-2 text-md font-medium text-gray-900 ">暱稱：</label>
+            <label for="name" class="block mb-2 text-md font-medium text-gray-900 ">Nickname：</label>
             <input
               class="block w-full mb-4 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-md focus:ring-blue-500 focus:border-blue-500"
               type="text" id="name" name="name" value="<%= userData[0].name ? userData[0].name : '' %>" required>
 
-            <label class="block mb-2 text-md font-medium text-gray-900 " for="birth">生日：</label>
+            <label class="block mb-2 text-md font-medium text-gray-900 " for="birth">Birth：</label>
             <input
               class="block mb-4 w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-md focus:ring-blue-500 focus:border-blue-500"
               type="date" id="birth" name="birth" value="<%= userData[0].birth ? userData[0].birth : '' %>" required>
 
-            <label for="email" class="block text-sm font-medium text-gray-900 ">Email信箱：
+            <label for="email" class="block text-sm font-medium text-gray-900 ">Email：
             </label>
-            <p class="text-xs text-gray-700 mb-1 text-red">*email為登入帳號，修改後登入帳號將一併修改</p>
+            <p class="text-xs text-gray-700 mb-1 text-red">*The email serves as the login account. Updating it will also update the login credentials.</p>
 
             <!-- <input class="block mb-2 text-sm font-medium text-gray-900 " type="email" id="email" name="email"
             value="<%= userData[0].email ? userData[0].email : '' %>"><br><br> -->
@@ -154,39 +154,67 @@
             </div>
 
 
-            <label class="block mb-2 text-md font-medium text-gray-900 " for="location">居住地區：</label>
+            <label class="block mb-2 text-md font-medium text-gray-900 " for="location">Region：</label>
             <select
               class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               id="location" name="location" required>
               <option value="<%= userData[0].location ? userData[0].location : '' %>">
                 <%= userData[0].location ? userData[0].location : '請選擇' %>
               </option>
-              <option value="臺北市">臺北市</option>
-              <option value="新北市">新北市</option>
-              <option value="基隆市">基隆市</option>
-              <option value="新竹市">新竹市</option>
-              <option value="桃園市">桃園市</option>
-              <option value="新竹縣">新竹縣</option>
-              <option value="宜蘭縣">宜蘭縣</option>
-              <option value="臺中市">臺中市</option>
-              <option value="苗栗縣">苗栗縣</option>
-              <option value="彰化縣">彰化縣</option>
-              <option value="南投縣">南投縣</option>
-              <option value="雲林縣">雲林縣</option>
-              <option value="高雄市">高雄市</option>
-              <option value="臺南市">臺南市</option>
-              <option value="嘉義市">嘉義市</option>
-              <option value="嘉義縣">嘉義縣</option>
-              <option value="屏東縣">屏東縣</option>
-              <option value="花蓮縣">花蓮縣</option>
-              <option value="台東縣">台東縣</option>
-              <option value="金門縣">金門縣</option>
-              <option value="澎湖縣">澎湖縣</option>
-              <option value="連江縣">連江縣</option>
+              <option value="Alabama">Alabama</option>
+              <option value="Alaska">Alaska</option>
+              <option value="Arizona">Arizona</option>
+              <option value="Arkansas">Arkansas</option>
+              <option value="California">California</option>
+              <option value="Colorado">Colorado</option>
+              <option value="Connecticut">Connecticut</option>
+              <option value="Delaware">Delaware</option>
+              <option value="Florida">Florida</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Hawaii">Hawaii</option>
+              <option value="Idaho">Idaho</option>
+              <option value="Illinois">Illinois</option>
+              <option value="Indiana">Indiana</option>
+              <option value="Iowa">Iowa</option>
+              <option value="Kansas">Kansas</option>
+              <option value="Kentucky">Kentucky</option>
+              <option value="Louisiana">Louisiana</option>
+              <option value="Maine">Maine</option>
+              <option value="Maryland">Maryland</option>
+              <option value="Massachusetts">Massachusetts</option>
+              <option value="Michigan">Michigan</option>
+              <option value="Minnesota">Minnesota</option>
+              <option value="Mississippi">Mississippi</option>
+              <option value="Missouri">Missouri</option>
+              <option value="Montana">Montana</option>
+              <option value="Nebraska">Nebraska</option>
+              <option value="Nevada">Nevada</option>
+              <option value="New Hampshire">New Hampshire</option>
+              <option value="New Jersey">New Jersey</option>
+              <option value="New Mexico">New Mexico</option>
+              <option value="New York">New York</option>
+              <option value="North Carolina">North Carolina</option>
+              <option value="North Dakota">North Dakota</option>
+              <option value="Ohio">Ohio</option>
+              <option value="Oklahoma">Oklahoma</option>
+              <option value="Oregon">Oregon</option>
+              <option value="Pennsylvania">Pennsylvania</option>
+              <option value="Rhode Island">Rhode Island</option>
+              <option value="South Carolina">South Carolina</option>
+              <option value="South Dakota">South Dakota</option>
+              <option value="Tennessee">Tennessee</option>
+              <option value="Texas">Texas</option>
+              <option value="Utah">Utah</option>
+              <option value="Vermont">Vermont</option>
+              <option value="Virginia">Virginia</option>
+              <option value="Washington">Washington</option>
+              <option value="West Virginia">West Virginia</option>
+              <option value="Wisconsin">Wisconsin</option>
+              <option value="Wyoming">Wyoming</option>
             </select>
 
 
-            <label class="block mb-2 text-md font-medium text-gray-900 " for="sickYear">家屬生病年份：</label>
+            <label class="block mb-2 text-md font-medium text-gray-900 " for="sickYear">Year of Family Member's Illness：</label>
             <input
               class="block mb-4 w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-md focus:ring-blue-500 focus:border-blue-500"
               type="number" id="sickYear" name="sickYear" placeholder="ex.2022" min="1"
@@ -196,40 +224,41 @@
           <textarea class="border border-black w-[300px] h-[100px] mt-2" id="hospital" name="hospital"
             required><%= userData[0].hospital ? userData[0].hospital : '' %></textarea> -->
 
-            <label class="block mb-2 text-md font-medium text-gray-900 " for="level" class="block mt-4">醫生診斷病程：</label>
+            <label class="block mb-2 text-md font-medium text-gray-900 " for="level" class="block mt-4">Doctor’s Diagnosis of Disease Progression：</label>
             <select
               class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               id="level" name="level" required>
               <option value="<%= userData[0].level ? userData[0].level : '' %>">
                 <%= userData[0].level ? userData[0].level : '請選擇' %>
               </option>
-              <option value="輕度">輕度</option>
-              <option value="中度">中度</option>
-              <option value="重度">重度</option>
+              <option value="Mild">Mild</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Severe">Severe</option>
             </select>
 
-            <label class="block mb-2 text-md font-medium text-gray-900 " for="carer" class="block mt-4">主要照顧者：</label>
+            <label class="block mb-2 text-md font-medium text-gray-900 " for="carer" class="block mt-4">Main caregiver：</label>
             <select
               class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               id="carer" name="carer" required>
               <option value="<%= userData[0].carer ? userData[0].carer : '請選擇' %>">
                 <%= userData[0].carer ? userData[0].carer : '請選擇' %>
               </option>
-              <option value="自己">自己</option>
-              <option value="家人">家人</option>
-              <option value="看護">看護</option>
-              <option value="外傭">外傭</option>
+              <option value="Myself">Myself</option>
+              <option value="Family">Family</option>
+              <option value="Caregiver">Caregiver</option>
+              <option value="Helper">Helper</option>
             </select><br>
 
 
-            <label class="block mb-2 text-md font-medium text-gray-900 " for="currentProblems">你目前遇到的問題：<p
-                class="text-xs  text-red">*限20個字內</p></label>
+            <label class="block mb-2 text-md font-medium text-gray-900 " for="currentProblems">Current Problem：<p
+                class="text-xs  text-red">*Limit 20 words</p></label>
             <textarea
               class="block w-full h-[100px] p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500"
               id="currentProblems" name="currentProblems" required><%= userData[0].current_problem%></textarea><br>
 
             <label class="block text-md font-medium text-gray-900 " for="conditions">家屬病況：</label>
-            <p class="text-xs mb-4  text-red">*病況為重要智慧媒合資訊，請點選最符合的6個狀況</p>
+            <p class="text-xs mb-4  text-red">*Please select the six most relevant conditions for intelligent matching, as the medical condition is an important
+            factor.</p>
 
             <div class="flex items-center justify-center w-full ">
               <% let count=0; %>
@@ -313,11 +342,10 @@
           });
         });
 
-        const picture1 = 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085750491'
-        const picture2 = 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085922330'
-        const picture3 = 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713085942030'
-        const picture4 = 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713090008735'
-        const picture5 = 'https://d3ajxzni2jkkr0.cloudfront.net/userImage/20230713091131086'
+        const picture1 = 'https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/1.png'
+        const picture2 = 'https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/2.png'
+        const picture3 = 'https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/3.png'
+        const picture4 = 'https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/4.png'
 
         function updatePreview() {
           if (pictureRadios[currentPictureIndex].value === 'upload') {
