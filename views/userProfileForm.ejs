@@ -415,8 +415,8 @@
       currentProblemsTextarea.addEventListener('input', function () {
         const enteredText = currentProblemsTextarea.value;
 
-        if (enteredText.length > 25) {
-          currentProblemsTextarea.value = enteredText.slice(0, 20);
+        if (enteredText.length > 50) {
+          currentProblemsTextarea.value = enteredText.slice(0, 50);
         }
       });
 

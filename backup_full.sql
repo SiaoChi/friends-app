@@ -32,7 +32,7 @@ CREATE TABLE `articles` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `articles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `articles` (
 
 LOCK TABLES `articles` WRITE;
 /*!40000 ALTER TABLE `articles` DISABLE KEYS */;
-INSERT INTO `articles` VALUES (1,'Caring for a Loved One with Alzheimer\'s','<p>The journey of caring for a family member with Alzheimer\'s is emotionally taxing, but also filled with moments of grace and growth.</p>','2025-03-30',NULL,1),(2,'The Struggle of Watching Someone Forget','<p>Witnessing a loved one forget their memories and lose themselves is a heart-wrenching experience that often feels like an ongoing grief.</p>','2025-03-30',NULL,1),(3,'The Emotional Toll of Dementia Care','<p>Being a caregiver for a dementia patient is physically and emotionally exhausting, and sometimes it feels like there\'s no escape from the sadness.</p>','2025-02-25',NULL,1),(4,'The Heartbreak of Seeing Change','<p>Every day with a family member who has dementia brings new challenges, and it\'s difficult to accept how much they&rsquo;ve changed over time.</p>','2025-03-30',NULL,1),(5,'Finding Strength Amidst Dementia','<p>Though caring for a loved one with dementia is a constant emotional struggle, family members find inner strength they never knew they had.</p>','2025-02-26',NULL,2),(6,'Hello','<p>Hello mates!&nbsp; Can I ask some questions here?</p>','2025-03-31',NULL,4),(7,'Coping with a Loved One\'s Memory Loss','It’s heartbreaking to see a loved one forget the things they once knew, but it reminds me to cherish every moment.','2025-03-31 11:59:21',0,1),(8,'A Day at a Time','Every day is different, but I try to stay hopeful, focusing on the small victories with my loved one.','2025-03-31 11:59:21',0,2),(9,'The Struggle of Letting Go','Watching them lose their sense of independence is difficult, but I remind myself they need me now more than ever.','2025-03-31 11:59:21',0,3),(10,'Finding Strength in Small Moments','Even in the face of dementia, there are moments of clarity that bring us closer, and I hold onto those.','2025-03-31 11:59:21',0,4),(11,'Understanding Their Pain','Sometimes, I feel helpless. But understanding their frustration helps me provide the support they need.','2025-03-31 11:59:21',0,1),(12,'Adjusting to the New Reality','Dementia changes everything. I’ve learned to adapt and focus on creating a safe and loving environment.','2025-03-31 11:59:21',0,2),(13,'The Emotional Toll of Caregiving','It’s exhausting, emotionally and physically, but I can’t imagine not being there for them.','2025-03-31 11:59:21',0,3),(14,'The Rollercoaster of Emotions','One moment they’re themselves, and the next, they’re not. It’s a daily emotional rollercoaster that never stops.','2025-03-31 11:59:21',0,4),(15,'Grief and Acceptance','It’s not easy to accept that they’re slowly slipping away, but I am learning to grieve while they’re still here.','2025-03-31 11:59:21',0,1),(16,'Finding Peace Through Patience','Patience is key. As hard as it is, I try to find peace through my patience, knowing that my love is enough.','2025-03-31 11:59:21',0,2);
+INSERT INTO `articles` VALUES (1,'Caring for a Loved One with Alzheimer\'s','<p>The journey of caring for a family member with Alzheimer\'s is emotionally taxing, but also filled with moments of grace and growth.</p>','2025-03-30',NULL,1),(2,'The Struggle of Watching Someone Forget','<p>Witnessing a loved one forget their memories and lose themselves is a heart-wrenching experience that often feels like an ongoing grief.</p>','2025-03-30',NULL,1),(3,'The Emotional Toll of Dementia Care','<p>Being a caregiver for a dementia patient is physically and emotionally exhausting, and sometimes it feels like there\'s no escape from the sadness.</p>','2025-02-25',NULL,1),(4,'The Heartbreak of Seeing Change','<p>Every day with a family member who has dementia brings new challenges, and it\'s difficult to accept how much they&rsquo;ve changed over time.</p>','2025-03-30',NULL,1),(5,'Finding Strength Amidst Dementia','<p>Though caring for a loved one with dementia is a constant emotional struggle, family members find inner strength they never knew they had.</p>','2025-02-26',NULL,2),(6,'Hello','<p>Hello mates!&nbsp; Can I ask some questions here?</p>','2025-03-31',NULL,4),(7,'Coping with a Loved One\'s Memory Loss','<p>It&rsquo;s heartbreaking to see a loved one forget the things they once knew, but it reminds me to cherish every moment....</p>','2025-03-31',0,1),(8,'A Day at a Time','Every day is different, but I try to stay hopeful, focusing on the small victories with my loved one.','2025-03-31 11:59:21',0,2),(9,'The Struggle of Letting Go','Watching them lose their sense of independence is difficult, but I remind myself they need me now more than ever.','2025-03-31 11:59:21',0,3),(10,'Finding Strength in Small Moments','Even in the face of dementia, there are moments of clarity that bring us closer, and I hold onto those.','2025-03-31 11:59:21',0,4),(11,'Understanding Their Pain','Sometimes, I feel helpless. But understanding their frustration helps me provide the support they need.','2025-03-31 11:59:21',0,1),(12,'Adjusting to the New Reality','Dementia changes everything. I’ve learned to adapt and focus on creating a safe and loving environment.','2025-03-31 11:59:21',0,2),(13,'The Emotional Toll of Caregiving','It’s exhausting, emotionally and physically, but I can’t imagine not being there for them.','2025-03-31 11:59:21',0,3),(14,'The Rollercoaster of Emotions','One moment they’re themselves, and the next, they’re not. It’s a daily emotional rollercoaster that never stops.','2025-03-31 11:59:21',0,4),(15,'Grief and Acceptance','It’s not easy to accept that they’re slowly slipping away, but I am learning to grieve while they’re still here.','2025-03-31 11:59:21',0,1),(16,'Finding Peace Through Patience','Patience is key. As hard as it is, I try to find peace through my patience, knowing that my love is enough.','2025-03-31 11:59:21',0,2),(17,'Test title','<p>Hi! want to make friends here!</p>','2025-03-31',NULL,1),(18,'Happy Today','<p>My mother is getting better today, thanks!</p>','2025-03-31',NULL,1);
 /*!40000 ALTER TABLE `articles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +82,7 @@ CREATE TABLE `messages` (
   `sender_id` int DEFAULT NULL,
   `room_name` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +91,7 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES (1,'hello','2025-03-31 00:18:34',1,'12'),(2,'hi how are you!','2025-03-31 03:09:16',1,'12'),(3,'hey!','2025-03-31 03:14:11',2,'12'),(4,'Cool!','2025-03-31 03:43:01',1,'12'),(5,'hi how are you','2025-03-31 04:37:48',1,'13');
+INSERT INTO `messages` VALUES (1,'hello','2025-03-31 00:18:34',1,'12'),(2,'hi how are you!','2025-03-31 03:09:16',1,'12'),(3,'hey!','2025-03-31 03:14:11',2,'12'),(4,'Cool!','2025-03-31 03:43:01',1,'12'),(5,'hi how are you','2025-03-31 04:37:48',1,'13'),(6,'hey how have you been?','2025-03-31 04:59:41',1,'12'),(7,':)','2025-03-31 04:59:45',1,'13');
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,7 +119,7 @@ CREATE TABLE `rooms` (
 
 LOCK TABLES `rooms` WRITE;
 /*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
-INSERT INTO `rooms` VALUES ('12','Cool!',NULL,'1,2',1,0,1),('13','hi how are you',NULL,'1,3',1,NULL,1);
+INSERT INTO `rooms` VALUES ('12','hey how have you been?',NULL,'1,2',1,0,2),('13',':)',NULL,'1,3',1,0,2);
 /*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +134,7 @@ CREATE TABLE `tags` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,7 +143,7 @@ CREATE TABLE `tags` (
 
 LOCK TABLES `tags` WRITE;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
-INSERT INTO `tags` VALUES (1,'don\'t eat'),(2,'don\'t talk'),(3,'can\'t walk'),(4,'forgetable'),(5,'Memory loss '),(6,'Confusion');
+INSERT INTO `tags` VALUES (1,'Changes in personality'),(2,'Social withdrawal'),(3,'Mood swings'),(4,'forgetable'),(5,'Memory loss '),(6,'Confusion'),(7,'Memory loss'),(8,'Difficulty with problem-solving'),(9,'Disorientation'),(10,'Trouble with familiar tasks'),(11,'Language difficulties'),(12,'Poor judgment'),(13,'Misplacing things');
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,7 +166,7 @@ CREATE TABLE `user_article_emoji` (
   CONSTRAINT `user_article_emoji_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `user_article_emoji_ibfk_2` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`),
   CONSTRAINT `user_article_emoji_ibfk_3` FOREIGN KEY (`emoji_id`) REFERENCES `emojis` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,7 +220,7 @@ CREATE TABLE `user_login` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_login_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,7 +229,7 @@ CREATE TABLE `user_login` (
 
 LOCK TABLES `user_login` WRITE;
 /*!40000 ALTER TABLE `user_login` DISABLE KEYS */;
-INSERT INTO `user_login` VALUES (1,'native','$argon2i$v=19$m=4096,t=3,p=1$l7DGAuf7dxneiw167CdTfg$f8lZde3WSiQzlrJv3pbyQdA0a/PXWkbL1a/HpXcDdsk',1),(2,'native','$argon2i$v=19$m=4096,t=3,p=1$QjtOIYH3196fxETUfRCHjw$6zLFhWd24NyqSfRTtVIXvGC9YNAFJZTmZ+lKM3Awe5o',2),(3,'native','$argon2i$v=19$m=4096,t=3,p=1$ujGmZx9eSwFugCnNpaW+NQ$e++G88Po2dyU3T1b/9owulQqwX7zz+aJd0TCiiNI74M',3),(4,'native','$argon2i$v=19$m=4096,t=3,p=1$Y++9WVsQHxrV0rrtF7VTWg$Jkm2qYBetTGDYlUJNZPDOJiK8roxH51TRxYH8kJz54c',4),(5,'native','$argon2i$v=19$m=4096,t=3,p=1$b7H66K5iCQj9lh7V43OV+A$2mgGKtGNtnewGUFibneb66sMKn6DaodvveIQcEIPors',5);
+INSERT INTO `user_login` VALUES (1,'native','$argon2i$v=19$m=4096,t=3,p=1$l7DGAuf7dxneiw167CdTfg$f8lZde3WSiQzlrJv3pbyQdA0a/PXWkbL1a/HpXcDdsk',1),(2,'native','$argon2i$v=19$m=4096,t=3,p=1$QjtOIYH3196fxETUfRCHjw$6zLFhWd24NyqSfRTtVIXvGC9YNAFJZTmZ+lKM3Awe5o',2),(3,'native','$argon2i$v=19$m=4096,t=3,p=1$ujGmZx9eSwFugCnNpaW+NQ$e++G88Po2dyU3T1b/9owulQqwX7zz+aJd0TCiiNI74M',3),(4,'native','$argon2i$v=19$m=4096,t=3,p=1$Y++9WVsQHxrV0rrtF7VTWg$Jkm2qYBetTGDYlUJNZPDOJiK8roxH51TRxYH8kJz54c',4),(5,'native','$argon2i$v=19$m=4096,t=3,p=1$b7H66K5iCQj9lh7V43OV+A$2mgGKtGNtnewGUFibneb66sMKn6DaodvveIQcEIPors',5),(6,'native','$argon2i$v=19$m=4096,t=3,p=1$ExpChVD8+WwQmRl0d4PKHw$4KCC+WYvqTmEPty5NilVcmN1tUC9aK/MCAovk0U+Q8U',6);
 /*!40000 ALTER TABLE `user_login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,7 +281,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `user_article_emoji_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -290,7 +290,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Kelly Guo','admin@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/1.png','2025-03-31','Georgia',2000,'tpe','Severe','Myself','I can\'t find proper doctor','2025-03-30 23:30:13',NULL),(2,'Bob','1@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/4.png','2025-03-31','宜蘭縣',1999,NULL,'Moderate','Family','Just want to make friends','2025-03-31 00:10:14',NULL),(3,'John','a@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/3.png','2025-03-31','基隆市',1922,NULL,'重度','看護','sharing my moods','2025-03-31 00:40:12',NULL),(4,'Ellen','ellen@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/2.png','2025-03-31','Connecticut',2018,NULL,'Moderate','Family','Looking for helper ','2025-03-31 03:38:57',NULL),(5,'Jack Lee','abc@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/4.png','2025-03-31','California',2021,NULL,'Moderate','Family','Lonliness','2025-03-31 04:20:51',NULL);
+INSERT INTO `users` VALUES (1,'Kelly Guo','admin@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/1.png','2025-03-31','Georgia',2000,'tpe','Severe','Myself','I can\'t find proper doctor','2025-03-30 23:30:13',NULL),(2,'Bob','1@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/4.png','2025-03-31','宜蘭縣',1999,NULL,'Moderate','Family','Just want to make friends','2025-03-31 00:10:14',NULL),(3,'John','a@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/3.png','2025-03-31','基隆市',1922,NULL,'重度','看護','sharing my moods','2025-03-31 00:40:12',NULL),(4,'Ellen','ellen@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/2.png','2025-03-31','Connecticut',2018,NULL,'Moderate','Family','Looking for helper ','2025-03-31 03:38:57',NULL),(5,'Jack Lee','abc@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/4.png','2025-03-31','California',2021,NULL,'Moderate','Family','Lonliness','2025-03-31 04:20:51',NULL),(6,'Niki','nick@gmail.com','https://s3.ap-southeast-1.amazonaws.com/test.chichi-lab.com/2.png','2025-03-31','Illinois',2020,NULL,'Mild','Myself','Happy to see this web','2025-03-31 05:02:06',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,7 +344,7 @@ CREATE TABLE `users_tags` (
 
 LOCK TABLES `users_tags` WRITE;
 /*!40000 ALTER TABLE `users_tags` DISABLE KEYS */;
-INSERT INTO `users_tags` VALUES (3,2),(3,5),(2,1),(2,2),(2,5),(2,6),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(5,1),(5,5),(5,6);
+INSERT INTO `users_tags` VALUES (3,2),(3,5),(2,1),(2,2),(2,5),(2,6),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(5,1),(5,5),(5,6),(1,1),(1,2),(1,3),(1,6),(6,2),(6,3),(6,5);
 /*!40000 ALTER TABLE `users_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -357,4 +357,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-31 12:54:19
+-- Dump completed on 2025-03-31 13:05:20
