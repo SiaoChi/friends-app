@@ -23,23 +23,17 @@ import {readFileSync} from "fs";
 import {redisClient} from "./models/redisClient.js";
 import {redisRequestLimitCheck} from "./middleware/ratelimiter.js";
 
-const SSH_KEY = process.env.SSH_KEY || null;
-const SSH_CERT = process.env.SSH_CERT || null;
+// const SSH_KEY = process.env.SSH_KEY || null;
+// const SSH_CERT = process.env.SSH_CERT || null;
 
-if (!SSH_KEY || !SSH_CERT) {
-  console.error("SSH_KEY or SSH_CERT environment variables are not set.");
-  process.exit(1);
-}
+// if (!SSH_KEY || !SSH_CERT) {
+//   console.error("SSH_KEY or SSH_CERT environment variables are not set.");
+//   process.exit(1);
+// }
 
-const httpsServer = createServer(
-  {
-    // key: readFileSync(SSH_KEY, 'utf-8'),
-    // cert: readFileSync(SSH_CERT, 'utf-8'),
-  },
-  app
-);
+const httpServer = createServer(app);
 
-const io = new Server(httpsServer);
+const io = new Server(httpServer);
 
 socketHandler(io);
 
@@ -71,7 +65,7 @@ app.use(errorHandler);
 
 redisClient.connect();
 
-export const server = httpsServer.listen(3000, () => {
+export const server = httpServer.listen(3000, () => {
   console.log("Server listening on *:3000");
 });
 
