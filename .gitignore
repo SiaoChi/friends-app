@@ -4,6 +4,7 @@ uploads/*
 
 backup.sql
 .env
+.env_ec2
 key.pem
 cert.pem
 
