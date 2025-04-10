@@ -21,7 +21,7 @@
 
                     <div class="flex flex-wrap justify-center items-center w-[900px]">
 
-                        <% if (friendsData && friendsData.length> 0) { %>
+                        <% if (friendsData && Array.isArray(friendsData) && friendsData.length> 0) { %>
                             <% for (let i=0; i < friendsData.length; i++) { %>
                                 <div class="card flex-col bg-white w-[400px] h-[230px] m-5 p-5 shadow-md">
                                     <div class="flex ">
@@ -54,9 +54,9 @@
                                     </div>
                                 </div>
                                 <% } %>
-                                    <% } else { %>
-                                        <p>No friends found.</p>
-                                        <% } %>
+                            <% } else { %>
+                                <p>No friends found.Maybe you've added all recommend friends :0, Let's check tomorrow.</p>
+                                <% } %>
                     </div>
 
                 </div>

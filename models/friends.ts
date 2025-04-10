@@ -106,31 +106,56 @@ export async function filterIgnoreFriends(
       delete mapFriends[id];
     }
   });
+
   return mapFriends;
 }
 
 export function sortedTopRecommendFriends(mapFriends: object) {
   const FRIENDS_NUMBER = 6;
+
+  // 檢查 mapFriends 是否為空對象，若是則直接返回空陣列
+  if (Object.keys(mapFriends).length === 0) {
+    return []; // 沒有朋友可推薦，直接返回空陣列
+  }
+
   const sortedFriends = Object.entries(mapFriends)
     .sort((a, b) => b[1] - a[1])
     .slice(0, FRIENDS_NUMBER);
 
-  let topUsers;
-  if (sortedFriends.length === 0) {
-    topUsers = null;
-  } else {
-    topUsers = sortedFriends.map(([key]) => key);
-  }
-  const parseIntTopFiveUsers = topUsers?.map((item) => parseInt(item));
+  const topUsers = sortedFriends.map(([key]) => key);
+
+  // 解析並返回推薦的朋友 ID
+  const parseIntTopFiveUsers = topUsers.map((item) => parseInt(item));
   const result = z.array(TopFiveUsersSchema).parse(parseIntTopFiveUsers);
+
   return result;
 }
 
 export async function getRecommendFriendsById(userId: number) {
   const userTagsId = await getUserTagsIdByUserId(userId);
+
+  if (!userTagsId || userTagsId.length === 0) {
+    throw new Error("No tags found for user");
+  }
+
   const mapFriendsId = await getUsersIdByTagId(userId, userTagsId);
+
+  if (!mapFriendsId || Object.keys(mapFriendsId).length === 0) {
+    throw new Error("No friends found for the given tags");
+  }
+
   const filterMapFriendsId = await filterIgnoreFriends(userId, mapFriendsId);
+
+  if (!filterMapFriendsId || Object.keys(filterMapFriendsId).length === 0) {
+    return [];
+  }
+
   const recommendFriends = sortedTopRecommendFriends(filterMapFriendsId);
+  console.log("sortedTopRecommendFriend:  ", recommendFriends);
+  if (!Array.isArray(recommendFriends) || recommendFriends.length === 0) {
+    return [];
+  }
+
   return recommendFriends;
 }
 
